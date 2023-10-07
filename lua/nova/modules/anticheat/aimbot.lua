@@ -546,8 +546,8 @@ local function AimbotHandler(ply, cmd, steamID)
         cmdStats["mouseNullCount"] > maxNoMouseCount and
         CheckTimeout(steamID, "anticheat_aimbot_move")
     then
-        PrintTable(cmdStats)
         // print all necessary information for debugging
+        /*PrintTable(cmdStats)
         print("mouse", mousex, mousey)
         print("lastmouse", lastx, lasty)
         print("serverangley", serverangley)
@@ -567,7 +567,7 @@ local function AimbotHandler(ply, cmd, steamID)
         print("active weapon", generalStats["weapon_class"])
         print("active weapon", ply:GetActiveWeapon())
 
-        Nova.takeScreenshot(ply, nil, true)
+        Nova.takeScreenshot(ply, nil, true)*/
 
         Nova.startDetection(
             "anticheat_aimbot",
@@ -586,8 +586,8 @@ local function AimbotHandler(ply, cmd, steamID)
         cmdStats["totalMouseContradictions"] > maxMouseContradictions and
         CheckTimeout(steamID, "anticheat_aimbot_contr")
     then
-        PrintTable(cmdStats)
         // print all necessary information for debugging
+        /*PrintTable(cmdStats)
         print("mouse", mousex, mousey)
         print("lastmouse", lastx, lasty)
         print("serverangley", serverangley)
@@ -607,7 +607,7 @@ local function AimbotHandler(ply, cmd, steamID)
         print("active weapon", generalStats["weapon_class"])
         print("active weapon", ply:GetActiveWeapon())
 
-        Nova.takeScreenshot(ply, nil, true)
+        Nova.takeScreenshot(ply, nil, true)*/
 
         Nova.startDetection(
             "anticheat_aimbot",
@@ -620,7 +620,6 @@ local function AimbotHandler(ply, cmd, steamID)
             ) .. (altPressed and " while ALT key was pressed." or "."),
             "anticheat_aimbot_action"
         )
-        // TODO: check handcuffs
     end
 end
 hook.Add("nova_base_startcommand", "anticheat_aimbot", AimbotHandler)
