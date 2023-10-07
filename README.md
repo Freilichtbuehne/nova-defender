@@ -1,6 +1,10 @@
 # nova-defender
 🛡 All-in-One Security Solution for Garry’s Mod servers (Anticheat, Banbypass, VPN and more)
 
+<p align="center">
+  <img src="https://i.imgur.com/GTY2nhn.png" width="350" title="Banner">
+</p>
+
 ## Primary Features
 
 ### ⚠️ Prevent players from messing with your server
@@ -42,6 +46,10 @@
 - All settings in game
 - Decide what to do in each individual detection case (Ask staff, ban, kick, nothing)
 - Advanced settings for more technical persons
+  
+<p align="center">
+  <img src="https://i.imgur.com/buaoJDg.png" width="550" title="Banner">
+</p>
 
 ## Installation
 
