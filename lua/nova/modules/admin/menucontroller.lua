@@ -20,6 +20,10 @@ local dataTypesLoad = {
 // for bandwith and performance reasons, we compress all data we send to the admin
 local function SendClientSettings(ply, data, messageName)
     local dataType = type(data)
+    if not dataTypesSave[dataType] then
+        Nova.log("e", string.format("Attempted to send invalid data type %q to %s", dataType, Nova.playerName(ply)))
+        return
+    end
     local convertedValue = dataTypesSave[dataType](data)    // convert
     convertedValue = util.Compress(convertedValue)          // compress
     local compressedSize = string.len(convertedValue)

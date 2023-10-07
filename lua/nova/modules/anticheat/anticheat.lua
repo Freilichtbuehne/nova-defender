@@ -487,7 +487,7 @@ hook.Add("nova_init_loaded", "anticheat_createnetmessage", function()
         // this may indicate that the netmessage was faster than the concommand
         // so we add a fake detection to the queue (golden ticket)
         // so the next time we receive a concommand we can ignore it
-        elseif protected and #detectionQueue[steamID] == 0 then
+        elseif protected and #(detectionQueue[steamID] or {}) == 0 then
             if not detectionQueue[steamID] then
                 detectionQueue[steamID] = {}
             end
