@@ -195,7 +195,7 @@ Nova.setSetting("anticheat_autoclick_check_fast", true, true, true, nil, true)
 Nova.setSetting("anticheat_autoclick_check_fastlong", true, true, true, nil, true)
 Nova.setSetting("anticheat_autoclick_check_robotic", true, true, true, nil, true)
 
-Nova.setSetting("anticheat_aimbot_enabled", true, true, true)
+Nova.setSetting("anticheat_aimbot_enabled", false, true, true)
 Nova.setSetting("anticheat_aimbot_action", "ask", true, true, {"kick", "ban", "notify", "ask", "nothing"})
 Nova.setSetting("anticheat_aimbot_reason", "Aimbot detected", true, true, nil, true)
 Nova.setSetting("anticheat_aimbot_check_snap", false, true, true, nil, true)
