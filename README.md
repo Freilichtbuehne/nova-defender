@@ -80,7 +80,7 @@ If you are familiar with the settings, you can also switch to the 'advanced sett
 4. Restart Server
 
 ### ❓ Anything not working?
-Check troubleshooting page: https://freilichtbuehne.gitbook.io/nova-defender/
+Check troubleshooting page: https://freilichtbuehne.gitbook.io/nova-defender/troubleshooting
 
 ## FAQ
 
@@ -115,6 +115,7 @@ Under the 'Networking' tab, you can configure everything.
 ## Known Issues
 - Aimbot detection will (at the moment) cause false positives in rare conditions (it is disabled by default)
 - With the anticheat enabled FProfiler will not work on the clientside anymore
+- Ban evasions are only detected if ban originated from Nova Defender and even better if player was banned while being connected to the server
 
 ## Support
 You are also welcome to contact me directly:
