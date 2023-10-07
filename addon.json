@@ -1,0 +1,11 @@
+{
+	"title"		:	"Nova Defender",
+	"type"		:	"ServerContent",
+	"tags"		:	[ "roleplay", "realism" ],
+	"ignore"	:
+	[
+		"*.py",
+		"*.txt",
+		"*.md*"
+	]
+}
