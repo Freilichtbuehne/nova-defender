@@ -44,8 +44,8 @@ Nova.config["use_mysql"] = false
 // only needed if use_mysql is set to true
 Nova.config["mysql_host"] = "localhost"
 Nova.config["mysql_port"] = 3306
-Nova.config["mysql_username"] = "please don't use root"
-Nova.config["mysql_pass"] = "very secure password"
+Nova.config["mysql_username"] = "please_dont_use_root"
+Nova.config["mysql_pass"] = "very_secure_password"
 Nova.config["mysql_db"] = "nova"
 
 
