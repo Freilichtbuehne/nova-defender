@@ -76,22 +76,24 @@ end
 
 local function bnot(x) return(-1 - x) % MOD end
 
-local function rshift1(a, disp)
-	if disp < 0 then return lshift(a, - disp) end
-	return math.floor(a % 2 ^ 32 / 2 ^ disp)
-end
+local lshift, rshift, rshift1, rrotate
 
-local function rshift(x, disp)
-	if disp > 31 or disp < -31 then return 0 end
-	return rshift1(x % MOD, disp)
-end
-
-local function lshift(a, disp)
+lshift = function(a, disp)
 	if disp < 0 then return rshift(a, - disp) end
 	return(a * 2 ^ disp) % 2 ^ 32
 end
 
-local function rrotate(x, disp)
+rshift = function(x, disp)
+	if disp > 31 or disp < -31 then return 0 end
+	return rshift1(x % MOD, disp)
+end
+
+rshift1 = function(a, disp)
+	if disp < 0 then return lshift(a, - disp) end
+	return math.floor(a % 2 ^ 32 / 2 ^ disp)
+end
+
+rrotate = function (x, disp)
 	x = x % MOD
 	disp = disp % 32
 	local low = band(x, 2 ^ disp - 1)

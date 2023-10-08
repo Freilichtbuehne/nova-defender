@@ -65,7 +65,7 @@ hook.Add("nova_config_setting_changed", "admin_menucontroller_payloads", functio
     end
 end)
 
-hook.Add("nova_security_privileges_groupchange", "admin_menucontroller_payloads", function(steamID, oldGroup, newGroup) 
+hook.Add("nova_security_privileges_groupchange", "admin_menucontroller_payloads", function(steamID, oldGroup, newGroup)
     // check if player was removed from protected or staff group completely
     // if so we need to remove the clientside menu
     /*
@@ -395,7 +395,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
         ["ip"] = function(ply, args)
             local steamID = args.steamID
             if not steamID then return end
-            local canSeeIP = Nova.getSetting("menu_access_staffseeip", false) 
+            local canSeeIP = Nova.getSetting("menu_access_staffseeip", false)
             if not canSeeIP and not Nova.isProtected(ply) then
                 // only protected players can request this
                 // or staff has specific access
@@ -488,7 +488,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
 
         // Option 2: Player requests a list of all players
         local players = {}
-        local canSeeIP = isProtected or Nova.getSetting("menu_access_staffseeip", false) 
+        local canSeeIP = isProtected or Nova.getSetting("menu_access_staffseeip", false)
         for k, v in ipairs(player.GetHumans() or {}) do
             local permission, index = Nova.getPlayerPermission(v)
             local canTouch = Nova.canTouch(ply, v)

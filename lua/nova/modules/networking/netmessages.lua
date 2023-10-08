@@ -128,7 +128,7 @@ local hooks = {
 
         local total = rateLimit[steamID][messageName].total_executions
         rateLimit[steamID][messageName].total_executions = total + 1
-        
+
         // only notify once if client exceed limit to prevent log spam
         if total == (messageLimit + 1) then
             local originalName = Nova.getNetmessage(messageName)

@@ -400,8 +400,8 @@ local function AimbotHandler(ply, cmd, steamID)
         return
     end
 
-    local lastx, lasty, lastap, lastay, lastsay, lastAxis, lastMC =
-        cmdStats.lastX, cmdStats.lastY, cmdStats.lastAP, cmdStats.lastAY, cmdStats.lastSAY, cmdStats.lastOnlyAxisChange, cmdStats.lastMouseContradiction
+    local lastx, lasty, lastap, lastay, lastsay, lastMC =
+        cmdStats.lastX, cmdStats.lastY, cmdStats.lastAP, cmdStats.lastAY, cmdStats.lastSAY, cmdStats.lastMouseContradiction
     local mouseChanged = (mousex != lastx or mousey != lasty)
     local mouseNull = (mousex == 0 and mousey == 0)
     local lastMouseNull = (lastx == 0 and lasty == 0)

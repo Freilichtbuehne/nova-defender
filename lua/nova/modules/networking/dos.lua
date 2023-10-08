@@ -141,12 +141,15 @@ local function CheckCollector()
         // Client is trying to cause a denial of service attack
         else
             local interval = Nova.getSetting("networking_dos_checkinterval", 5)
+            Nova.log("w", string.format("Player %s has caused a serverlag. Printing debug infos:", Nova.playerName(k)))
+            PrintTable(v)
             Nova.startDetection("networking_dos", k, ConvertTime(v.total), interval, "networking_dos_action")
         end
 
         // Reset time
         v.total = 0
         v.count = 0
+        v.messages = {}
     end
 
     // Get percentile
@@ -179,12 +182,18 @@ hook.Add("nova_networking_incoming_post", "networking_dos", function(client, str
             total = 0,
             count = 0,
             max = 0,
+            messages = {},
         }
     end
 
     // add the time to the table
     processTimeCollector[steamID].total = processTimeCollector[steamID].total + deltaTime
     processTimeCollector[steamID].count = processTimeCollector[steamID].count + 1
+    if not processTimeCollector[steamID].messages[strName] then
+        processTimeCollector[steamID].messages[strName] = deltaTime
+    else
+        processTimeCollector[steamID].messages[strName] = processTimeCollector[steamID].messages[strName] + deltaTime
+    end
 
     // check every n seconds
     local curTime = CurTime()
@@ -196,7 +205,7 @@ hook.Add("nova_networking_incoming_post", "networking_dos", function(client, str
 
     // if netmessage took too long, we log the message
     if deltaTime > 0.5 then
-        Nova.log("w", string.format("Netmessage %s from %s took %s to process.", strName, Nova.playerName(steamID), ConvertTime(deltaTime)))
+        Nova.log("w", string.format("Netmessage %q from %s took %s to process.", strName, Nova.playerName(steamID), ConvertTime(deltaTime)))
     end
 end)
 
