@@ -44,7 +44,7 @@ Nova.getAnticheatPayload = function()
 	// autoclick settings
 	local aclHookName = Nova.generateString(8, 16)
 	lines:Register("ac_acl_hkname",  vars:Set("ac_acl_hkname", aclHookName, false, true), 3)
-	local acl_sensivity = Nova.getSetting("anticheat_autoclick_sensivity", false)
+	local acl_sensivity = Nova.getSetting("anticheat_autoclick_sensivity", "low")
 	local acl_params = {
 		["high"] = {
 			mdev = 0.003,

@@ -89,8 +89,9 @@ local function ConnectToDatabase()
             hook.Run("nova_mysql_connected")
         end)
     end
-    Nova.mysql.onConnectionFailed = function(err)
-        Nova.log("e", string.format("Failed to connect to MySQL database: %q", util.TableToJSON(err or {})))
+    Nova.mysql.onConnectionFailed = function(db, err)
+        if not err then err = "Unknown Error" end
+        Nova.log("e", string.format("Failed to connect to MySQL database: %q", tostring(err)))
     end
 end
 
