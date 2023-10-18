@@ -23,7 +23,7 @@ local function CreateTables(callback)
 
 
     local detectionsQuery, detectionsCreated = "CREATE TABLE IF NOT EXISTS `nova_detections` (" ..
-        "`id` TEXT, " ..
+        "`id` VARCHAR(36) NOT NULL," ..
         "`steamid` VARCHAR(255) NOT NULL, " ..
         "`comment` TEXT, " ..
         "`reason` TEXT, " ..
