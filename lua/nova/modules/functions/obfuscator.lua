@@ -31,8 +31,6 @@ local function DumpFunction(func)
     return table.concat(v, ",")
 end
 
-
-
 Nova.obfuscator = Nova.obfuscator or {}
 Nova.obfuscator.getFunctionChecksum = function(inputFunction, name)
     local inputType = type(inputFunction)
@@ -46,21 +44,25 @@ Nova.obfuscator.getFunctionChecksum = function(inputFunction, name)
     end
     return dmp
 end
-Nova.obfuscator.variable = {}
+
+Nova.obfuscator.variable = {identifier = {}, lookup = {}}
 function Nova.obfuscator.variable:Get(identifier)
-    if not self[identifier] then
+    if not self.identifier[identifier] then
         local varName = ""
-        for i = 1, math.random(8,16) do
+        // Repeat until at least 8 characters and varName doesn't exist already
+        while string.len(varName) < 8 or self.lookup[varName] do
             varName = varName .. (math.random(0,1) == 1 and "K" or "k")
         end
-        self[identifier] = varName
+
+        self.identifier[identifier] = varName
+        self.lookup[varName] = identifier
     end
-    return self[identifier]
+    return self.identifier[identifier]
 end
 function Nova.obfuscator.variable:Set(identifier, value, notLocal, quotes)
-    if not self[identifier] then self:Get(identifier) end
+    if not self.identifier[identifier] then self:Get(identifier) end
     if quotes then value = string.format("[==[%s]==]", value) end
-    return string.format("%s%s = %s", notLocal and "" or "local ", self[identifier], value)
+    return string.format("%s%s = %s", notLocal and "" or "local ", self.identifier[identifier], value)
 end
 
 Nova.obfuscator.randomOrder = function(tbl)
