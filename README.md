@@ -1,8 +1,16 @@
-🛡 All-in-One Security Solution for Garry’s Mod servers (Anticheat, Banbypass, VPN and more)
-
-<p align="center">
-  <img src="https://i.imgur.com/GTY2nhn.png" width="350" title="Banner">
+<p>
+  🛡 All-in-One Security Solution for Garry’s Mod servers (Anticheat, Banbypass, VPN and more)
 </p>
+<p>
+  <img src="https://i.imgur.com/GTY2nhn.png" width="35%" title="Banner">
+</p>
+
+## Functionality Demo
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=9xUF_B0s9Gk" target="_blank">
+ <img src="https://i.ytimg.com/vi/9xUF_B0s9Gk/mqdefault.jpg" alt="Nova Defender Demo" width="35%" border="10" />
+</a>
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=9xUF_B0s9Gk" target="_blank"> Youtube Nova Defender Demo </a>
 
 ## Primary Features
 
