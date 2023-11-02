@@ -172,7 +172,7 @@ Nova.convertSteamID = function(ply_or_steamID)
         // empty
         if ply_or_steamID == "" then return "" end
         // steamid32
-        if string.find(ply_or_steamID, "STEAM_") then return ply_or_steamID end
+        if string.match(ply_or_steamID, "STEAM_[0-9]:[0-9]:[0-9]+") then return ply_or_steamID end
         // steamid64
         if tonumber(ply_or_steamID) then return util.SteamIDFrom64(ply_or_steamID) end
     end

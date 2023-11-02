@@ -69,8 +69,8 @@ commands = {
                 ["name"] = "SteamID",
                 ["description"] = "SteamID32 or SteamID64 IN QUOTES of the player to ban",
                 ["validator"] = function(steamID)
-                    local converted = Nova.convertSteamID(steamID)
-                    if not converted then print("Invalid SteamID") return end
+                    local converted = Nova.convertSteamID(steamID) or ""
+                    if converted == "" then print("Invalid SteamID, forgot quotes?") return end
                     return converted
                 end
            },
@@ -98,8 +98,8 @@ commands = {
                 ["name"] = "SteamID",
                 ["description"] = "SteamID32 or SteamID64 IN QUOTES of the player to unban",
                 ["validator"] = function(steamID)
-                    local converted = Nova.convertSteamID(steamID)
-                    if not converted then print("Invalid SteamID") return end
+                    local converted = Nova.convertSteamID(steamID) or ""
+                    if converted == "" then print("Invalid SteamID, forgot quotes?") return end
                     return converted
                 end
            },
@@ -117,8 +117,8 @@ commands = {
                 ["name"] = "SteamID",
                 ["description"] = "SteamID32 or SteamID64 IN QUOTES of the player to check",
                 ["validator"] = function(steamID)
-                    local converted = Nova.convertSteamID(steamID)
-                    if not converted then print("Invalid SteamID") return end
+                    local converted = Nova.convertSteamID(steamID) or ""
+                    if converted == "" then print("Invalid SteamID, forgot quotes?") return end
                     return converted
                 end
            },
@@ -148,8 +148,8 @@ commands = {
                 ["name"] = "SteamID",
                 ["description"] = "SteamID32 or SteamID64 IN QUOTES of the player",
                 ["validator"] = function(steamID)
-                    local converted = Nova.convertSteamID(steamID)
-                    if not converted then print("Invalid SteamID") return end
+                    local converted = Nova.convertSteamID(steamID) or ""
+                    if converted == "" then print("Invalid SteamID, forgot quotes?") return end
                     return converted
                 end
            },
@@ -173,8 +173,8 @@ commands = {
                 ["name"] = "SteamID",
                 ["description"] = "SteamID32 or SteamID64 IN QUOTES of the player",
                 ["validator"] = function(steamID)
-                    local converted = Nova.convertSteamID(steamID)
-                    if not converted then print("Invalid SteamID") return end
+                    local converted = Nova.convertSteamID(steamID) or ""
+                    if converted == "" then print("Invalid SteamID, forgot quotes?") return end
                     return converted
                 end
            },
