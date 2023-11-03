@@ -115,7 +115,7 @@ Yes, the addon that detects the cheater first will ban him first. If you don't c
 Normal player bans can still be made via any existing admin tools. Cheaters, exploiters etc. will be banned automatically via Nova Defender. Ban evasions can only be detected if the ban originates from Nova Defender. You can use this addon perfectly alongside ULX.
 
 ### What if players are banned for no reason?
-By default, a notification is sent before EVERY ban asking what action should be taken. If the notifications are reliable for a specific detection, 'Ban' or 'Kick' can be selected directly in the action settings. Detections like aimbot are intentionally disabled by default as they do not provide solid evidence that a player che
+By default, a notification is sent before EVERY ban asking what action should be taken. If the notifications are reliable for a specific detection, 'Ban' or 'Kick' can be selected directly in the action settings. Detections like aimbot are intentionally disabled by default as they do not provide solid evidence that a player cheated.
 
 Otherwise, feel free to report a false detection via a GitHub issue or cantact me directly.
 
