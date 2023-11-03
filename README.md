@@ -1,13 +1,19 @@
-<p>
+<p align="center">
   🛡 All-in-One Security Solution for Garry’s Mod servers (Anticheat, Banbypass, VPN and more)
 </p>
-<p>
-  <img src="https://i.imgur.com/GTY2nhn.png" width="35%" title="Banner">
+<p align="center">
+  <!--<img src="https://i.imgur.com/GTY2nhn.png" width="412px" title="Banner">-->
+  <img src="https://i.imgur.com/6z8hxLV.gif" width="412px" title="Banner">
+</p>
+
+<p align="center">
+  :computer: <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3069680995">Also avaliable on Steam Workshop</a>
+  :open_file_folder: <a href="https://github.com/Freilichtbuehne/nova-defender/releases/latest">Direct download</a>
 </p>
 
 ## Functionality Demo
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=9xUF_B0s9Gk" target="_blank">
- <img src="https://i.ytimg.com/vi/9xUF_B0s9Gk/mqdefault.jpg" alt="Nova Defender Demo" width="35%" border="10" />
+ <img src="https://i.ytimg.com/vi/9xUF_B0s9Gk/mqdefault.jpg" alt="Nova Defender Demo"  width="412px" />
 </a>
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=9xUF_B0s9Gk" target="_blank"> Youtube Nova Defender Demo </a>
@@ -15,7 +21,7 @@
 ## Primary Features
 
 ### ⚠️ Prevent players from messing with your server
-- Using cheat software
+- Using [cheat software](https://github.com/Freilichtbuehne/nova-defender#how-is-an-open-source-anticheat-supposed-to-work)
 - Detects aimbot
 - Cause Lags
 - Crash Server
@@ -75,7 +81,7 @@
 
 
 ### ❓ What should I change ingame?
-By default, all admins who are online are asked what should be done each time a detection is triggered. If no admin is online, you can always review the detection afterward in the 'Detections' tab. If a detection does not cause any problems after a few days, you can set the action to 'ban' or 'kick'. If a message occurs frequently wrong, you can set the action to 'nothing' and write a support ticket if necessary.
+By default, all admins who are online are asked what should be done each time a detection is triggered. If no admin is online, you can always review the detection afterward in the 'Detections' tab. If a detection does not cause any problems after a few days, you can set the action to 'ban' or 'kick'. If a message occurs frequently wrong, you can set the action to 'nothing'. If you experience problems with detections PLEASE let me know to improve them via an issue on GitHub or contact me directly.
 
 If you are familiar with the settings, you can also switch to the 'advanced settings' to access many more features.
 
@@ -103,15 +109,15 @@ This addon was continuously tested on a large DarkRP and TTT server for over two
 With an average of 50 players, cheaters were reliably banned, ban evasions were detected, and the servers were protected.
 
 ###  Can I use this addon alongside other anticheat addons?
-Yes, the addon that detects the cheater first will ban him first. If you don't care that anticheat bans are spread over several addons, you can use more than one. Be careful, though, because anticheat systems often conflict with each other. 
+Yes, the addon that detects the cheater first will ban him first. If you don't care that anticheat bans are spread over several addons, you can use more than one. Be careful, though, because anticheat systems often conflict with each other. This can cause performance issues and false positives.
 
 ### Can I use this addon alongside other admin tools?
 Normal player bans can still be made via any existing admin tools. Cheaters, exploiters etc. will be banned automatically via Nova Defender. Ban evasions can only be detected if the ban originates from Nova Defender. You can use this addon perfectly alongside ULX.
 
 ### What if players are banned for no reason?
-By default, a notification is sent before EVERY ban asking what action should be taken. If the notifications are reliable for a specific detection, 'Ban' or 'Kick' can be selected directly in the action settings.
+By default, a notification is sent before EVERY ban asking what action should be taken. If the notifications are reliable for a specific detection, 'Ban' or 'Kick' can be selected directly in the action settings. Detections like aimbot are intentionally disabled by default as they do not provide solid evidence that a player che
 
-Otherwise, feel free to report a false detection via the ticket system, and it will be improved.
+Otherwise, feel free to report a false detection via a GitHub issue or cantact me directly.
 
 
 ### Where can I find saved screenshots on my server?
@@ -130,7 +136,7 @@ You are also welcome to contact me directly:
 - Steam: https://steamcommunity.com/id/samuelweil/
 
 ## Credits
-- HMAC-SHA256 signature: https://github.com/jqqqi/Lua-HMAC-SHA256
-- Backdoor and exploit netmessages: https://steamcommunity.com/sharedfiles/filedetails/?id=1308262997
-- LZW Compression: https://github.com/Rochet2/lualzw
-- Yueliang LuaVM: https://github.com/gamesys/moonshine/blob/master/extensions/luac/yueliang.lua
+- [HMAC-SHA256 signature](https://github.com/jqqqi/Lua-HMAC-SHA256)
+- [Backdoor and exploit netmessages](https://steamcommunity.com/sharedfiles/filedetails/?id=1308262997)
+- [LZW Compression](https://github.com/Rochet2/lualzw)
+- [Yueliang LuaVM](https://github.com/gamesys/moonshine/blob/master/extensions/luac/yueliang.lua)
