@@ -98,7 +98,7 @@ Check troubleshooting page: https://freilichtbuehne.gitbook.io/nova-defender/tro
 ## FAQ
 
 ### How is an open source anticheat supposed to work?
-Currently **only some simple cheats are detected**. Since the source code of Nova Defender is open and and visible, cheats can be easily modified to be undetectable. Therefore, **owners of large servers can request the extension of the anticheat, which also detects external, new or paid cheats by name**. Feel free to contact me directly via Steam for this. However, I reserve the right to refuse the request even without providing a reason.
+Currently **only some simple cheats are detected**. Since the source code of Nova Defender is open and visible, cheats can be easily modified to be undetected again. Therefore, **owners of large servers can request the extension of the anticheat, which also detects external, new or paid cheats by name**. Feel free to contact me directly via Steam for this. However, I reserve the right to refuse the request even without providing a reason.
 
 ### What it does not do?
 No replacement for any admin menu (like ULX, sAdmin, xAdmin, ...)
