@@ -3316,7 +3316,11 @@ Nova.getInspectionPayload = function()
     sb.btnGrip.Paint = function(self, _w, _h)
       draw.RoundedBox(4, _w / 5, 0, _w * 0.5, _h, style.color.pri)
     end
-    
+
+    local blacklistDirs = {
+      "^garrysmod/addons/",
+    }
+  
     local function OpenFolder(folderNode)
       if not IsValid(self) then return end
       if not IsValid(folderNode) then return end
@@ -3336,6 +3340,21 @@ Nova.getInspectionPayload = function()
         surface.SetDrawColor( self.m_Color.r, self.m_Color.g, self.m_Color.b, self.m_Color.a )
         surface.DrawTexturedRectRotated( x + dw / 2, y + dh / 2, dw, dh, rot )
         return true
+      end
+      -- block addons folder for privacy concerns
+      -- this can easily get bypassed, but also implemented from scratch
+      for k, pattern in ipairs(blacklistDirs) do
+        if string.match( path, pattern) then
+          local queue = browser.queue[path]
+          if IsValid(loading) then loading:Remove() end
+          folderNode.discovered = true
+          folderNode.awaiting = nil
+          local node = folderNode:AddNode( "Hidden by Nova Defender" )
+          local fullPath = string.format("%s%s", path, v)
+          node.fullpath = fullPath
+          node.Icon:SetImage( "icon16/cancel.png" )
+          return
+        end
       end
       SendData("open_folder", path)
     end

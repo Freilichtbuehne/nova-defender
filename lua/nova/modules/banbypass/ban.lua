@@ -696,8 +696,8 @@ end
 
 // are we already connected to database (hook will never run) or do we need to wait?
 // depends on whether setting.lua is loaded before or after mysql.lua
-if (Nova.sqlite or Nova.mysql) and Nova.configLoaded then
-    LoadBans()
-else
+if not Nova.defaultSettingsLoaded then
     hook.Add("nova_mysql_config_loaded", "banbypass_loadbans", LoadBans)
+else
+    LoadBans()
 end

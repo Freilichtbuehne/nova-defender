@@ -94,7 +94,7 @@ hook.Add("nova_init_loaded", "devicecookies_createnetmessage", function()
     Nova.netmessage("devicecookies_reqestcookie")
 end)
 
-hook.Add("nova_mysql_config_loaded", "devicecookies_initialize", function()
+local function InitCookies()
     Nova.log("d", "Initializing device cookies")
 
     // initialize cookie server secret (if not set)
@@ -159,7 +159,13 @@ hook.Add("nova_mysql_config_loaded", "devicecookies_initialize", function()
 
         hook.Run("nova_banbypass_cookieloaded", ply)
     end)
-end)
+end
+
+if not Nova.defaultSettingsLoaded then
+    hook.Add("nova_mysql_config_loaded", "devicecookies_initialize", InitCookies)
+else
+    InitCookies()
+end
 
 concommand.Add("nova_cookie", function(ply, cmd, args)
     if ply != NULL and not Nova.isProtected(ply) then return end

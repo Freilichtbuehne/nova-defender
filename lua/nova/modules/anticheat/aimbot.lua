@@ -696,7 +696,7 @@ hook.Add("nova_networking_playerauthenticated", "anticheat_sendaimbotpayload", f
     Nova.log("d", string.format("Sent anticheat payload to %s", Nova.playerName(ply)))
 end)
 
-if not Nova.configLoaded then
+if not Nova.defaultSettingsLoaded then
     hook.Add("nova_mysql_config_loaded", "anticheat_aimbot", LoadConfig)
 else
     LoadConfig()

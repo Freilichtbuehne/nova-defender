@@ -105,26 +105,23 @@ Nova.setSetting("networking_concommand_dump", false, true, true, nil, true)
 /*===============================
 	HTTP
 ===============================*/
+Nova.setSetting("networking_http_overwrite", false, true, true)
+Nova.setSetting("networking_http_logging", true, true, true, nil, true)
+Nova.setSetting("networking_http_blockunsafe", false, true, true, nil, true)
+Nova.setSetting("networking_http_whitelist", false, true, true, nil, true)
+Nova.setSetting("networking_http_whitelistdomains", {
+	"google.com",
+	"vcmod.org",
+	"m4dsolutions.com",
+}, true, true, nil, true)
 
 Nova.setSetting("networking_fetch_overwrite", false, true, true)
-Nova.setSetting("networking_fetch_logging", true, true, true, nil, true)
-Nova.setSetting("networking_fetch_blockunsafe", false, true, true, nil, true)
 Nova.setSetting("networking_fetch_whitelist", false, true, true, nil, true)
-Nova.setSetting("networking_fetch_domains",{
-	"google.com",
-	"vcmod.org",
-	"m4dsolutions.com",
-}, true, true, nil, true)
+Nova.setSetting("networking_fetch_blockunsafe", false, true, true, nil, true)
 
 Nova.setSetting("networking_post_overwrite", false, true, true)
-Nova.setSetting("networking_post_logging", true, true, true, nil, true)
-Nova.setSetting("networking_post_blockunsafe", false, true, true, nil, true)
 Nova.setSetting("networking_post_whitelist", false, true, true, nil, true)
-Nova.setSetting("networking_post_domains", {
-	"google.com",
-	"vcmod.org",
-	"m4dsolutions.com",
-}, true, true, nil, true)
+Nova.setSetting("networking_post_blockunsafe", false, true, true, nil, true)
 
 /*===============================
 	VPN
@@ -283,5 +280,5 @@ Nova.setSetting("security_health_ignorelist", {}, false, true)
 
 Nova.setSetting("uid", string.format("%x", math.random(0x11111111111111, 0xFFFFFFFFFFFFFF)), false, true)
 
-Nova.configLoaded = true
+Nova.defaultSettingsLoaded = true
 end

@@ -57,17 +57,19 @@ local phrases = {
     ["networking_screenshot_steam"] = "Screenshot über Steam:\nCheats blockieren oft die Aufnahme von Screenshots durch Addons. Wir können dies umgehen, indem wir einen Steam-Screenshot machen. Der Benutzer wird es bemerken, weil es in seiner Steam-Screenshot-Galerie erscheint. Ist das Häkchen nicht gesetzt, wird die herkömmliche Methode verwendet.",
     ["networking_screenshot_quality"] = "Screenshot-Qualität\nScreenshots mit hoher Qualität können bis zu einer Minute für die Übertragung benötigen.",
 
-    ["networking_fetch_overwrite"] = "Untersuche HTTP-Anfragen (Empfangen): Untersuche Anfragen über http.Fetch. NICHT AKTIVIEREN, WENN DU VCMOD VERWENDEST!",
-    ["networking_fetch_logging"] = "Anfragen protokollieren:\nAlle http.Fetch-Anfragen werden im Detail geloggt. Dies ist nützlich, um einen Überblick darüber zu erhalten, welche URLs aufgerufen werden.",
+    ["networking_http_overwrite"] = "Untersuche HTTP-Aufrufe (Senden+Empfangen):\nIst diese Einstellung aktiviert, wird die HTTP-Funktion überschrieben und Anfragen können protokolliert oder blockiert werden. Diese Methode kann jedoch auch umgangen werden oder DRM-Systeme deaktivieren.",
+    ["networking_http_logging"] = "Anfragen protokollieren:\nAlle HTTP-Anfragen werden im Detail in der Konsole geloggt. Dies ist nützlich, um einen Überblick darüber zu erhalten, welche URLs aufgerufen werden. Funktioniert nur, wenn HTTP-Anfragen untersucht werden.",
+    ["networking_http_blockunsafe"] = "Unsichere Anfragen blockieren:\nAnfragen, die von unsicheren Quellen wie Konsole oder RunString stammen, werden blockiert.",
+    ["networking_http_whitelist"] = "Whitelist aktivieren:\nNur Domains und IP-Adressen, die der Liste hinzugefügt wurden, werden zugelassen.",
+    ["networking_http_whitelistdomains"] = "Domains whitelisten:\nFüge alle vertrauten Domains und IPs die erlaubt sein sollen hinzu. Alles andere wird blockiert. Wenn du dir nicht sicher bist, welche Domain auf die Whitelist gesetzt werden sollen, deaktiviere die Whitelist und schalte nur die Protokollierung ein.",
+
+    ["networking_fetch_overwrite"] = "Untersuche http.Fetch (Empfangen von Daten):\nÜberschreibt die http.Fetch-Funktion. NICHT AKTIVIEREN, WENN DU VCMOD VERWENDEST! Diese Methode kann jedoch auch umgangen werden oder DRM-Systeme deaktivieren.",
     ["networking_fetch_whitelist"] = "Whitelist aktivieren:\nNur Domains und IP-Adressen, die der Liste hinzugefügt wurden, werden zugelassen.",
     ["networking_fetch_blockunsafe"] = "Unsichere Anfragen blockieren:\nAnfragen, die von unsicheren Quellen wie Konsole oder RunString stammen, werden blockiert.",
-    ["networking_fetch_domains"] = "Domains whitelisten:\nFüge alle vertrauten Domains und IPs die erlaubt sein sollen hinzu. Alles andere wird blockiert. Wenn du dir nicht sicher bist, welche Domain auf die Whitelist gesetzt werden sollen, deaktiviere die Whitelist und schalte nur die Protokollierung ein.",
 
-    ["networking_post_overwrite"] = "Untersuche HTTP-Anfragen (Senden):\nUntersuche Anfragen über http.Post. Das Senden von HTTP-Anfragen kann von Angreifern genutzt werden, um alle Dateien auf dem Server zu klauen.",
-    ["networking_post_logging"] = "Anfragen protokollieren:\nAlle http.Post-Anfragen werden im Detail geloggt. Dies ist nützlich, um einen Überblick darüber zu erhalten, welche URLs kontaktiert werden.",
+    ["networking_post_overwrite"] = "Untersuche http.Post (Senden von Daten):\nÜberschreibt die http.Post-Funktion. Das Senden von HTTP-Anfragen kann von Angreifern genutzt werden, um Dateien auf dem Server zu klauen. Diese Methode kann jedoch auch umgangen werden oder DRM-Systeme deaktivieren.",
     ["networking_post_whitelist"] = "Whitelist aktivieren:\nNur Domains und IP-Adressen, die der Liste hinzugefügt wurden, werden zugelassen.",
     ["networking_post_blockunsafe"] = "Unsichere Anfragen blockieren: \nAnfragen, die von unsicheren Quellen wie Konsole oder RunString stammen, werden blockiert.",
-    ["networking_post_domains"] = "Domains whitelisten:\nFüge alle vertrauten Domains und IPs die erlaubt sein sollen hinzu. Alles andere wird blockiert. Wenn du dir nicht sicher bist, welche Domain auf die Whitelist gesetzt werden sollen, deaktiviere die Whitelist und schalte nur die Protokollierung ein.",
     /*
         Banbypass
     */

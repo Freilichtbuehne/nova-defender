@@ -197,70 +197,74 @@ Nova.registerAction("security_privilege_removal", "security_privileges_group_pro
 
 local groupCache = {}
 
-hook.Add("nova_mysql_config_loaded", "privileges_group_protection", function()
+local function CreateTimer()
+    timer.Create("nova_privileges_group_protection", Nova.getSetting("security_privileges_group_protection_timer_interval", 5), 0, function()
+        if not Nova.getSetting("security_privileges_group_protection_enabled", false) then return end
 
-timer.Create("nova_privileges_group_protection", Nova.getSetting("security_privileges_group_protection_timer_interval", 5), 0, function()
-    if not Nova.getSetting("security_privileges_group_protection_enabled", false) then return end
+        local players = player.GetHumans()
+        for k, v in ipairs(players or {}) do
+            if not IsValid(v) or not v:IsPlayer() then continue end
 
-    local players = player.GetHumans()
-    for k, v in ipairs(players or {}) do
-        if not IsValid(v) or not v:IsPlayer() then continue end
+            local steamID = v:SteamID() if not steamID then continue end
+            local userGroup = v:GetUserGroup()
+            local isProtected = Nova.isProtected(steamID)
 
-        local steamID = v:SteamID() if not steamID then continue end
-        local userGroup = v:GetUserGroup()
-        local isProtected = Nova.isProtected(steamID)
+            // player has no cached group yet
+            if not groupCache[steamID] then
+                groupCache[steamID] = {
+                    ["group"] = userGroup,
+                    ["isStaff"] = Nova.isStaff(steamID),
+                    ["isProtected"] = Nova.isProtected(steamID),
+                }
+            // check if group changed
+            elseif groupCache[steamID] and groupCache[steamID] != userGroup then
+                local isStaff = Nova.isStaff(steamID)
 
-        // player has no cached group yet
-        if not groupCache[steamID] then
-            groupCache[steamID] = {
-                ["group"] = userGroup,
-                ["isStaff"] = Nova.isStaff(steamID),
-                ["isProtected"] = Nova.isProtected(steamID),
-            }
-        // check if group changed
-        elseif groupCache[steamID] and groupCache[steamID] != userGroup then
-            local isStaff = Nova.isStaff(steamID)
+                local newGroup = {
+                    ["group"] = userGroup,
+                    ["isStaff"] = isStaff,
+                    ["isProtected"] = isProtected,
+                }
 
-            local newGroup = {
-                ["group"] = userGroup,
-                ["isStaff"] = isStaff,
-                ["isProtected"] = isProtected,
-            }
+                hook.Run("nova_security_privileges_groupchange", steamID, groupCache[steamID], newGroup)
+                groupCache[steamID] = newGroup
+            end
 
-            hook.Run("nova_security_privileges_groupchange", steamID, groupCache[steamID], newGroup)
-            groupCache[steamID] = newGroup
+            local protectedPlayers = Nova.getSetting("security_privileges_group_protection_protected_players", {})
+            local protectedGroups = Nova.getSetting("security_permissions_groups_protected", {})
+            // player is protected but his group mismatch
+            if isProtected
+                and protectedPlayers[steamID]
+                and protectedPlayers[steamID].group != userGroup then
+
+                local action = Nova.getSetting("security_privileges_group_protection_removal_action", "set")
+                local func_name = "removal_" .. action
+
+                if ShouldIgnore(steamID, userGroup, func_name) then continue end
+
+                Nova.startDetection("security_privilege_removal", v, userGroup)
+                continue
+            end
+
+            // player has protected group but is not whitelisted
+            if not isProtected and table.HasValue(protectedGroups, userGroup) then
+                local action = Nova.getSetting("security_privileges_group_protection_escalation_action", "ask")
+                local func_name = "escalation_" .. action
+
+                if ShouldIgnore(steamID, userGroup, func_name) then continue end
+
+                Nova.startDetection("security_privilege_escalation", v, userGroup, "security_privileges_group_protection_escalation_action")
+                continue
+            end
         end
+    end)
+end
 
-        local protectedPlayers = Nova.getSetting("security_privileges_group_protection_protected_players", {})
-        local protectedGroups = Nova.getSetting("security_permissions_groups_protected", {})
-        // player is protected but his group mismatch
-        if isProtected
-            and protectedPlayers[steamID]
-            and protectedPlayers[steamID].group != userGroup then
-
-            local action = Nova.getSetting("security_privileges_group_protection_removal_action", "set")
-            local func_name = "removal_" .. action
-
-            if ShouldIgnore(steamID, userGroup, func_name) then continue end
-
-            Nova.startDetection("security_privilege_removal", v, userGroup)
-            continue
-        end
-
-        // player has protected group but is not whitelisted
-        if not isProtected and table.HasValue(protectedGroups, userGroup) then
-            local action = Nova.getSetting("security_privileges_group_protection_escalation_action", "ask")
-            local func_name = "escalation_" .. action
-
-            if ShouldIgnore(steamID, userGroup, func_name) then continue end
-
-            Nova.startDetection("security_privilege_escalation", v, userGroup, "security_privileges_group_protection_escalation_action")
-            continue
-        end
-    end
-end)
-
-end)
+if not Nova.defaultSettingsLoaded then
+    hook.Add("nova_mysql_config_loaded", "privileges_group_protection", CreateTimer)
+else
+    CreateTimer()
+end
 
 // if a protected player is added or removed
 hook.Add("nova_config_setting_changed", "privileges_group_protection", function(key, value, oldValue)

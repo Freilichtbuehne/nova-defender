@@ -103,6 +103,20 @@ Nova.setSetting = function(key, value, showInUI, ifNotExists, options, advanced)
     return value
 end
 
+Nova.deleteSetting = function(key)
+    if not key then return end
+
+    // if setting is not in the cache, we return the default value
+    if not configCache[key] then
+        return
+    end
+
+    configCache[key] = nil
+
+    local query = "DELETE FROM `nova_config` WHERE `key` = " .. Nova.sqlEscape(key) .. ";"
+    Nova.query(query)
+end
+
 // this only gets called by ui
 Nova.setUISetting = function(key, value)
     if not configCache[key] or not configCache[key].show_in_ui then
@@ -224,7 +238,7 @@ hook.Add("nova_init_loaded", "config_loadconfig", function()
 end)
 
 // in case of lua refresh
-if Nova.configLoaded then
+if Nova.defaultSettingsLoaded then
     LoadConfig()
 end
 

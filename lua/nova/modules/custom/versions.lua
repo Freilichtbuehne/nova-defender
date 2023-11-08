@@ -19,6 +19,30 @@ local patches = {
         ");"
         Nova.query(detectionsQuery)
     end,
+    ["1.7.0"] = function()
+        // Merge both settings into one
+        Nova.log("i", "Merging networking_fetch_domains and networking_post_domains into networking_http_whitelistdomains")
+        local whitelistFetch = Nova.getSetting("networking_fetch_domains", {})
+        local whitelistPost = Nova.getSetting("networking_post_domains", {})
+
+        local merge = {}
+        for k,v in ipairs(whitelistFetch) do
+            if not table.HasValue(merge, v) then table.insert(merge, v) end
+        end
+        for k,v in ipairs(whitelistPost) do
+            if not table.HasValue(merge, v) then table.insert(merge, v) end
+        end
+        Nova.setSetting("networking_http_whitelistdomains", merge)
+
+        Nova.setSetting("networking_http_logging", Nova.getSetting("networking_fetch_logging", false) or Nova.getSetting("networking_post_logging", false))
+
+        // delete old settings
+        Nova.deleteSetting("networking_fetch_domains")
+        Nova.deleteSetting("networking_post_domains")
+        Nova.deleteSetting("networking_fetch_logging")
+        Nova.deleteSetting("networking_post_logging")
+
+    end
 }
 
 local function IsVersionHigherOrEqual(version1, version2)
@@ -50,13 +74,14 @@ local function SearchPatch(oldVersion, newVersion)
     return patchesNecessary
 end
 
-hook.Add("nova_mysql_config_loaded", "compatibility_versionchanges", function()
+local function CheckVersion()
     local lastVersion = Nova.getSetting("compatibility_lastversion", "none")
     // first time running Nova
     if lastVersion == "none" then
         lastVersion = Nova["version"]
         Nova.setSetting("compatibility_lastversion", lastVersion, false, true)
     end
+
     // version hasn't changed
     if lastVersion == Nova["version"] then return end
 
@@ -80,4 +105,11 @@ hook.Add("nova_mysql_config_loaded", "compatibility_versionchanges", function()
             Nova.log("e", string.format("Patch for version %s invalid", version))
         end
     end
-end)
+end
+
+
+if not Nova.defaultSettingsLoaded then
+    hook.Add("nova_mysql_config_loaded", "compatibility_versionchanges", CheckVersion)
+else
+    CheckVersion()
+end

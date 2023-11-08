@@ -57,17 +57,19 @@ local phrases = {
     ["networking_screenshot_steam"] = "Screenshot via Steam:\nCheats often block addons from taking screenshots. We can bypass this by taking a Steam screenshot. The user will notice it, because it will appear in his Steam screenshot galery. If unchecked the conventional method is used.",
     ["networking_screenshot_quality"] = "Screenshot Quality\nScreenshots with high quality may take up to a minute to transfer.",
 
-    ["networking_fetch_overwrite"] = "Inspect fetch requests:\nInspect requests via http.Fetch. DON'T ENABLE IF YOU ARE USING VCMOD!",
-    ["networking_fetch_logging"] = "Log fetch requests:\nAll http.Fetch requests will be logged in detail. This is usefull to get an overview of which URLs are contacted.",
-    ["networking_fetch_whitelist"] = "Enable whitelisting fetch requests:\nOnly domains and IP addresses added to the list will be allowed.",
-    ["networking_fetch_blockunsafe"] = "Block unsafe fetch requests:\nBlock requests originating from unsafe sources like console or RunString.",
-    ["networking_fetch_domains"] = "Whitelist fetch requests:\nAdd all trusted domains and IP addresses which should be allowed. Everything else will be blocked. If you are unsure which domains to whitelist, disable whitelist and just turn on logging.",
+    ["networking_http_overwrite"] = "Inspect HTTP calls (send+receive):\nIf this setting is enabled, the HTTP function is overridden and requests can be logged or blocked. However, this method can also be bypassed or disable DRM systems.",
+    ["networking_http_logging"] = "Log requests:\nAll HTTP requests are logged in detail in the console. This is useful to get an overview of which URLs are called. Only works when HTTP requests are inspected.",
+    ["networking_http_blockunsafe"] = "Block unsafe requests:\nRequests originating from unsafe sources such as console or RunString are blocked.",
+    ["networking_http_whitelist"] = "Enable whitelist:\nOnly domains and IP addresses that have been added to the list are allowed.",
+    ["networking_http_whitelistdomains"] = "Whitelist domains:\nAdd all trusted domains and IPs that should be allowed. Everything else will be blocked. If you are not sure which domains to whitelist, disable the whitelist and enable logging only.",
 
-    ["networking_post_overwrite"] = "Inspect post requests:\nInspect requests via http.Post. Sending webrequests can be used by attackers to leak all your files on the server.",
-    ["networking_post_logging"] = "Log post requests:\nAll http.Post requests will be logged in detail. This is usefull to get an overview of which URLs are contacted.",
-    ["networking_post_whitelist"] = "Enable whitelisting post requests:\nOnly domains and IP addresses added to the list will be allowed.",
-    ["networking_post_blockunsafe"] = "Block unsafe post requests:\nBlock requests originating from unsafe sources like console or RunString.",
-    ["networking_post_domains"] = "Whitelist post requests:\nAdd all trusted domains and IP addresses which should be allowed. Everything else will be blocked. If you are unsure which domains to whitelist, disable whitelist and just turn on logging.",
+    ["networking_fetch_overwrite"] = "Inspect http.fetch (receiving data):\nOverwrite the http.fetch function. DO NOT ENABLE IF YOU ARE USING VCMOD! However, this method can also be bypassed or disable DRM systems.",
+    ["networking_fetch_whitelist"] = "Enable whitelist:\nOnly domains and IP addresses added to the list will be allowed.",
+    ["networking_fetch_blockunsafe"] = "Block unsafe requests:\nRequests originating from unsafe sources such as console or RunString are blocked.",
+
+    ["networking_post_overwrite"] = "Inspect http.post (sending data):\nOverwrite the http.post function. Sending HTTP requests can be used by attackers to steal files on the server. However, this method can also be bypassed or disable DRM systems.",
+    ["networking_post_whitelist"] = "Enable whitelist:\nOnly domains and IP addresses that have been added to the list are allowed.",
+    ["networking_post_blockunsafe"] = "Block unsafe requests: \nRequests originating from insecure sources such as console or RunString are blocked.",
     /*
         Banbypass
     */
