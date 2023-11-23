@@ -1266,7 +1266,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
   function TEXT_BOX:Init()
     self.text = Lang("menu_elem_no_data")
     
-    self:SetSize(style.frame.w / 2, style.frame.h / 1.5)
+    self:SetSize(style.frame.w / 1.8, style.frame.h / 1.5)
     self:Center()
     self:SetTitle("")
     self:ShowCloseButton(false)
