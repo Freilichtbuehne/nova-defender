@@ -9,11 +9,11 @@ local phrases = {
     ["menu_notify_showstaff"] = "Show notifications to staff.",
     ["menu_notify_showinfo"] = "Show informational notifications",
     ["menu_access_player"] = "Staff has access to 'Players Online' tab and can perform actions there. Staff cannot target protected players.",
-    ["menu_access_staffseeip"] = "Staff can see IP adresses of players",
+    ["menu_access_staffseeip"] = "Staff can see IP addresses of players",
     ["menu_access_detections"] = "Staff has access to 'Detections' tab",
     ["menu_access_bans"] = "Staff has access to 'Bans' tab",
     ["menu_access_health"] = "Staff has access to 'Health' tab",
-    ["menu_access_inspection"] = "Staff has access to 'Playerinspection' tab",
+    ["menu_access_inspection"] = "Staff has access to 'Inspect Players' tab",
 
     ["menu_action_timeopen"] = "Punishment promt display duration in seconds.",
     ["menu_action_showstaff"] = "Ask staff for punishment action if no protected players are there (or AFK).",
@@ -37,10 +37,10 @@ local phrases = {
     ["networking_sendlua_validationfailed_action"] = "What should happen when a player blocks code from Nova Defender?",
     ["networking_sendlua_validationfailed_reason"] = "Reason for a player get's kicked or banned by blocking code from Nova Defender.",
     ["networking_fakenets_backdoors_load"] = "Create fake backdoors and trick attackers into using them.",
-    ["networking_fakenets_backdoors_block"] = "Block backdoors on server. Might block legitimate netmessages and break addons! First see the 'health' tab and check for existing backdoors.",
+    ["networking_fakenets_backdoors_block"] = "Block backdoors on server. Might block legitimate netmessages and break addons! First see the 'Health' tab and check for existing backdoors.",
     ["networking_fakenets_backdoors_action"] = "What should happen when attacker uses a fake backdoor?",
     ["networking_fakenets_exploits_load"] = "Create fake exploits and trick attackers into using them.",
-    ["networking_fakenets_exploits_block"] = "Block exploitable netmessages on server. This breaks exploitable addons on your server! First see the 'health' tab and check which addons are exploitable.",
+    ["networking_fakenets_exploits_block"] = "Block exploitable netmessages on server. This breaks exploitable addons on your server! First see the 'Health' tab and check which addons are exploitable.",
     ["networking_fakenets_exploits_action"] = "What should happen when attacker uses a fake exploit?",
     ["networking_vpn_vpn-action"] = "What should happen when a player uses a VPN?",
     ["networking_vpn_vpn-action_reason"] = "Reason for using a VPN.",
@@ -48,13 +48,13 @@ local phrases = {
     ["networking_vpn_country-action_reason"] = "Reason for coming from a country not allowed.",
     ["networking_vpn_dump"] = "Prints information about a players IP address to console",
     ["networking_vpn_apikey"] = "VPN API key:\nFor scanning IP addresses. You need to register at https://www.ipqualityscore.com/create-account and retrieve your key at https://www.ipqualityscore.com/user/settings.",
-    ["networking_vpn_countrycodes"] = "Allowed countries to join your server. Get contry codes from here: https://countrycode.org/ (2-letter code in uppercase). It is recommended to whitelist your own and neighboring countries. You can add more countries time by time.",
-    ["networking_vpn_whitelist_asns"] = "Whitelisted ASN numbers (number to identify an internet service provider). It may happen that the API incorrectly detects a VPN connection. Therefore, known ISPs are whitelisted. Get them from https://ipinfo.io/countries. Alternatively you can see the ASN of each connected client in player tab.",
+    ["networking_vpn_countrycodes"] = "Allowed countries to join your server. Get country codes from here: https://countrycode.org/ (2-letter code in uppercase). It is recommended to whitelist your own and neighboring countries. You can add more countries time by time.",
+    ["networking_vpn_whitelist_asns"] = "Whitelisted ASN numbers (number to identify an internet service provider). It may happen that the API incorrectly detects a VPN connection. Therefore, known ISPs are whitelisted. Get them from https://ipinfo.io/countries. Alternatively you can see the ASN of each connected client in 'Player' tab.",
     ["networking_screenshot_store_ban"] = "Save screenshots (On ban):\nRight before a player gets banned, a screenshot of his screen will be made and saved inside the servers '/data/nova/ban_screenshots' folder.",
     ["networking_screenshot_store_manual"] = "Save screenshots (Menu):\nIf an admin takes a screenshot of a player, it will get saved inside the servers '/data/nova/admin_screenshots' folder.",
     ["networking_screenshot_limit_ban"] = "Screenshot limit (On ban):\nMaximum number of screenshots stored inside the servers data folder. Oldest will get deleted.",
     ["networking_screenshot_limit_manual"] = "Screenshot limit (Menu):\nMaximum number of screenshots stored inside the servers data folder. Oldest will get deleted.",
-    ["networking_screenshot_steam"] = "Screenshot via Steam:\nCheats often block addons from taking screenshots. We can bypass this by taking a Steam screenshot. The user will notice it, because it will appear in his Steam screenshot galery. If unchecked the conventional method is used.",
+    ["networking_screenshot_steam"] = "Screenshot via Steam:\nCheats often block addons from taking screenshots. We can bypass this by taking a Steam screenshot. The user will notice it, because it will appear in his Steam screenshot gallery. If unchecked the conventional method is used.",
     ["networking_screenshot_quality"] = "Screenshot Quality\nScreenshots with high quality may take up to a minute to transfer.",
 
     ["networking_http_overwrite"] = "Inspect HTTP calls (send+receive):\nIf this setting is enabled, the HTTP function is overridden and requests can be logged or blocked. However, this method can also be bypassed or disable DRM systems.",
@@ -69,7 +69,7 @@ local phrases = {
 
     ["networking_post_overwrite"] = "Inspect http.post (sending data):\nOverwrite the http.post function. Sending HTTP requests can be used by attackers to steal files on the server. However, this method can also be bypassed or disable DRM systems.",
     ["networking_post_whitelist"] = "Enable whitelist:\nOnly domains and IP addresses that have been added to the list are allowed.",
-    ["networking_post_blockunsafe"] = "Block unsafe requests: \nRequests originating from insecure sources such as console or RunString are blocked.",
+    ["networking_post_blockunsafe"] = "Block unsafe requests:\nRequests originating from insecure sources such as console or RunString are blocked.",
     /*
         Banbypass
     */
@@ -91,10 +91,10 @@ local phrases = {
         Anticheat
     */
     ["anticheat_reason"] = "Reason for a player get's banned if he uses any sorts of cheats.",
-    ["anticheat_enabled"] = "Enable Anticheat:\nIf this is enabled anticheat code will be sent to all clients and detections will be handeled. If this gets disabled, the anticheat code remains active on all currently connected clients but detections are ignored. This option includes autoclick and aimbot detection.",
+    ["anticheat_enabled"] = "Enable Anticheat:\nIf this is enabled anticheat code will be sent to all clients and detections will be handled. If this gets disabled, the anticheat code remains active on all currently connected clients but detections are ignored. This option includes autoclick and aimbot detection.",
     ["anticheat_action"] = "What should happen when a player has cheats?",
     ["anticheat_verify_action"] = "What should happen when the anticheat doesn't load for a player?",
-    ["anticheat_verify_execution"] = "Check if anticheat is running:\nAfter a player receives the anticheat, confirmation is requested whether he has executed it. However, this process can fail for several reasons and therefore should not be set to 'ban'.",
+    ["anticheat_verify_execution"] = "Check if anticheat is running:\nAfter a player receives the anticheat, confirmation is requested whether he has executed it. However, this process can fail for several reasons and therefore should not be set to 'Ban'.",
     ["anticheat_verify_reason"] = "Reason for a player get's banned if the anticheat doesn't load.",
     ["anticheat_check_function"] = "Check Functions:\nCompares function names on the client with known function names of cheats. This may detect legitimate functions inside code you provide as well.",
     ["anticheat_check_files"] = "Check Files:\nSimilar to 'Check Functions'. Compares the filename of a running script with known file names of cheats.",
@@ -191,7 +191,7 @@ local phrases = {
     /*
         Notifications
     */
-    ["menu_notify_hello_staff"] = "This server is proteced by Nova Defender.\nYou are categorized as staff.",
+    ["menu_notify_hello_staff"] = "This server is protected by Nova Defender.\nYou are categorized as staff.",
     ["menu_notify_hello_protected"] = "This server is protected by Nova Defender.\nYou are categorized as protected.",
     ["menu_notify_hello_menu"] = "Open menu with !nova.",
 
@@ -277,11 +277,11 @@ local phrases = {
     ["health_check_seversecure_title"] = "Serversecure Module",
     ["health_check_seversecure_desc"] = "A module that mitigates exploits on the Source engine. Created by danielga.",
     ["health_check_seversecure_desc_long"] =
-[[Whithout this module it might be possible to easily crash your server.
+[[Without this module it might be possible to easily crash your server.
 It can limit the number of packets your server will accept and validate them.
 
 To install, go to https://github.com/danielga/gmsv_serversecure.
-   1. Go to releases and download the .dll file for your servers operating system.
+   1. Go to Releases and download the .dll file for your servers operating system.
    2. Create a folder "garrysmod/lua/bin" if it doesn't exist.
    3. Place the .dll file in your "/garrysmod/lua/bin" folder.
    4. On Github download the "serversecure.lua" file ("/include/modules").
@@ -317,7 +317,7 @@ Also there can be vulnerable netmessages which are not listed here.
       vulnerability in software)
 
 Ways to remove a back door:
-   1. If avaliable, check given path (if path starts with 'lua/' it's likely from workshop)
+   1. If available, check given path (if path starts with 'lua/' it's likely from workshop)
    2. Scan your server with e.g. https://github.com/THABBuzzkill/nomalua
    3. Remove all scripts you added recently and check if this message appears again
    4. Download all files on your server and do a text search for the listed backdoor
@@ -360,13 +360,13 @@ With this, Nova-Defender can then examine IP addresses via this page.
    ["health_check_nova_anticheat_title"] = "Nova Defender Anticheat extension",
    ["health_check_nova_anticheat_desc"] = "The anticheat needs an extension to detect more cheats.",
    ["health_check_nova_anticheat_desc_long"] =
-   [[Currently only some simple cheats are detected. Since the source code of Nova Defender is open and
+   [[Currently only some simple cheats are detected. Since the source code of Nova Defender is open
 and visible, cheats can be easily modified to be undetectable.
 Therefore, owners of large servers can request the extension of the anticheat,
 which also detects external, new or paid cheats by name.
 Feel free to contact me directly via Steam for this.
 However, I reserve the right to refuse the request even without providing a reason.]],
-   /*
+    /*
         Server
     */
     ["server_general_suffix"] = "Text to append to every kick, ban or rejection message. For example your Teamspeak, Discord or other support site.",
@@ -446,7 +446,7 @@ However, I reserve the right to refuse the request even without providing a reas
     ["menu_elem_new_value"] = "New value",
     ["menu_elem_submit"] = "Submit",
     ["menu_elem_no_bans"] = "No bans found",
-    ["menu_elem_no_data"] = "No data avaliable",
+    ["menu_elem_no_data"] = "No data available",
     ["menu_elem_checkboxtext_checked"] = "Active",
     ["menu_elem_checkboxtext_unchecked"] = "Inactive",
     ["menu_elem_search_term"] = "Search term...",
@@ -529,7 +529,7 @@ Security:
     ["indicator_advanced"] = "Player uses debug/developer commands (he might know what he is doing...)",
     ["indicator_first_connect"] = "First time connected to this server (if game hasn't been reinstalled)",
     ["indicator_cheat_hotkey"] = "Player pressed key that commonly opens cheat menus (like INSERT or HOME)",
-    ["indicator_bhop"] = "Player has a bunnyhop bind on his mousewheel (like 'bind mwheelup +jump')",
+    ["indicator_bhop"] = "Player has a bunnyhop bind on his mouse wheel (like 'bind mwheelup +jump')",
     ["indicator_memoriam"] = "Player has used the cheat 'Memoriam' in the past or is currently doing so",
     ["indicator_multihack"] = "Player has used the cheat 'Garrysmod 64-bit Visuals Multihack Reborn' in the past or is currently doing so",
     ["indicator_exechack"] = "Player has used the paid cheat 'exechack' in the past or is currently doing so",
