@@ -10,7 +10,7 @@ local phrases = {
     ["menu_access_staffseeip"] = "管理员可以看到玩家的 IP 地址",
     ["menu_access_detections"] = "管理员可访问'检测'选项卡",
     ["menu_access_bans"] = "管理员可访问'封禁'选项卡",
-    ["menu_access_health"] = "管理员可访问'健康'选项卡",
+    ["menu_access_health"] = "管理员可访问'服务器健康'选项卡",
     ["menu_access_inspection"] = "管理员可以访问'检查玩家'选项卡",
     ["menu_action_timeopen"] = "惩罚提示显示持续时间（秒）。",
     ["menu_action_showstaff"] = "如果没有受保护的玩家在场（或 AFK），则要求管理员采取惩罚行动。",
@@ -32,10 +32,10 @@ local phrases = {
     ["networking_sendlua_validationfailed_action"] = "当玩家阻止 Nova Defender 的代码时会发生什么？",
     ["networking_sendlua_validationfailed_reason"] = "玩家被 Nova Defender 屏蔽代码踢出或禁言的原因",
     ["networking_fakenets_backdoors_load"] = "创建假后门并诱骗攻击者使用它们。",
-    ["networking_fakenets_backdoors_block"] = "阻止服务器上的后门。可能会阻止合法的网络信息并破坏附加程序！首先查看'健康'选项卡并检查是否存在后门。",
+    ["networking_fakenets_backdoors_block"] = "阻止服务器上的后门。可能会阻止合法的网络信息并破坏附加程序！首先查看'服务器健康'选项卡并检查是否存在后门。",
     ["networking_fakenets_backdoors_action"] = "当攻击者使用假后门时会发生什么？",
     ["networking_fakenets_exploits_load"] = "创建虚假漏洞并诱使攻击者使用它们",
-    ["networking_fakenets_exploits_block"] = "阻止服务器上可利用的网络信息。这会破坏服务器上的可利用插件！首先查看'健康'选项卡，检查哪些附加组件可被利用。",
+    ["networking_fakenets_exploits_block"] = "阻止服务器上可利用的网络信息。这会破坏服务器上的可利用插件！首先查看'服务器健康'选项卡，检查哪些附加组件可被利用。",
     ["networking_fakenets_exploits_action"] = "当攻击者使用假冒漏洞时会发生什么？",
     ["networking_vpn_vpn-action"] = "当玩家使用 VPN 时会发生什么？",
     ["networking_vpn_vpn-action_reason"] = "使用 VPN 的原因",
@@ -257,23 +257,23 @@ local phrases = {
     -- Health
     ["health_check_seversecure_title"] = "Serversecure模块",
     ["health_check_seversecure_desc"] = "一个可以减轻Source引擎上的漏洞的模块。由danielga创建。",
-    ["health_check_seversecure_desc_long"] =
-    [[如果没有这个模块，你的服务器可能很容易崩溃。
+    ["health_check_seversecure_desc_long"] = [[
+    如果没有这个模块，你的服务器可能很容易崩溃。
     它可以限制你的服务器接受的数据包数量并验证它们。
 
     要安装，请访问https://github.com/danielga/gmsv_serversecure。
-       1. 转到Releases并下载适用于你服务器操作系统的.dll文件。
-       2. 如果不存在"garrysmod/lua/bin"文件夹，请创建一个。
-       3. 将.dll文件放在你的"/garrysmod/lua/bin"文件夹中。
-       4. 在Github上下载"serversecure.lua"文件("/include/modules")。
-       5. 将此文件放在"/garrysmod/lua/includes/modules"文件夹内。
-       6. 重启你的服务器。
+    1. 转到Releases并下载适用于你服务器操作系统的.dll文件。
+    2. 如果不存在"garrysmod/lua/bin"文件夹，请创建一个。
+    3. 将.dll文件放在你的"/garrysmod/lua/bin"文件夹中。
+    4. 在Github上下载"serversecure.lua"文件("/include/modules")。
+    5. 将此文件放在"/garrysmod/lua/includes/modules"文件夹内。
+    6. 重启你的服务器。
 
     如果你希望Nova Defender为你配置模块，请在"Exploit"选项卡中激活"自动设置Serversecure"选项。]],
     ["health_check_exploits_title"] = "已知可被利用的插件",
     ["health_check_exploits_desc"] = "已知可被利用的插件的网络消息列表。",
-    ["health_check_exploits_desc_long"] =
-    [[网络消息使客户端和服务器之间的通信成为可能。
+    ["health_check_exploits_desc_long"] = [[
+    网络消息使客户端和服务器之间的通信成为可能。
     然而，这些消息可以被客户端轻易地操纵。
     所以，如果服务器不检查客户端是否被允许发送这个消息，
     就可能出现可被利用的安全漏洞（金钱漏洞，服务器崩溃，管理员权限）。
@@ -282,71 +282,66 @@ local phrases = {
     不能保证这个漏洞仍然存在。
     此外，可能存在一些未在此列出的易受攻击的网络消息。
 
-       1. 定期更新你的插件
-       2. 用新的插件替换过时/不受支持的插件
-       3. 如果你熟悉Lua，手动检查受影响的网络消息]],
+    1. 定期更新你的插件
+    2. 用新的插件替换过时/不受支持的插件
+    3. 如果你熟悉Lua，手动检查受影响的网络消息]],
     ["health_check_backdoors_title"] = "后门",
     ["health_check_backdoors_desc"] = "服务器上可能存在后门，使攻击者得到不必要的访问权限。",
-    ["health_check_backdoors_desc_long"] =
-    [[后门可以通过以下方式之一加载到服务器上：
-       1. 恶意的工作坊插件
-       2. 一个人要求你将一个Lua文件上传到服务器
-          这个文件是"特别为你制作的"
-       3. 有权访问你的服务器的开发者为自己建立了一个后门
-       4. 服务器本身已经被破坏（操作系统的漏洞，
-          软件的漏洞）
+    ["health_check_backdoors_desc_long"] = [[
+    后门可以通过以下方式之一加载到服务器上：
+    1. 恶意的工作坊插件
+    2. 一个人要求你将一个Lua文件上传到服务器这个文件是"特别为你制作的"
+    3. 有权访问你的服务器的开发者为自己建立了一个后门
+    4. 服务器本身已经被破坏（操作系统的漏洞，软件的漏洞）
 
     移除后门的方法：
-       1. 如果可用，检查给定的路径（如果路径以'lua/'开头，它可能来自工作坊）
-       2. 使用例如https://github.com/THABBuzzkill/nomalua扫描你的服务器
-       3. 移除你最近添加的所有脚本，并检查是否再次出现此消息
-       4. 下载你服务器上的所有文件，并对列出的后门进行文本搜索
-       5. 困难的方式：移除所有插件，直到此消息停止出现，然后逐一添加它们
-          回来并检查它再次出现的插件。]],
+    1. 如果可用，检查给定的路径（如果路径以'lua/'开头，它可能来自工作坊）
+    2. 使用例如https://github.com/THABBuzzkill/nomalua扫描你的服务器
+    3. 移除你最近添加的所有脚本，并检查是否再次出现此消息
+    4. 下载你服务器上的所有文件，并对列出的后门进行文本搜索
+    5. 困难的方式：移除所有插件，直到此消息停止出现，然后逐一添加它们回来并检查它再次出现的插件。]],
     ["health_check_mysql_pass_title"] = "弱数据库密码",
     ["health_check_mysql_pass_desc"] = "Nova Defender的数据库密码太弱。",
-    ["health_check_mysql_pass_desc_long"] =
-    [[如果你正在使用MySQL，你需要一个强密码。
-          即使它不从互联网上访问。
-
-          如何保护你的数据库：
-             1. 一个强大的数据库密码不是你必须记住的
-             2. 使用密码生成器创建一个随机密码
-             3. 为每个数据库使用不同的密码
-             4. 为每个插件使用不同的数据库（或适当的数据库权限）]],
+    ["health_check_mysql_pass_desc_long"] = [[
+    如果你正在使用MySQL，你需要一个强密码。即使它不从互联网上访问。
+    如何保护你的数据库：
+    1. 一个强大的数据库密码不是你必须记住的
+    2. 使用密码生成器创建一个随机密码
+    3. 为每个数据库使用不同的密码
+    4. 为每个插件使用不同的数据库（或适当的数据库权限）]],
     ["health_check_nova_errors_title"] = "Nova Defender错误",
     ["health_check_nova_errors_desc"] = "由Nova Defender生成的错误",
-    ["health_check_nova_errors_desc_long"] =
-    [[好吧，阅读它们。如果你不确定如何解决给定的问题，请联系我。
-          如果每个错误消息对你来说都是明确的，并且不影响功能，
-          你可以安全地忽略这个消息。]],
+    ["health_check_nova_errors_desc_long"] = [[
+    好吧，阅读它们。如果你不确定如何解决给定的问题，请联系我。
+    如果每个错误消息对你来说都是明确的，并且不影响功能，
+    你可以安全地忽略这个消息。]],
     ["health_check_nova_vpn_title"] = "Nova Defender VPN保护",
     ["health_check_nova_vpn_desc"] = "必须设置VPN保护以阻止国家和检测VPN。",
-    ["health_check_nova_vpn_desc_long"] =
-    [[在"Networking"选项卡中，你必须插入你的API密钥，
-          你可以在ipqualityscore.com免费注册后获得。
-          有了这个，Nova-Defender可以通过这个页面检查IP地址。
-             1. 转到https://www.ipqualityscore.com/create-account
-             2. 在这里复制你的API密钥https://www.ipqualityscore.com/user/settings
-             3. 将它粘贴在"Networking"选项卡下的"VPN API key"中]],
+    ["health_check_nova_vpn_desc_long"] = [[
+    在"Networking"选项卡中，你必须插入你的API密钥，
+    你可以在ipqualityscore.com免费注册后获得。
+    有了这个，Nova-Defender可以通过这个页面检查IP地址。
+    1. 转到https://www.ipqualityscore.com/create-account
+    2. 在这里复制你的API密钥https://www.ipqualityscore.com/user/settings
+    3. 将它粘贴在"Networking"选项卡下的"VPN API key"中]],
     ["health_check_nova_steamapi_title"] = "Nova Defender Steam个人资料保护",
     ["health_check_nova_steamapi_desc"] =
     "必须设置Steam个人资料保护以检测玩家的可疑个人资料。",
-    ["health_check_nova_steamapi_desc_long"] =
-    [[在"Ban System"选项卡中，你需要插入你的API密钥，
-             1. 转到https://steamcommunity.com/dev/apikey
-             2. 输入你的服务器的域名
-             3. 复制你的API密钥
-             4. 将它粘贴在"Ban System"选项卡下的"Steam API key"中]],
+    ["health_check_nova_steamapi_desc_long"] = [[
+    在"Ban System"选项卡中，你需要插入你的API密钥，
+    1. 转到https://steamcommunity.com/dev/apikey
+    2. 输入你的服务器的域名
+    3. 复制你的API密钥
+    4. 将它粘贴在"Ban System"选项卡下的"Steam API key"中]],
     ["health_check_nova_anticheat_title"] = "Nova Defender反作弊扩展",
     ["health_check_nova_anticheat_desc"] = "反作弊需要一个扩展来检测更多的作弊。",
-    ["health_check_nova_anticheat_desc_long"] =
-    [[目前只有一些简单的作弊被检测到。由于Nova Defender的源代码是开放的
-          并且可见，作弊可以很容易地被修改为无法检测。
-          因此，大型服务器的所有者可以请求反作弊的扩展，
-          它还可以通过名称检测外部的、新的或付费的作弊。
-          欢迎直接通过Steam联系我。
-          然而，我保留拒绝请求的权利，即使不提供理由。]],
+    ["health_check_nova_anticheat_desc_long"] = [[
+    目前只有一些简单的作弊被检测到。由于Nova Defender的源代码是开放的
+    并且可见，作弊可以很容易地被修改为无法检测。
+    因此，大型服务器的所有者可以请求反作弊的扩展，
+    它还可以通过名称检测外部的、新的或付费的作弊。
+    欢迎直接通过Steam联系我。
+    然而，我保留拒绝请求的权利，即使不提供理由。]],
     -- Server
     ["server_general_suffix"] = "附加到每个踢出、封禁或拒绝消息的文本。例如你的Teamspeak，Discord或其他支持网站。",
 
@@ -464,7 +459,8 @@ local phrases = {
     ["menu_elem_exec_clientopen"] = "客户端打开了连接",
     ["menu_elem_exec_clientclose"] = "客户端关闭了连接",
     ["menu_elem_exec_error"] = "服务器内部错误",
-    ["menu_elem_exec_help"] = [[应用：
+    ["menu_elem_exec_help"] = [[
+    应用：
     • 如果你熟悉Lua，可以使用这个
     • 设计用于调试目的和寻找Lua作弊
 
