@@ -4,14 +4,30 @@
 
 Nova.fakeNetsLoaded = Nova.fakeNetsLoaded or false
 
+// If Nova is installed in coexistence with SNTE, we ignore all exploits and backdoors
+// that are already detected by SNTE
+// https://steamcommunity.com/sharedfiles/filedetails/?id=1308262997
+local function SNTEInstalled(arguments)
+    if hook.GetTable()["CanTool"]["SNTE_KILL_BOUNCY_BALL_EXPLOIT"] then return true end
+    local banMethodCallback = cvars.GetConVarCallbacks("snte_banmethod")
+    if banMethodCallback and table.Count(banMethodCallback) > 0 then return true end
+    return false
+end
+
 local function LoadFakeNets()
     if Nova.fakeNetsLoaded then return end
+
+    local snte = SNTEInstalled()
 
     for key, value in pairs(Nova.fakenets_backdoors or {}) do
         // netmessage already exists on server
         if tobool(util.NetworkStringToID(key)) then
-            Nova.log("w", string.format("Detected backdoor %q on the server!", key))
-            Nova.fakenets_backdoors[key] = false
+            if snte then
+                Nova.log("w", string.format("Detected backdoor %q on the server! It is likely created by SNTE", key))
+            else
+                Nova.log("w", string.format("Detected backdoor %q on the server!", key))
+                Nova.fakenets_backdoors[key] = false
+            end
             continue
         end
 
@@ -30,8 +46,12 @@ local function LoadFakeNets()
             // exists on server and should not be detected as harmful
             // we assume these are already patched
             // Nova Defender does not protect you from not keeping your server up to date
-            Nova.log("w", string.format("Detected exploit %q on the server", key))
-            Nova.fakenets_exploits[key] = false
+            if snte then
+                Nova.log("w", string.format("Detected exploit %q on the server! It is likely created by SNTE", key))
+            else
+                Nova.log("w", string.format("Detected exploit %q on the server", key))
+                Nova.fakenets_exploits[key] = false
+            end
             continue
         end
 

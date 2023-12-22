@@ -186,7 +186,7 @@ Nova.isAFK = function(ply)
         return ply:GE_IsAFK() == true
     elseif DarkRP and isfunction(ply.getDarkRPVar) then
         return ply:getDarkRPVar("AFK") == true
-    elseif system.UpTime() > 60 * 5 then return true end // 5 minutes
+    elseif (system.UpTime() or 0) > 60 * 5 then return true end // 5 minutes
     return false
 end
 
