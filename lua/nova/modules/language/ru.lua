@@ -534,6 +534,7 @@ local phrases = {
     ["indicator_bhop"] = "Игрок имеет привязку распрыжки к своему колесу мыши (например, «bind mwheelup +jump»).",
     ["indicator_memoriam"] = "Игрок использовал чит «Memoriam» в прошлом или делает это прямо сейчас",
     ["indicator_multihack"] = "Игрок использовал чит «Garrysmod 64-bit Visuals Multihack Reborn» в прошлом или делает это прямо сейчас",
+    ["indicator_fenixmulti"] = "Игрок использовал чит «FenixMulti» в прошлом или делает это прямо сейчас",
     ["indicator_exechack"] = "Игрок использовал платный чит «exechack» в прошлом или делает это прямо сейчас",
     ["indicator_banned"] = "Игрок был заблокирован Nova Defender на другом сервере",
     ["indicator_profile_familyshared"] = "Игрок имеет аккаунт Family Sharing",

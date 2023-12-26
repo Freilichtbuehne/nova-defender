@@ -16,6 +16,7 @@ local allowedIndicators = {
     ["indicator_bhop"] = 5,
     ["indicator_memoriam"] = 10,
     ["indicator_multihack"] = 10,
+    ["indicator_fenixmulti"] = 10,
     ["indicator_exechack"] = 10,
     ["indicator_banned"] = 7,
     ["indicator_profile_familyshared"] = 3,
@@ -71,6 +72,7 @@ local scenarios = {
         local thisGame = Any(cache, {
             "indicator_memoriam",
             "indicator_multihack",
+            "indicator_fenixmulti",
             "indicator_exechack",
             "indicator_banned",
         })

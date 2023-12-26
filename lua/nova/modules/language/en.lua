@@ -532,6 +532,7 @@ Security:
     ["indicator_bhop"] = "Player has a bunnyhop bind on his mouse wheel (like 'bind mwheelup +jump')",
     ["indicator_memoriam"] = "Player has used the cheat 'Memoriam' in the past or is currently doing so",
     ["indicator_multihack"] = "Player has used the cheat 'Garrysmod 64-bit Visuals Multihack Reborn' in the past or is currently doing so",
+    ["indicator_fenixmulti"] = "Player has used the cheat 'FenixMulti' in the past or is currently doing so",
     ["indicator_exechack"] = "Player has used the paid cheat 'exechack' in the past or is currently doing so",
     ["indicator_banned"] = "Player has been banned by Nova Defender on another server",
     ["indicator_profile_familyshared"] = "Player has a familyshared account",

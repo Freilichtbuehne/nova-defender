@@ -506,6 +506,7 @@ local phrases = {
     ["indicator_bhop"] = "玩家在他的鼠标滚轮上绑定了兔子跳（如'bind mwheelup +jump'）",
     ["indicator_memoriam"] = "玩家过去或现在使用了作弊'Memoriam'",
     ["indicator_multihack"] = "玩家过去或现在使用了作弊'Garrysmod 64-bit Visuals Multihack Reborn'",
+    ["indicator_fenixmulti"] = "玩家过去或现在使用了作弊'FenixMulti'",
     ["indicator_exechack"] = "玩家过去或现在使用了付费作弊'exechack'",
     ["indicator_banned"] = "玩家已经在另一个服务器上被Nova Defender封禁",
     ["indicator_profile_familyshared"] = "玩家有一个家庭共享账户",
