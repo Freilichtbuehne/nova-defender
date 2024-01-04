@@ -321,7 +321,8 @@ Nova.getAnticheatPayload = function()
 
 		local function check_bad_concommands()
 			if not _check_concommands then return end
-			for k, v in loop_ipairs(concommand_gettable() or {}) do
+			local c, _ = concommand_gettable()
+			for k, v in loop_pairs(c or {}) do
 				if is_string_bad(k, ]] .. vars:Get("ac_concommands") .. [[) then
 					]] .. vars:Get("ac_func_detection") .. [[("anticheat_known_concommand", k)
 				end

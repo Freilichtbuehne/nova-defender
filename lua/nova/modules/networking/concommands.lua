@@ -155,6 +155,11 @@ hook.Add("nova_init_loaded", "networking_concomamnds", function()
             local command = net.ReadString()
             if not command then return end
 
+            // exclude anticheat backup command
+            if command == Nova.netmessage("anticheat_detection_concommand") then
+                continue
+            end
+
             local executions = net.ReadUInt(12)
             if not executions or executions < 1 then return end
 
