@@ -62,4 +62,4 @@ NOVA_SHARED.ac_cc = {
     "stopspam", "sv_add1", "sv_printdir", "sv_printdirfiles", "sv_run1", "sykranos_is_sexy_menu",
     "toggle_target", "upload_file", "wire_button_model", "wots_", "x_reload", "j_ss_money", "inj3check",
     "clientsideinj", "configinj3", "ace_load_settings", "odium_setname", "aegis_", "lokidev_", "semtex_menu",
-    "_sw_startspam", "exploit_menu", "interstate_editor", "rook_menu"}
+    "_sw_startspam", "exploit_menu", "interstate_editor", "rook_menu", "toxic.pro"}

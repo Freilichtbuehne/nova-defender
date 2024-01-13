@@ -2401,7 +2401,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
     net.Start("]] .. Nova.netmessage("admin_get_inspection") .. [[")
     net.SendToServer()
     timer.Create("nova_client_load_inspection", 0.1, 100, function()
-      if not vgui.Exists("nova_admin_menu_inspection") then return end
+      if vgui.Exists and not vgui.Exists("nova_admin_menu_inspection") then return end
+      if vgui.GetControlTable and not vgui.GetControlTable("nova_admin_menu_inspection") then return end
       vgui.Register("nova_admin_page_inspection", vgui.GetControlTable("nova_admin_menu_inspection"), "DPanel")
       timer.Remove("nova_client_load_inspection")
       ReloadFrame()
