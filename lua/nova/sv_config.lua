@@ -21,7 +21,7 @@ Nova.config = Nova.config or {}
 	Language Configuration
 ===============================*/
 
-// avaliable: en, de (see /nova/modules/language folder)
+// avaliable: en, de, ru, zh_hans (see /nova/modules/language folder)
 Nova.config["language"] = "en"
 
 // format to display time and date
