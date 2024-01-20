@@ -273,8 +273,10 @@ Nova.getAnticheatPayload = function()
 
 		local current_file = ""
 		local function check_detour(func)
+			-- dump gmod update breaks this
+			if true then return true end
+
 			local s, _ = safe_pcall( function() funck(func, -1) end )
-			if not s then return true end
 			if string_startswith(debug_getinfo(func).short_src, "addons/") then return true end
 			return debug_getinfo(func).short_src and current_file == debug_getinfo(func).short_src
 		end
@@ -386,6 +388,7 @@ Nova.getAnticheatPayload = function()
 			for k, v in loop_pairs(m_check_tbl or {}) do
 				if not check_detour(v) then
 					]] .. vars:Get("ac_func_detection") .. [[("anticheat_function_detour", get_log_information(debug_getinfo(v)))
+					break
 				end
 			end
 		end
@@ -618,6 +621,7 @@ Nova.getAnticheatPayload = function()
 			for k, v in loop_pairs( m_check_tbl or {}) do
 				if not check_detour(v) then
 					]] .. vars:Get("ac_func_detection") .. [[("anticheat_function_detour", get_log_information(debug_getinfo(v)))
+					break
 				end
 			end
 		end
