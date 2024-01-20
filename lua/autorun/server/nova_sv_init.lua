@@ -1,6 +1,6 @@
 Nova = Nova or {}
 Nova.extensions = Nova.extensions or {}
-Nova["version"] = "1.7.4"
+Nova["version"] = "1.7.5"
 
 local lines = {
     [[ ]],
