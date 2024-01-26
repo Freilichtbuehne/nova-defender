@@ -152,7 +152,7 @@ Nova.getUISetting = function(key)
         return nil, true
     // setting exists but the setting is not accessible in the UI, we return nil
     elseif not configCache[key].show_in_ui then
-        Nova.log("e", "Tried to get setting %q but it is not acessible in the UI.", key)
+        Nova.log("e", string.format("Tried to get setting %q but it is not acessible in the UI.", key))
         return nil, true
     // setting exists and is accessible in the UI, we return the value
     else

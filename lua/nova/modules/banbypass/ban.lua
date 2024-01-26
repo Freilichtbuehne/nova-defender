@@ -599,7 +599,11 @@ hook.Add("nova_init_loaded", "banbypass_checkban", function()
         local evidence = ""
 
         local isBanned = false
+        playerSteamID = Nova.convertSteamID(ply)
         for k,v in pairs(databaseCache or {}) do
+            // prevent race condition when ban is not completely revoked yet
+            if v.steamid == playerSteamID then continue end
+
             // check if secretKey exists in database
             if string.len(secretKey) > 5 and v.secret_key == secretKey then
                 Nova.log("i", string.format("Found ban for %s: secretKey in files", Nova.playerName(ply)))
