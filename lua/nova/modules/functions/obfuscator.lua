@@ -32,11 +32,11 @@ local function DumpFunction(func)
 end
 
 Nova.obfuscator = Nova.obfuscator or {}
-Nova.obfuscator.getFunctionChecksum = function(inputFunction, name)
+Nova.obfuscator.getFunctionChecksum = function(inputFunction)
     local inputType = type(inputFunction)
     local dmp = nil
     if inputType == "function" then
-        dmp = util.SHA256(DumpFunction(inputFunction, name))
+        dmp = util.SHA256(DumpFunction(inputFunction))
     elseif inputType == "string" then
         dmp = util.SHA256(inputFunction)
     elseif inputType == "table" then

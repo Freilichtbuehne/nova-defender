@@ -13,6 +13,7 @@ local allowedIndicators = {
     ["indicator_advanced"] = 1,
     ["indicator_first_connect"] = 2,
     ["indicator_cheat_hotkey"] = 2,
+    ["indicator_cheat_menu"] = 3,
     ["indicator_bhop"] = 5,
     ["indicator_memoriam"] = 10,
     ["indicator_multihack"] = 10,
@@ -79,6 +80,7 @@ local scenarios = {
         local suspicious = Any(cache, {
             "indicator_bhop",
             "indicator_cheat_hotkey",
+            "indicator_cheat_menu",
         })
         return thisGame or All({otherGame, suspicious})
     end,
@@ -169,15 +171,23 @@ local indicatorPayload = [[
 
     local keys = {KEY_INSERT, KEY_HOME}
     local hookName = %q
+    local oldCursor = vgui.CursorVisible()
     hook.Add( "Think", hookName, function()
         for k, v in ipairs(keys) do
-            if input.IsKeyDown(v) then
-                indicators["indicator_cheat_hotkey"] = true
-                hook.Remove("Think", hookName)
-                S()
+            if input.IsKeyDown(v) and not input.LookupKeyBinding(v) then
+                if not indicators["indicator_cheat_hotkey"] then
+                    indicators["indicator_cheat_hotkey"] = true
+                    S()
+                end
+                if not oldCursor and vgui.CursorVisible() then
+                    indicators["indicator_cheat_menu"] = true
+                    S()
+                    hook.Remove("Think", hookName)
+                end
                 break
             end
         end
+        oldCursor = vgui.CursorVisible()
     end )
 
     S()
