@@ -154,8 +154,8 @@ Nova.askAction = function(notify, callback)
 
     Nova.log("d", string.format("Sending action request for %q to %d player(s) and wait %d seconds", notify["message"], totalStaff, notify["timeopen"]))
 
-     // send the notification to all staff
-     net.Start(Nova.netmessage("functions_sendnotify"))
+    // send the notification to all staff
+    net.Start(Nova.netmessage("functions_sendnotify"))
         net.WriteString(util.TableToJSON(notify))
     net.Send(recipientsStaff)
 

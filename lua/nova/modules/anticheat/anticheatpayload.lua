@@ -209,14 +209,14 @@ Nova.getAnticheatPayload = function()
 		} ]] .. lines:Insert("ac_key") .. [[
 		local bad_module_names = {
 			"dickwrap", "enginepred", "bsendpacket", "fhook", "name_enabler",
-			"cvar3", "cv3", "nyx", "amplify", "mega", "pa4", "pspeed",
+			"cvar3", "cv3", "nyx", "amplify", "mega", "pa4", "pspeed", "big",
 			"snixzz2", "spreadthebutter", "stringtables", "svm", "swag", "external"
 		}
 		local bad_cvar_names = {
 			"esp_enable", "smeg", "wallhack", "nospread", "antiaim", "hvh", "autostrafe",
 			"circlestrafe", "spinbot", "odium", "ragebot", "legitbot", "fakeangles", "anticac",
 			"antiscreenshot", "fakeduck", "lagexploit", "exploits_open", "gmodhack", "cathack",
-			"aimbot_ignoreteam"
+			"aimbot_ignoreteam", "antiaim_walldtc_yaw"
 		} ]] .. lines:Insert("ac_key") .. [[
 		]] .. lines:Insert("ac_f_key_9") .. [[
 
