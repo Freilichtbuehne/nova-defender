@@ -161,22 +161,25 @@ end
 
 // Some netmessages often causes serverlags
 // They are almost guaranteed to be laggy but they are not part of a denial of service attack
+// TODO: Add option to dynamically add netmessages to the blacklist
 local dosBlacklist = {
     "FProfile_", // https://github.com/FPtje/FProfiler
+    "zmc_fridge_buy", // https://www.gmodstore.com/market/view/zero-s-masterchef-cooking-script
 }
 
 local nextCheck = 0
 hook.Add("nova_networking_incoming_post", "networking_dos", function(client, strName, deltaTime)
     local steamID = client:SteamID()
 
-    // check if the netmessage is blacklisted
+    // Step 1: Check if the netmessage is blacklisted
     for _, v in ipairs(dosBlacklist) do
         if string.StartWith(strName, v) then
             return
         end
     end
 
-    // check if the client is already in the table
+    // Step 2: Check if the client is already in the table
+    // If not, we create a new table
     if not processTimeCollector[steamID] then
         processTimeCollector[steamID] = {
             total = 0,
@@ -186,7 +189,7 @@ hook.Add("nova_networking_incoming_post", "networking_dos", function(client, str
         }
     end
 
-    // add the time to the table
+    // Step 3: Add the consumed time to the table
     processTimeCollector[steamID].total = processTimeCollector[steamID].total + deltaTime
     processTimeCollector[steamID].count = processTimeCollector[steamID].count + 1
     if not processTimeCollector[steamID].messages[strName] then
@@ -195,7 +198,7 @@ hook.Add("nova_networking_incoming_post", "networking_dos", function(client, str
         processTimeCollector[steamID].messages[strName] = processTimeCollector[steamID].messages[strName] + deltaTime
     end
 
-    // check every n seconds
+    // Step 4: Set the time for next check
     local curTime = CurTime()
     if curTime > nextCheck then
         nextCheck = curTime + Nova.getSetting("networking_dos_checkinterval", 5)
@@ -203,7 +206,7 @@ hook.Add("nova_networking_incoming_post", "networking_dos", function(client, str
         timer.Simple(0, CheckCollector)
     end
 
-    // if netmessage took too long, we log the message
+    // Debug: If netmessage took too long, we log the message
     if deltaTime > 0.5 then
         Nova.log("w", string.format("Netmessage %q from %s took %s to process.", strName, Nova.playerName(steamID), ConvertTime(deltaTime)))
     end
