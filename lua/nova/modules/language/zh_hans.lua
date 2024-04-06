@@ -1,7 +1,9 @@
 local lang = "zh_hans"
 
 local phrases = {
-    -- Notifications
+    /*
+        Notifications
+    */
     ["menu_logging_debug"] = "调试模式：\n 这将向服务器控制台打印额外日志。",
     ["menu_notify_timeopen"] = "通知显示持续时间（秒）。",
     ["menu_notify_showstaff"] = "向管理员显示通知。",
@@ -14,7 +16,9 @@ local phrases = {
     ["menu_access_inspection"] = "管理员可以访问'检查玩家'选项卡",
     ["menu_action_timeopen"] = "惩罚提示显示持续时间（秒）。",
     ["menu_action_showstaff"] = "如果没有受保护的玩家在场（或 AFK），则要求管理员采取惩罚行动。",
-    -- Networking
+    /*
+        Networking
+    */
     ["networking_concommand_logging"] = "记录命令：\n 记录客户端和服务器执行的每一条控制台命令",
     ["networking_concommand_dump"] = "Dump Commands:（转储命令）：当玩家断开连接时，将他执行过的所有命令打印到控制台。这会让你的日志快速增长。",
     ["networking_netcollector_dump"] = "Dump Netmessages:（当玩家断开连接时，将其发送到服务器的所有网络信息打印到控制台。",
@@ -65,7 +69,9 @@ local phrases = {
     ["networking_post_overwrite"] = "检查 http.post（发送数据）：改写 http.post 函数。发送 HTTP 请求可被攻击者用来窃取服务器上的文件。不过，这种方法也可以绕过或禁用 DRM 系统。",
     ["networking_post_whitelist"] = "启用白名单：只允许已添加到列表中的域和 IP 地址。",
     ["networking_post_blockunsafe"] = "阻止不安全的请求：\n来自控制台或 RunString 等不安全来源的请求会被阻止。",
-    -- Banbypass
+    /*
+        Banbypass
+    */
     ["banbypass_ban_banstaff"] = "管理员可能被禁言",
     ["banbypass_ban_default_reason"] = "如果没有说明玩家被封禁的原因",
 
@@ -80,7 +86,9 @@ local phrases = {
     ["banbypass_bypass_fingerprint_sensivity"] = "指纹比对的灵敏度应该有多高？",
 
     ["banbypass_bypass_indicators_apikey"] = "Steam API 密钥：\nThe SteamAPI 可用于查看有关玩家的更详细数据。查找结果显示在指示器中的'玩家在线'选项卡中。在 https://steamcommunity.com/dev/apikey 创建一个并粘贴到这里。",
-    -- Anticheat
+    /*
+        Anticheat
+    */
     ["anticheat_reason"] = "如果玩家使用任何形式的作弊，他将被封禁的原因。",
     ["anticheat_enabled"] = "启用反作弊：\n如果启用此选项，反作弊代码将发送给所有客户端并处理检测。如果此选项被禁用，反作弊代码仍然在所有当前连接的客户端上保持活动，但检测将被忽略。此选项包括自动点击和瞄准辅助检测。",
     ["anticheat_action"] = "当玩家有作弊行为时应该发生什么？",
@@ -115,7 +123,9 @@ local phrases = {
     ["anticheat_aimbot_check_snap"] = "检测快速转动:\n检测玩家视角是否瞬间改变。警告：这将阻止客户端设置其视角角度（如果不是服务器端完成），因此会破坏某些插件！",
     ["anticheat_aimbot_check_move"] = "检测可疑的移动:\n检测玩家是否在不移动鼠标的情况下不断改变视角。",
     ["anticheat_aimbot_check_contr"] = "检测矛盾的移动:\n检测玩家是否将鼠标移动到与视角变化不同的方向。",
-    -- Exploit
+    /*
+        Exploit
+    */
     ["exploit_fix_propspawn"] = "Propspawn:\n防止生成具有复制材料的道具。",
     ["exploit_fix_material"] = "Material:\n防止材料复制。",
     ["exploit_fix_fadingdoor"] = "Fadingdoor:\n防止玩家无法再看到的图形错误。",
@@ -123,7 +133,9 @@ local phrases = {
     ["exploit_fix_bouncyball"] = "Bouncyball:\n防止焊接弹跳球。",
     ["exploit_fix_bhop"] = "Bunnyhop:\n防止兔子跳。",
     ["exploit_fix_serversecure"] = "自动设置Serversecure:\n查看'Health'选项卡以获取更多信息。",
-    -- Security
+    /*
+        Security
+    */
     ["security_permissions_groups_protected"] = "受保护的用户组：\n被视为受保护的所有用户组。只有白名单上的玩家可以拥有此组。受保护的玩家可以完全访问此菜单。",
     ["security_permissions_groups_staff"] = "员工和管理员用户组：\n拥有员工权限的所有用户组。",
     ["security_privileges_group_protection_enabled"] = "自动等级保护：\n如果一个没有被列入白名单的玩家例如拥有一个受保护的用户组，我们将采取行动。",
@@ -132,7 +144,9 @@ local phrases = {
     ["security_privileges_group_protection_removal_action"] = "当一个受保护的玩家失去他的用户组时，应该发生什么？",
     ["security_privileges_group_protection_protected_players"] = "受保护的玩家：\n所有被允许拥有受保护用户组的玩家。如果你移除一个在线的玩家，他将被踢出。",
     ["security_privileges_group_protection_kick_reason"] = "如果一个受保护的玩家在他连接时失去了他的保护，踢出他的原因。",
-    -- Detections
+    /*
+        Detections
+    */
     ["config_detection_banbypass_familyshare"] = "家庭共享账户绕过封禁",
     ["config_detection_banbypass_clientcheck"] = "封禁绕过客户端检查",
     ["config_detection_banbypass_ipcheck"] = "封禁绕过IP检查",
@@ -173,7 +187,9 @@ local phrases = {
     ["config_detection_anticheat_aimbot_contr"] = "瞄准辅助矛盾的移动",
     ["config_detection_security_privilege_escalation"] = "权限升级到受保护的用户组",
     ["config_detection_admin_manual"] = "管理员或控制台的手动封禁",
-    -- Notifications
+    /*
+        Notifications
+    */
     ["menu_notify_hello_staff"] = "此服务器受Nova Defender保护。\n您被归类为管理员。",
     ["menu_notify_hello_protected"] = "此服务器受Nova Defender保护。\n您被归类为受保护的用户。",
     ["menu_notify_hello_menu"] = "使用!nova打开菜单。",
@@ -254,7 +270,9 @@ local phrases = {
     ["notify_functions_action_notify"] = "管理员%s对%s的检测%q采取了以下行动：%q。",
     ["notify_functions_allow_success"] = "成功排除检测。",
     ["notify_functions_allow_failed"] = "无法排除此检测。",
-    -- Health
+    /*
+        Health
+    */
     ["health_check_seversecure_title"] = "Serversecure模块",
     ["health_check_seversecure_desc"] = "一个可以减轻Source引擎上的漏洞的模块。由danielga创建。",
     ["health_check_seversecure_desc_long"] = [[
@@ -342,7 +360,14 @@ local phrases = {
     它还可以通过名称检测外部的、新的或付费的作弊。
     欢迎直接通过Steam联系我。
     然而，我保留拒绝请求的权利，即使不提供理由。]],
-    -- Server
+    ["health_check_nova_anticheat_version_title"] = "Nova Defender Anticheat 旧版本",
+    ["health_check_nova_anticheat_version_desc"] = "反作弊软件不是最新的。",
+    ["health_check_nova_anticheat_version_desc_long"] =
+    [[请从 GitHub 下载最新版本：
+https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
+    /*
+        Server
+    */
     ["server_general_suffix"] = "附加到每个踢出、封禁或拒绝消息的文本。例如你的Teamspeak，Discord或其他支持网站。",
 
     ["server_access_maintenance_enabled"] = "维护模式：\n只有受保护的玩家和有密码的玩家可以加入服务器。",
@@ -356,7 +381,9 @@ local phrases = {
     ["server_lockdown_enabled"] = "封锁模式：\n只有管理员、受保护的和受信任的可以加入服务器。当有许多新账户被创建用来加入服务器进行捣乱、破坏或崩溃服务器时使用。已经在服务器上的玩家不受影响。首先确保在Nova Defender的配置文件中定义了谁是受信任的。这应该只在短时间内使用。",
     ["server_lockdown_reason"] = "在封锁模式下，如果他不是受保护的、管理员或受信任的，踢出玩家的原因。",
 
-    -- Admin Menu
+    /*
+        Admin Menu
+    */
     ["menu_title_banbypass"] = "封禁系统",
     ["menu_title_health"] = "服务器健康",
     ["menu_title_network"] = "网络",

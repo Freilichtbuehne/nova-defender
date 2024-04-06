@@ -273,3 +273,29 @@ Nova.truncate = function(text, maxLength, append)
     if string.len(text) <= maxLength then return text end
     return string.sub(text, 1, maxLength - string.len(append)) .. append
 end
+
+// returns true if version1 is higher or equal to version2
+// 1.0.0 > 0.9.9 => true
+// 1.0.0 > 1.0.0 => true
+// 1.0.0 > 1.0.1 => false
+Nova.isVersionHigherOrEqual = function(version1, version2)
+    if version1 == version2 then return true end
+
+    if not isstring(version1) or not isstring(version2) then
+        return false
+    end
+
+    local v1 = string.Split(version1, ".")
+    local v2 = string.Split(version2, ".")
+
+    for i = 1, 3 do
+        if tonumber(v1[i]) > tonumber(v2[i]) then
+            return true
+        elseif tonumber(v1[i]) == tonumber(v2[i]) then
+            continue
+        elseif tonumber(v1[i]) < tonumber(v2[i]) then
+            return false
+        end
+    end
+    return false
+end

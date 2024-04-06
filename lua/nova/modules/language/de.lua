@@ -371,6 +371,11 @@ Daher können Besitzer von großen Servern die Erweiterung des Anticheats anford
 welche auch externe, neue oder bezahlte Cheats namentlich erkennt.
 Kontaktiere mich hierfür gerne direkt über Steam.
 Ich behalte mir jedoch vor die Anfrage auch ohne Angabe von Gründen abzulehnen.]],
+   ["health_check_nova_anticheat_version_title"] = "Nova Defender Anticheat veraltete Version",
+   ["health_check_nova_anticheat_version_desc"] = "Das Anticheat ist nicht auf dem neusten Stand.",
+   ["health_check_nova_anticheat_version_desc_long"] =
+   [[Bitte lade die neuste Version auf GitHub herunter:
+https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
    /*
         Server
     */

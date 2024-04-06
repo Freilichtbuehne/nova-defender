@@ -100,6 +100,9 @@ Check troubleshooting page: https://freilichtbuehne.gitbook.io/nova-defender/tro
 ### How is an open source anticheat supposed to work?
 Currently **only some simple cheats are detected**. Since the source code of Nova Defender is open and visible, cheats can be easily modified to be undetected again. Therefore, **owners of large servers can request the extension of the anticheat, which also detects external, new or paid cheats by name**. Feel free to contact me directly via Steam for this. However, I reserve the right to refuse the request even without providing a reason.
 
+### Does it detect C++ cheats?
+Yes. Of course not all, but many of the most commonly used cheats. However most advanced cheats are only detected with the extended version (see question above). It is not bound to the programming language like C++. It can also detect external cheats that are written in Rust.
+
 ### What it does not do?
 No replacement for any admin menu (like ULX, sAdmin, xAdmin, ...)
 
@@ -109,7 +112,7 @@ This addon was continuously tested on a large DarkRP and TTT server for over two
 With an average of 50 players, cheaters were reliably banned, ban evasions were detected, and the servers were protected.
 
 ###  Can I use this addon alongside other anticheat addons?
-Yes, the addon that detects the cheater first will ban him first. If you don't care that anticheat bans are spread over several addons, you can use more than one. Be careful, though, because anticheat systems often conflict with each other. This can cause performance issues and false positives.
+Yes, but you shouldn't. The addon that detects the cheater first will ban him first. If you don't care that anticheat bans are spread over several addons, you can use more than one. Be careful, though, because anticheat systems often conflict with each other. This can cause performance issues and false positives.
 
 ### Can I use this addon alongside other admin tools?
 Normal player bans can still be made via any existing admin tools. Cheaters, exploiters etc. will be banned automatically via Nova Defender. Ban evasions can only be detected if the ban originates from Nova Defender. You can use this addon perfectly alongside ULX.
@@ -119,11 +122,13 @@ By default, a notification is sent before EVERY ban asking what action should be
 
 Otherwise, feel free to report a false detection via a GitHub issue or cantact me directly.
 
-
 ### Where can I find saved screenshots on my server?
 Screenshots before a ban will be saved on your server under the following folder: `/data/nova/ban_screenshots`. Screenshots of admins are stored on your server under the following folder: `/data/nova/admin_screenshots`.
 
 Under the 'Networking' tab, you can configure everything.
+
+### Question not listed?
+See "Support" section.
 
 ## Known Issues
 - Aimbot detection will (at the moment) cause false positives in rare conditions (it is disabled by default)

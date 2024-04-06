@@ -368,6 +368,11 @@ local phrases = {
 Не стесняйтесь обращаться ко мне по этому поводу напрямую через Steam.
 (принимаются запросы только на английском языке)
 Однако я оставляю за собой право отклонить запрос даже без объяснения причины.]],
+   ["health_check_nova_anticheat_version_title"] = "Nova Defender Anticheat старая версия",
+   ["health_check_nova_anticheat_version_desc"] = "Античит не обновлен.",
+   ["health_check_nova_anticheat_version_desc_long"] =
+   [[Пожалуйста, загрузите последнюю версию с GitHub:
+https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     /*
         Server
     */

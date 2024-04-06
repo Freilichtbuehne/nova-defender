@@ -45,32 +45,15 @@ local patches = {
     end
 }
 
-local function IsVersionHigherOrEqual(version1, version2)
-    if version1 == version2 then return true end
-    local v1 = string.Split(version1, ".")
-    local v2 = string.Split(version2, ".")
-
-    for i = 1, 3 do
-        if tonumber(v1[i]) > tonumber(v2[i]) then
-            return true
-        elseif tonumber(v1[i]) == tonumber(v2[i]) then
-            continue
-        elseif tonumber(v1[i]) < tonumber(v2[i]) then
-            return false
-        end
-    end
-    return false
-end
-
 local function SearchPatch(oldVersion, newVersion)
     local patchesNecessary = {}
     for version, patch in pairs(patches) do
-        if not IsVersionHigherOrEqual(oldVersion, version) and IsVersionHigherOrEqual(newVersion, version) then
+        if not Nova.isVersionHigherOrEqual(oldVersion, version) and Nova.isVersionHigherOrEqual(newVersion, version) then
             table.insert(patchesNecessary, version)
         end
     end
     // sort (low to high) 
-    table.sort(patchesNecessary, function(a, b) return not IsVersionHigherOrEqual(a, b) end)
+    table.sort(patchesNecessary, function(a, b) return not Nova.isVersionHigherOrEqual(a, b) end)
     return patchesNecessary
 end
 

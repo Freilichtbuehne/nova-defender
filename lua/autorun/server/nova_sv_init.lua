@@ -1,6 +1,10 @@
-Nova = Nova or {}
-Nova.extensions = Nova.extensions or {}
-Nova["version"] = "1.7.8"
+Nova = Nova or {
+    ["version"] = "1.7.9"
+}
+
+Nova.extensions = Nova.extensions or {
+    ["latest_version_anticheat"] = "1.0.0"
+}
 
 local lines = {
     [[ ]],

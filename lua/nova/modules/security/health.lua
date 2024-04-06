@@ -140,6 +140,22 @@ local healthChecks = {
             }
         end,
     },
+    ["nova_anticheat_version"] = {
+        name = "health_check_nova_anticheat_version_title",
+        desc = "health_check_nova_anticheat_version_desc",
+        long_desc = "health_check_nova_anticheat_version_desc_long",
+        score = 6,
+        check = function()
+            local latestACVersion = Nova.extensions["latest_version_anticheat"]
+            local currentACVersion = Nova.extensions["anticheat"]
+            if currentACVersion == true then currentACVersion = "0.0.0" end
+            local impacted = Nova.extensions["anticheat"] and not Nova.isVersionHigherOrEqual(currentACVersion, latestACVersion)
+            return {
+                ["impacted"] = impacted,
+                ["list"] = {string.format("Current: v.%s, Latest: v.%s", currentACVersion, latestACVersion)},
+            }
+        end,
+    },
     /*["nova_config"] = {
         name = "health_check_nova_config_title",
         desc = "health_check_nova_config_desc",

@@ -24,6 +24,12 @@ Nova.getMenuPayload = function(ply_or_steamid)
       ]]
     end
 
+    local anticheatVersion = Nova.extensions["anticheat"] or "default"
+    if not isstring(anticheatVersion) then anticheatVersion = "0.0.0" end
+    if anticheatVersion != "default" then
+      anticheatVersion = "v." .. anticheatVersion
+    end
+
     local payload = [[
   ------------------------------
   --  Global Variables
@@ -2719,8 +2725,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
     local function OpenMenu(data)
       NOVA_MENU = vgui.Create("nova_admin_menu")
       local info = vgui.Create("DLabel", NOVA_MENU)
-      local headerText = NOVA_PROTECTED and "Nova Defender v.%s | UID: %s" or "Nova Defender v.%s"
-      info:SetText(string.format(headerText, NOVA_VERSION, NOVA_UID))
+      local headerText = NOVA_PROTECTED and "Nova Defender v.%s | Anticheat: %s | UID: %s" or "Nova Defender v.%s"
+      info:SetText(string.format(headerText, NOVA_VERSION, "]] .. anticheatVersion .. [[", NOVA_UID))
       info:SetFont("nova_font")
       info:SizeToContents()
       info:SetPos(NOVA_MENU:GetWide() - info:GetWide() - style.margins.lr, style.margins.tb)
