@@ -543,6 +543,7 @@ Sicherheit:
     ["indicator_memoriam"] = "Spieler hat den Cheat 'Memoriam' in der Vergangenheit genutzt oder tut es aktuell",
     ["indicator_multihack"] = "Spieler hat den Cheat 'Garrysmod 64-bit Visuals Multihack Reborn' in der Vergangenheit genutzt oder tut es aktuell",
     ["indicator_fenixmulti"] = "Spieler hat den Cheat 'FenixMulti' in der Vergangenheit genutzt oder tut es aktuell",
+    ["indicator_interstate"] = "Spieler hat den Cheat 'interstate editor' in der Vergangenheit genutzt oder tut es aktuell",
     ["indicator_exechack"] = "Spieler hat den bezahlten Cheat 'exechack' in der Vergangenheit genutzt oder tut es aktuell",
     ["indicator_banned"] = "Spieler wurde von Nova Defender auf einem anderen Server gebannt",
     ["indicator_profile_familyshared"] = "Spieler hat einen Familysharing-Account",

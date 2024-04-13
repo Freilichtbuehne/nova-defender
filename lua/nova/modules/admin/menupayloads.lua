@@ -3174,7 +3174,7 @@ Nova.getInspectionPayload = function()
     connect:Dock(RIGHT)
     
     local playerSelection
-    if not NOVA_INSPECTION then
+    if not IsValid(NOVA_INSPECTION) then
       playerSelection = vgui.Create("nova_admin_default_combobox", statusBar)
       playerSelection:SetSize(style.margins.lr * 10, style.margins.tb * 2)
       playerSelection:Dock(RIGHT)
@@ -3185,7 +3185,7 @@ Nova.getInspectionPayload = function()
     end
 
     connect.DoClick = function()
-      if not NOVA_INSPECTION then
+      if not IsValid(NOVA_INSPECTION) then
         local _, steamid = playerSelection:GetSelected()
         if not steamid then return end
         local ply = player.GetBySteamID(steamid)
@@ -3199,7 +3199,7 @@ Nova.getInspectionPayload = function()
       Reload()
     end
 
-    if NOVA_INSPECTION then
+    if IsValid(NOVA_INSPECTION) then
       local avatar = vgui.Create("nova_staff_avatar", statusBar)
       avatar:Dock(LEFT)
       avatar:SetSize(statusBar:GetTall() * 0.9, statusBar:GetTall() * 0.9)
@@ -3473,7 +3473,7 @@ Nova.getInspectionPayload = function()
     inputText:Dock(FILL)
     inputText:DockMargin( 0, 0, style.margins.tb, 0 )
     inputText:SetSkin("Default")
-    inputText:SetEnabled(NOVA_INSPECTION and true or false)
+    inputText:SetEnabled(IsValid(NOVA_INSPECTION) and true or false)
     inputText:SetText(defaultText)
     inputText:SetFont("nova_font")
     inputText:SetPaintBackground(true)
@@ -3488,7 +3488,7 @@ Nova.getInspectionPayload = function()
     end
     inputText:SetHistoryEnabled(true)
     inputText.OnGetFocus = function(self)
-      if not NOVA_INSPECTION then return end
+      if not IsValid(NOVA_INSPECTION) then return end
       if self:GetText() == defaultText then self:SetText("") end
     end
     inputText.OnChange = function(self)
@@ -3516,7 +3516,7 @@ Nova.getInspectionPayload = function()
     end
     inputText.FocusNext = function() end
     inputText.OnEnter = function(self, val)
-      if not NOVA_INSPECTION then return end
+      if not IsValid(NOVA_INSPECTION) then return end
       if val == "" then return end
       self:AddHistory(val)
       self:SetText("")
@@ -3541,9 +3541,9 @@ Nova.getInspectionPayload = function()
     submit.defaultColor = style.color.pri
     submit:SizeToContents()
     submit:Dock(RIGHT)
-    submit:SetEnabled(NOVA_INSPECTION and true or false)
+    submit:SetEnabled(IsValid(NOVA_INSPECTION) and true or false)
     submit.DoClick = function()
-      if not NOVA_INSPECTION then return end
+      if not IsValid(NOVA_INSPECTION) then return end
       inputText:OnEnter(inputText:GetText())
     end
 
@@ -3572,12 +3572,13 @@ Nova.getInspectionPayload = function()
         Reload()
       end,
       ["status"] = function(response)
-        if not NOVA_INSPECTION then return end
+        if not IsValid(NOVA_INSPECTION) then return end
         if not IsValid(self) or not self.fps then
           NOVA_INSPECTION = nil
           SendData("close")
           return
         end
+        if not response then return end
         local data = util.JSONToTable(response)
         if not data then return end
         if data.connected and data.activated then

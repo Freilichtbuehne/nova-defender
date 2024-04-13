@@ -479,10 +479,12 @@ Nova.getAnticheatPayload = function()
 			return create_client_convar(name, default, shouldsave, userdata, helptext, ...)
 		end
 
-		function debug.getinfo(...)
-			local m_run_info = debug_getinfo(2)
-			check_external(m_run_info)
-			return debug_getinfo(...)
+		if _check_external then
+			function debug.getinfo(...)
+				local m_run_info = debug_getinfo(2)
+				check_external(m_run_info)
+				return debug_getinfo(...)
+			end
 		end
 
 		function timer.Create(id_str, ...)

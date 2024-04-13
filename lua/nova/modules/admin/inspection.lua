@@ -426,6 +426,11 @@ timer.Create("nova_admin_inspection_session", 2, 0, function()
             // send client 
             SendClient(session.client, "open")
         end
+        // check if client is still connected
+        if not IsValid(session.client) then
+            Nova.log("d", string.format("Client %s disconnected, closing inspection session...", Nova.playerName(session.client)))
+            DestroySession(adminSteamID)
+        end
     end
 end)
 
