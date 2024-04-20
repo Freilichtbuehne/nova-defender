@@ -216,7 +216,7 @@ Nova.getAnticheatPayload = function()
 			"esp_enable", "smeg", "wallhack", "nospread", "antiaim", "hvh", "autostrafe",
 			"circlestrafe", "spinbot", "odium", "ragebot", "legitbot", "fakeangles", "anticac",
 			"antiscreenshot", "fakeduck", "lagexploit", "exploits_open", "gmodhack", "cathack",
-			"aimbot_ignoreteam", "antiaim_walldtc_yaw"
+			"aimbot_ignoreteam", "antiaim_walldtc_yaw", {"spin_enabled", "BhopVar"}
 		} ]] .. lines:Insert("ac_key") .. [[
 		]] .. lines:Insert("ac_f_key_9") .. [[
 
@@ -285,7 +285,7 @@ Nova.getAnticheatPayload = function()
 		local function is_string_bad(b_string, b_table)
 			b_string = string_lower(b_string or "")
 			for k, v in loop_ipairs(b_table or {}) do
-				if v and string_find(b_string, v) then
+				if _type(v) == "string" and string_find(b_string, v) then
 					return true, v
 				end
 			end
@@ -341,7 +341,14 @@ Nova.getAnticheatPayload = function()
 		local function check_convars()
 			if not _check_cvars then return end
 			for k, v in loop_ipairs(bad_cvar_names or {}) do
-				if convar_exists(v) then ]] .. vars:Get("ac_func_detection") .. [[("anticheat_known_cvar", "CVarName: " .. v) end
+				if _type(v) ~= "table" then v = {v} end
+				local f = true
+				for _, c in loop_ipairs(v) do
+					if not convar_exists(c) then f = false break end
+				end
+				if f then
+					]] .. vars:Get("ac_func_detection") .. [[("anticheat_known_cvar", "CVarName: " .. table.concat(v, ", "))
+				end
 			end
 		end
 

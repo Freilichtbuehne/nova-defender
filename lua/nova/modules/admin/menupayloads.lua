@@ -35,7 +35,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
   --  Global Variables
   ------------------------------
   NOVA_VERSION = "]] .. Nova["version"] .. [["
-  NOVA_UID = "]] .. Nova.getSetting("uid", "unknown") .. [["
+  NOVA_UID = "]] .. (isProtected and Nova.getSetting("uid", "unknown") or "") .. [["
   NOVA_MENU = NOVA_MENU or nil
   NOVA_LANG = NOVA_LANG or nil
   NOVA_ACTIVE_TAB = NOVA_ACTIVE_TAB or nil

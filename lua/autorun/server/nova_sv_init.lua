@@ -1,9 +1,9 @@
 Nova = Nova or {
-    ["version"] = "1.7.10"
+    ["version"] = "1.7.11"
 }
 
 Nova.extensions = Nova.extensions or {
-    ["latest_version_anticheat"] = "1.0.1"
+    ["latest_version_anticheat"] = "1.0.2"
 }
 
 local lines = {
