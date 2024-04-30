@@ -2752,7 +2752,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
       icon:SetImage("nova/discord.png")
       icon:SetSize(70,70)
       icon:SetZPos( 100 )
-      icon.DoClick = function() gui.OpenURL("https://discord.gg/rFFbkyTY") end
+      icon.DoClick = function() gui.OpenURL("https://discord.gg/64MxGDhz8R") end
 
       local discordText = vgui.Create("DLabel", tab)
       discordText:SetFont("nova_font")
