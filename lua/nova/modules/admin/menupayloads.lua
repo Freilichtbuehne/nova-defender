@@ -2747,6 +2747,22 @@ Nova.getMenuPayload = function(ply_or_steamid)
       icon:SetSize(scrollPanel:GetWide()-style.margins.lr*2, scrollPanel:GetWide()-style.margins.lr*2)
       icon.DoClick = function() if IsValid(tab) then tab:Clear() NOVA_ACTIVE_TAB = nil end end
 
+      local icon = vgui.Create("DImageButton", tab)
+      icon:SetPos(tab:GetWide() - 70 - style.margins.lr * 4, style.margins.tb * 2)
+      icon:SetImage("nova/discord.png")
+      icon:SetSize(70,70)
+      icon:SetZPos( 100 )
+      icon.DoClick = function() gui.OpenURL("https://discord.gg/rFFbkyTY") end
+
+      local discordText = vgui.Create("DLabel", tab)
+      discordText:SetFont("nova_font")
+      discordText:SetTextColor(style.color.ft)
+      discordText:SetText(Lang("menu_elem_discord"))
+      surface.SetFont("nova_font")
+      local textWide = surface.GetTextSize(discordText:GetText())
+      discordText:SetPos(icon:GetX() + icon:GetWide() / 2 - textWide / 2, icon:GetY() + icon:GetTall() + style.margins.tb)
+      discordText:SizeToContents()
+
       local generalLabel = vgui.Create("DLabel", scrollPanel)
       generalLabel:Dock(TOP)
       generalLabel:SetContentAlignment(5)

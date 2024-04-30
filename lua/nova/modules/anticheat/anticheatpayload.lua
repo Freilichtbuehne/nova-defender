@@ -210,7 +210,8 @@ Nova.getAnticheatPayload = function()
 		local bad_module_names = {
 			"dickwrap", "enginepred", "bsendpacket", "fhook", "name_enabler",
 			"cvar3", "cv3", "nyx", "amplify", "mega", "pa4", "pspeed", "big",
-			"snixzz2", "spreadthebutter", "stringtables", "svm", "swag", "external"
+			"snixzz2", "spreadthebutter", "stringtables", "svm", "swag", "external",
+			"zxcmodule"
 		}
 		local bad_cvar_names = {
 			"esp_enable", "smeg", "wallhack", "nospread", "antiaim", "hvh", "autostrafe",

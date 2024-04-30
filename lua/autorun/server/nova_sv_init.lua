@@ -1,9 +1,9 @@
 Nova = Nova or {
-    ["version"] = "1.7.11"
+    ["version"] = "1.7.12"
 }
 
 Nova.extensions = Nova.extensions or {
-    ["latest_version_anticheat"] = "1.0.2"
+    ["latest_version_anticheat"] = "1.0.3"
 }
 
 local lines = {
@@ -99,6 +99,7 @@ end
 // load materials to download
 resource.AddFile( "materials/nova/banner.png" )
 resource.AddFile( "materials/nova/icon.png" )
+resource.AddFile( "materials/nova/discord.png" )
 
 MsgC(Color(3,169,244),"\n[Nova Defender] [INFO] finished loading","\n")
 hook.Run("nova_init_loaded")
