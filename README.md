@@ -7,8 +7,15 @@
 </p>
 
 <p align="center">
+  <a href=https://discord.gg/zEMuB6kN9g>
+    <img src="https://i.imgur.com/Qb6CVTY.png" width="412px" title="Banner">
+  </a>
+</p>
+
+<p align="center">
   :computer: <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3069680995">Also avaliable on Steam Workshop</a>
   :open_file_folder: <a href="https://github.com/Freilichtbuehne/nova-defender/releases/latest">Direct download</a>
+  :microphone: <a href="https://discord.gg/zEMuB6kN9g">Discord</a>
 </p>
 
 ## Functionality Demo
