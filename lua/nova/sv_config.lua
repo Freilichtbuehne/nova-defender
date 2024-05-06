@@ -48,6 +48,12 @@ Nova.config["mysql_username"] = "please_dont_use_root"
 Nova.config["mysql_pass"] = "very_secure_password"
 Nova.config["mysql_db"] = "nova"
 
+/*===============================
+	Misc Configuration
+===============================*/
+
+// enables you to change the default chat command to open the admin menu
+Nova.config["menu_chatcommand"] = "!nova"
 
 
 

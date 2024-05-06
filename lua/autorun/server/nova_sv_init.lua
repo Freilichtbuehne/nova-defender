@@ -1,5 +1,5 @@
 Nova = Nova or {
-    ["version"] = "1.7.12"
+    ["version"] = "1.7.13"
 }
 
 Nova.extensions = Nova.extensions or {

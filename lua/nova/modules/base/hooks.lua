@@ -29,7 +29,9 @@ local function AdminMenu(ply, text)
     if not IsValid(ply) or not ply:IsPlayer() or ply:IsBot() then return end
     if not Nova.isStaff(ply) then return end
 
-    if string.lower(text or "") == "!nova" then
+    local menuChatCommand = Nova.config["menu_chatcommand"] or "!nova"
+
+    if string.lower(text or "") == menuChatCommand then
         ply:ConCommand("nova_defender")
 
         return ""
