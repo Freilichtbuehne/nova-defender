@@ -113,6 +113,7 @@ Nova.setSetting("networking_http_whitelistdomains", {
 	"google.com",
 	"vcmod.org",
 	"m4dsolutions.com",
+	"api.gmod-integration.com",
 }, true, true, nil, true)
 
 Nova.setSetting("networking_fetch_overwrite", false, true, true)
