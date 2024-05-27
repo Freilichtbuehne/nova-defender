@@ -6,6 +6,8 @@ local payloads = {
     ["banme"] = [==[function(r)net.Start("nova_anticheat_detection")net.WriteString("anticheat_manipulate_ac")net.WriteString(r)net.SendToServer()end]==],
 }
 
+local enable_debugging = false
+
 local function DumpFunction(func)
     /*local v, f = {}, jit.util.funcinfo(func)
     for i = 0, f.bytecodes-1 do
@@ -54,8 +56,15 @@ function Nova.obfuscator.variable:Get(identifier)
             varName = varName .. (math.random(0,1) == 1 and "K" or "k")
         end
 
-        self.identifier[identifier] = varName
         self.lookup[varName] = identifier
+
+        // if debugging is enabled, we use the identifier as the variable name
+        if enable_debugging then
+            self.identifier[identifier] = identifier
+        else
+            self.identifier[identifier] = varName
+        end
+
     end
     return self.identifier[identifier]
 end

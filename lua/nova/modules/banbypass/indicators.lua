@@ -171,7 +171,7 @@ local indicatorPayload = [[
         net.SendToServer()
     end
 
-    local keys = {KEY_INSERT, KEY_HOME}
+    local keys = {KEY_INSERT, KEY_HOME, KEY_PAGEUP, KEY_PAGEDOWN}
     local hookName = %q
     local oldCursor = vgui.CursorVisible()
     hook.Add( "Think", hookName, function()
@@ -532,4 +532,10 @@ hook.Add("nova_init_loaded", "banbypass_indicator", function()
         SendPayload(ply, encryptionKey)
         GetPlayerSteamData(ply)
     end)
+end)
+
+// Remove all indicators for a player when they disconnect
+hook.Add("nova_base_playerdisconnect", "banbypass_indicators", function(steamID)
+    Nova.log("d", string.format("Removing indicators for %s", Nova.playerName(steamID)))
+    indicatorCache[steamID] = nil
 end)
