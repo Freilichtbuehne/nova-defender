@@ -4,17 +4,17 @@ local phrases = {
     -- Notifications
     ["menu_logging_debug"] = "调试模式：\n这将在服务器控制台打印额外的日志。",
     ["menu_notify_timeopen"] = "通知显示时长（秒）。",
-    ["menu_notify_showstaff"] = "向工作人员显示通知。",
+    ["menu_notify_showstaff"] = "向管理员显示通知。",
     ["menu_notify_showinfo"] = "显示信息通知",
-    ["menu_access_player"] = "工作人员可以访问“在线玩家”标签页并在那里执行操作。工作人员不能针对受保护的玩家。",
-    ["menu_access_staffseeip"] = "工作人员可以看到玩家的IP地址",
-    ["menu_access_detections"] = "工作人员可以访问“检测”标签页",
-    ["menu_access_bans"] = "工作人员可以访问“封禁”标签页",
-    ["menu_access_health"] = "工作人员可以访问“健康”标签页",
-    ["menu_access_inspection"] = "工作人员可以访问“检查玩家”标签页",
+    ["menu_access_player"] = "管理员可以访问“在线玩家”标签页并在那里执行操作。管理员不能针对受保护的玩家。",
+    ["menu_access_staffseeip"] = "管理员可以看到玩家的IP地址",
+    ["menu_access_detections"] = "管理员可以访问“检测”标签页",
+    ["menu_access_bans"] = "管理员可以访问“封禁”标签页",
+    ["menu_access_health"] = "管理员可以访问“健康”标签页",
+    ["menu_access_inspection"] = "管理员可以访问“检查玩家”标签页",
 
     ["menu_action_timeopen"] = "处罚提示显示时长（秒）。",
-    ["menu_action_showstaff"] = "如果没有受保护的玩家（或AFK），询问工作人员进行处罚操作。",
+    ["menu_action_showstaff"] = "如果没有受保护的玩家（或AFK），询问管理员进行处罚操作。",
     -- Networking
     ["networking_concommand_logging"] = "命令日志：\n记录客户端和服务器执行的每个控制台命令",
     ["networking_concommand_dump"] = "转储命令：\n当玩家断开连接时，将他执行的所有命令打印到控制台。这可能会很快增加你的日志大小。",
@@ -67,7 +67,7 @@ local phrases = {
     ["networking_post_whitelist"] = "启用白名单：\n只允许已添加到列表中的域名和IP地址。",
     ["networking_post_blockunsafe"] = "阻止不安全的请求：\n来自不安全来源（如控制台或RunString）的请求被阻止。",
     -- Banbypass
-    ["banbypass_ban_banstaff"] = "工作人员可以被封禁",
+    ["banbypass_ban_banstaff"] = "管理员可以被封禁",
     ["banbypass_ban_default_reason"] = "如果没有指定原因，玩家被封禁的原因",
 
     ["banbypass_bypass_default_reason"] = "玩家因绕过封禁而被封禁的原因",
@@ -175,7 +175,7 @@ local phrases = {
     ["config_detection_security_privilege_escalation"] = "提升到受保护用户组的权限",
     ["config_detection_admin_manual"] = "管理员或控制台的手动封禁",
     -- Notifications
-    ["menu_notify_hello_staff"] = "该服务器受Nova Defender保护。\n您被归类为工作人员。",
+    ["menu_notify_hello_staff"] = "该服务器受Nova Defender保护。\n您被归类为管理员。",
     ["menu_notify_hello_protected"] = "该服务器受Nova Defender保护。\n您被归类为受保护者。",
     ["menu_notify_hello_menu"] = "使用 !nova 打开菜单。",
 
@@ -367,8 +367,8 @@ local phrases = {
     ["server_access_password_lock_reason"] = "如果他输入错误密码太多次，显示给客户端的原因。",
     ["server_access_password_max_attempts"] = "锁定前的最大尝试次数",
 
-    ["server_lockdown_enabled"] = "封锁模式：\n只有工作人员、受保护和受信任的玩家可以加入服务器。当许多新账户被创建来加入服务器进行捣乱、破坏或崩溃服务器时使用此模式。已经在服务器上的玩家不受影响。确保首先在Nova Defender的配置文件中定义谁是受信任的。这应该只用于短时间。",
-    ["server_lockdown_reason"] = "如果玩家在封锁模式下不受保护、不是工作人员或不受信任时踢出玩家的原因。",
+    ["server_lockdown_enabled"] = "封锁模式：\n只有管理员、受保护和受信任的玩家可以加入服务器。当许多新账户被创建来加入服务器进行捣乱、破坏或崩溃服务器时使用此模式。已经在服务器上的玩家不受影响。确保首先在Nova Defender的配置文件中定义谁是受信任的。这应该只用于短时间。",
+    ["server_lockdown_reason"] = "如果玩家在封锁模式下不受保护、不是管理员或不受信任时踢出玩家的原因。",
     -- Admin Menu
     ["menu_title_banbypass"] = "封禁系统",
     ["menu_title_health"] = "健康",
