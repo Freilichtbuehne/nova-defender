@@ -84,7 +84,6 @@ Nova.setSetting("networking_sendlua_validationfailed_reason", "Validation Error"
 Nova.setSetting("networking_screenshot_store_ban", true, true, true)
 Nova.setSetting("networking_screenshot_store_manual", false, true, true, nil, true)
 Nova.setSetting("networking_screenshot_quality", "medium", true, true, {"low", "medium", "high"})
-Nova.setSetting("networking_screenshot_steam", false, true, true, nil, true)
 Nova.setSetting("networking_screenshot_limit_ban", 50, true, true, nil, true)
 Nova.setSetting("networking_screenshot_limit_manual", 20, true, true, nil, true)
 
@@ -219,6 +218,8 @@ Nova.setSetting("anticheat_check_files", true, true, true, nil, true)
 Nova.setSetting("anticheat_check_byte_code", true, false, true, nil, true)
 Nova.setSetting("anticheat_check_net_scan", true, true, true, nil, true)
 Nova.setSetting("anticheat_spam_filestealers", false, true, true, nil, true)
+
+Nova.setSetting("anticheat_check_experimental", false, true, true, nil, true)
 
 /*===============================
 	Security

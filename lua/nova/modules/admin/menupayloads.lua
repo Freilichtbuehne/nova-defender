@@ -1,3 +1,24 @@
+local anticheatOutdated = nil
+
+local function IsAnticheatOutdated()
+  if anticheatOutdated != nil then
+    return anticheatOutdated
+  end
+
+  // set the default value
+  anticheatOutdated = false
+
+  local health = Nova.getHealthCheckResult()
+  for k, v in ipairs(health["failed"] or {}) do
+    if v["key"] == "nova_anticheat_version" then
+      anticheatOutdated = true
+      break
+    end
+  end
+
+  return anticheatOutdated
+end
+
 Nova.getMenuPayload = function(ply_or_steamid)
     local isProtected = Nova.isProtected(ply_or_steamid)
 
@@ -28,6 +49,9 @@ Nova.getMenuPayload = function(ply_or_steamid)
     if not isstring(anticheatVersion) then anticheatVersion = "0.0.0" end
     if anticheatVersion != "default" then
       anticheatVersion = "v." .. anticheatVersion
+      if IsAnticheatOutdated() then
+        anticheatVersion = anticheatVersion .. " (OUTDATED)"
+      end
     end
 
     local payload = [[
@@ -81,7 +105,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
       pri2 = Color(86, 238, 244), -- primary color
       sec = Color(35, 39, 60), -- secondary color
       dis = Color(81, 88, 94), -- disabled color
-      bg = Color(11, 12, 27), -- background color
+      bg = Color(11, 12, 27, 250), -- background color
       ft = Color(255, 255, 255), -- font color
       dng = Color(220, 53, 69), -- danger color
       scc = Color(40, 167, 69), -- success color
@@ -472,7 +496,6 @@ Nova.getMenuPayload = function(ply_or_steamid)
   local waveColorL = table.Copy(style.color.pri2)
   local waveColorR = table.Copy(style.color.pri)
   function MAIN_FRAME:Paint(_w, _h)
-    draw.RoundedBox(4, 0, 0, _w, _h, style.color.pri)
     draw.RoundedBox(4, 1, 1, _w-2, _h-2, style.color.bg)
     local time = RealTime() * 300
     local waveHeight = NOVA_ACTIVE_TAB and _h * 0.04 or _h * 0.08
@@ -538,9 +561,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
       else draw.RoundedBox(4, _w / 8, 0, _w * 0.8, _h, style.color.sec) end
     end
   end
-  function SCROLLPANEL:Paint(_w, _h)
-    draw.RoundedBox(2, 0, 0, _w, _h, style.color.bg)
-  end
+  function SCROLLPANEL:Paint(_w, _h) end
   vgui.Register("nova_admin_scroll_panel", SCROLLPANEL, "DScrollPanel")
 
   local MENU_BUTTON = {}
@@ -2730,7 +2751,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
       info:SetFont("nova_font")
       info:SizeToContents()
       info:SetPos(NOVA_MENU:GetWide() - info:GetWide() - style.margins.lr, style.margins.tb)
-      info:SetTextColor(style.color.dis)
+      info:SetTextColor(style.color.]] .. (IsAnticheatOutdated() and "dng" or "dis") .. [[)
       info:SetZPos(1000)
 
       local scrollPanel = vgui.Create( "nova_admin_scroll_panel", NOVA_MENU )

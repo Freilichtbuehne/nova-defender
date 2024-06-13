@@ -120,6 +120,11 @@ Nova.obfuscator.obfuscate = function(source, replaceText)
         // Step 1: Compiling source for the first time
         local has_no_error
         has_no_error, compiled = pcall(Nova.compile, source)
+        // check for debugging
+        // we always compile the source, even if debugging is enabled
+        if enable_debugging then
+            compiled = source
+        end
         if not has_no_error then Nova.log("e", string.format("Compile error: %s", compiled)) return false end
         compilerCache[sourceChecksum] = compiled
         Nova.log("d", string.format("Compiled source for the first time: %s", sourceChecksum))
@@ -177,7 +182,11 @@ Nova.obfuscator.obfuscate = function(source, replaceText)
         lines:Register("decoded", vars:Set("decoded", string.format("%s(%s)", vars:Get("decode"), vars:Get("code"))))
         lines:Register("decrypted", vars:Set("decrypted", string.format("%s[%s](%s,%s)", vars:Get("cipher"), string.format("%s(%s)", vars:Get("decode"), vars:Get("cipherAttribute")), vars:Get("decoded"), vars:Get("key"))))
         lines:Register("decompressed", vars:Set("decompressed", string.format("%s(%s)", vars:Get("decompress"), vars:Get("decrypted"))))
-        lines:Register("run", vars:Set("run", string.format("%s(%s)()", vars:Get("interpreter"), vars:Get("decompressed"), vars:Get("getfenv"))))
+        if enable_debugging then
+            lines:Register("run", vars:Set("run", string.format("RunString(%s)", vars:Get("decompressed"))))
+        else
+            lines:Register("run", vars:Set("run", string.format("%s(%s)()", vars:Get("interpreter"), vars:Get("decompressed"))))
+        end
 
         // Step 5.4: Assembling functions
         local funcImports = {

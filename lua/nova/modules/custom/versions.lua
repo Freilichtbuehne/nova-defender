@@ -41,7 +41,10 @@ local patches = {
         Nova.deleteSetting("networking_post_domains")
         Nova.deleteSetting("networking_fetch_logging")
         Nova.deleteSetting("networking_post_logging")
-
+    end,
+    ["1.8.0"] = function()
+        Nova.log("i", "Deleting obsolete setting")
+        Nova.deleteSetting("networking_screenshot_steam")
     end
 }
 

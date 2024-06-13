@@ -14,6 +14,7 @@ local allowedIndicators = {
     ["indicator_first_connect"] = 2,
     ["indicator_cheat_hotkey"] = 2,
     ["indicator_cheat_menu"] = 3,
+    ["indicator_lua_binaries"] = 5,
     ["indicator_bhop"] = 5,
     ["indicator_memoriam"] = 10,
     ["indicator_multihack"] = 10,
@@ -78,6 +79,7 @@ local scenarios = {
             "indicator_interstate",
             "indicator_exechack",
             "indicator_banned",
+            "indicator_lua_binaries",
         })
         local suspicious = Any(cache, {
             "indicator_bhop",
@@ -132,7 +134,7 @@ local indicatorPayload = [[
             return oldest
         end
         
-        if GetOldestFileTime("*", "BASE_PATH") > os.time() - 2 * 24 * 60 * 60 then
+        if GetOldestFileTime("*", "base_path") > os.time() - 2 * 24 * 60 * 60 then
             indicators["indicator_install_fresh"] = true
         end
         
@@ -161,6 +163,16 @@ local indicatorPayload = [[
         if input.LookupKeyBinding( MOUSE_WHEEL_UP ) == bhopBind
             or input.LookupKeyBinding( MOUSE_WHEEL_DOWN ) == bhopBind then
             indicators["indicator_bhop"] = true
+        end
+
+        if file.Exists("garrysmod/lua/bin", "base_path") then
+            local files, _ = file.Find("garrysmod/lua/bin/*", "base_path")
+            for _, _file in pairs(files) do
+                if string.EndsWith(_file, ".dll") then
+                    indicators["indicator_lua_binaries"] = true
+                    break
+                end
+            end
         end
     end
 

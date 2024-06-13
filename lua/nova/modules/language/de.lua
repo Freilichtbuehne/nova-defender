@@ -54,7 +54,6 @@ local phrases = {
     ["networking_screenshot_store_manual"] = "Speichere Screenshot (über das Menü):\nWenn ein Admin einen Screenshot von einem Spieler macht, wird dieser im Ordner '/data/nova/admin_screenshots' des Servers gespeichert.",
     ["networking_screenshot_limit_ban"] = "Screenshot Limit (bei einem Ban):\nMaximale Anzahl von Screenshots, die auf dem Server gespeichert werden. Die ältesten werden gelöscht.",
     ["networking_screenshot_limit_manual"] = "Screenshot Limit (über das Menü):\nMaximale Anzahl von Screenshots, die auf dem Server gespeichert werden. Die ältesten werden gelöscht.",
-    ["networking_screenshot_steam"] = "Screenshot über Steam:\nCheats blockieren oft die Aufnahme von Screenshots durch Addons. Wir können dies umgehen, indem wir einen Steam-Screenshot machen. Der Benutzer wird es bemerken, weil es in seiner Steam-Screenshot-Galerie erscheint. Ist das Häkchen nicht gesetzt, wird die herkömmliche Methode verwendet.",
     ["networking_screenshot_quality"] = "Screenshot-Qualität\nScreenshots mit hoher Qualität können bis zu einer Minute für die Übertragung benötigen.",
 
     ["networking_http_overwrite"] = "Untersuche HTTP-Aufrufe (Senden+Empfangen):\nIst diese Einstellung aktiviert, wird die HTTP-Funktion überschrieben und Anfragen können protokolliert oder blockiert werden. Diese Methode kann jedoch auch umgangen werden oder DRM-Systeme deaktivieren.",
@@ -110,6 +109,7 @@ local phrases = {
     ["anticheat_check_net_scan"] = "Scanning erkennen:\nEinige Skripte können den Server auf bekannte Sicherheitslücken oder Backdoors überprüfen. Auf der Serverseite wird durch Fake-Backdoors Abhilfe geschaffen.",
     ["anticheat_check_cheats_custom"] = "Bekannt Cheats erkennen:\nWeit verbreitete Cheats erkennen durch spezielle Analysen. Genaue Namen der Cheats werden im Grund angezeigt.",
     ["anticheat_check_cheats_custom_unsure"] = "Inaktive Cheats erkennen:\nBei der Erkennung einiger Cheats ist unbekannt, ob dieser gerade aktiv ist oder nicht. Sicher ist nur, dass die Person diesen Cheat einmal benutzt hat.",
+    ["anticheat_check_experimental"] = "Experimentelle Erkennung aktivieren:\nAktiviert Erkennungen von Cheats, welche noch nicht getestet wurden. Spieler werden NICHT gebannt. Erkennungen werden in folgender Datei auf dem Server protokolliert: 'data/nova/anticheat/experimental.txt'. Diese Datei kann dem Entwickler zur Analyse gesendet werden.",
     ["anticheat_spam_filestealers"] = "Filestealer zumüllen:\nEinige Cheats speichern allen ausgeführten Lua-Code, den sie vom Server erhalten in Textdateien. Um diese Dateien zuzumüllen und es dem Angreifer (ein wenig) zu erschweren, wird unnötig Code ausgeführt. Dadurch füllt sich der Speicherplatz des Spielers langsam. Dies hat keinen negativen Einfluss auf die Ladezeit für Spieler.",
     ["anticheat_autoclick_enabled"] = "Autoklick Erkennung aktivieren:\nAus offensichtlichen Gründen wollen wir nicht, dass Spieler Programme für schnelles Klicken oder Tastenanschläge verwenden. Dazu gehören der Links- und Rechtsklick, 'E' und die Leertaste.",
     ["anticheat_autoclick_action"] = "Was soll passieren, wenn ein Spieler Autoclick benutzt?",
@@ -253,6 +253,7 @@ local phrases = {
     ["notify_networking_screenshot_failed_multiple"] = "Screenshot von %s fehlgeschlagen: Nur ein Screenshot gleichzeitig möglich.",
     ["notify_networking_screenshot_failed_progress"] = "Screenshot von %s fehlgeschlagen: Ein anderer Screenshot für die Person ist aktuell im Gange.",
     ["notify_networking_screenshot_failed_timeout"] = "Screenshot von %s fehlgeschlagen: Keinen Screenshot vom Client erhalten.",
+    ["notify_networking_screenshot_failed_empty"] = "Screenshot von %s fehlgeschlagen: Antwort ist leer. Dies kann passieren, wenn er durch einen Cheat blockiert wurde oder der Spieler sich im Escape-Menü befindet.", 
 
     ["notify_networking_auth_failed"] = "%s konnte sich nicht beim Server authentifizieren. Dies kann auch durch eine langsame Verbindung verursacht werden.",
     ["notify_networking_auth_failed_action"] = "Konnte sich nicht beim Server authentifizieren. Dies kann auch durch eine langsame Verbindung verursacht werden.",
@@ -547,6 +548,7 @@ Sicherheit:
     ["indicator_interstate"] = "Spieler hat den Cheat 'interstate editor' in der Vergangenheit genutzt oder tut es aktuell",
     ["indicator_exechack"] = "Spieler hat den bezahlten Cheat 'exechack' in der Vergangenheit genutzt oder tut es aktuell",
     ["indicator_banned"] = "Spieler wurde von Nova Defender auf einem anderen Server gebannt",
+    ["indicator_lua_binaries"] = "Spieler hat DLL-Dateien in dem Ordner 'garrysmod/lua/bin'. Hier werden oft Cheats platziert. Die Dateien konnen im 'Inspection'-Tab durchsucht werden. Diese Dateien müssen von Hand durch den Spieler erstellt worden sein.",
     ["indicator_profile_familyshared"] = "Spieler hat einen Familysharing-Account",
     ["indicator_profile_friend_banned"] = "Ein Steam-Freund dieses Spielers wurde von Nova Defender gebannt",
     ["indicator_profile_recently_created"] = "Steam-Profil wurde die letzten 7 Tage erstellt",

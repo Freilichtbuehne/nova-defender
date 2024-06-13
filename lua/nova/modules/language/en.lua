@@ -54,7 +54,6 @@ local phrases = {
     ["networking_screenshot_store_manual"] = "Save screenshots (Menu):\nIf an admin takes a screenshot of a player, it will get saved inside the servers '/data/nova/admin_screenshots' folder.",
     ["networking_screenshot_limit_ban"] = "Screenshot limit (On ban):\nMaximum number of screenshots stored inside the servers data folder. Oldest will get deleted.",
     ["networking_screenshot_limit_manual"] = "Screenshot limit (Menu):\nMaximum number of screenshots stored inside the servers data folder. Oldest will get deleted.",
-    ["networking_screenshot_steam"] = "Screenshot via Steam:\nCheats often block addons from taking screenshots. We can bypass this by taking a Steam screenshot. The user will notice it, because it will appear in his Steam screenshot gallery. If unchecked the conventional method is used.",
     ["networking_screenshot_quality"] = "Screenshot Quality\nScreenshots with high quality may take up to a minute to transfer.",
 
     ["networking_http_overwrite"] = "Inspect HTTP calls (send+receive):\nIf this setting is enabled, the HTTP function is overridden and requests can be logged or blocked. However, this method can also be bypassed or disable DRM systems.",
@@ -110,6 +109,7 @@ local phrases = {
     ["anticheat_check_net_scan"] = "Check Scanning:\nSome scripts can scan the server for known vulnerabilities or backdoors.",
     ["anticheat_check_cheats_custom"] = "Detect known cheats:\nDetect widely used cheats by special analysis. Exact names of cheats are displayed in the reason.",
     ["anticheat_check_cheats_custom_unsure"] = "Detect inactive cheats:\nWhen detecting some cheats, it is unknown whether this cheat is currently active or not. The only thing that is certain is that the person has used this cheat once.",
+    ["anticheat_check_experimental"] = "Enable experimental detections:\nActivates detections of cheats that have not yet been tested. Players will NOT be banned. Detections are logged in the following file on the server: 'data/nova/anticheat/experimental.txt'. This file can be sent to the developer for analysis.",
     ["anticheat_spam_filestealers"] = "Clutter filestealer:\nSome cheats store all the executed Lua code they receive from the server in text files. To clutter up these files and make it (a little) more difficult for the attacker, we clutter up these files with useless code. This slowly fills up the player's disk. This has no negative impact on player load time.",
     ["anticheat_autoclick_enabled"] = "Enable autoclick detection:\nFor obvious reasons, we don't want any players to use programs for fast clicking or keystrokes. This includes left and right click, use and space bar.",
     ["anticheat_autoclick_action"] = "What should happen when a player uses autoklick?",
@@ -253,6 +253,7 @@ local phrases = {
     ["notify_networking_screenshot_failed_multiple"] = "Screenshot for %s failed: You can only take one screenshot at a time",
     ["notify_networking_screenshot_failed_progress"] = "Screenshot for %s failed: Other screenshot for this player in progress.",
     ["notify_networking_screenshot_failed_timeout"] = "Screenshot for %s failed: Received no screenshot from client.",
+    ["notify_networking_screenshot_failed_empty"] = "Screenshot of %s failed: Answer is empty. This can happen if it has been blocked by a cheat or the player is in the escape menu.", 
 
     ["notify_networking_auth_failed"] = "%s couldn't authenticate with the server. This could also be caused by a slow connection.",
     ["notify_networking_auth_failed_action"] = "Couldn't authenticate with the server. This could also be caused by a slow connection.",
@@ -543,6 +544,7 @@ Security:
     ["indicator_interstate"] = "Player has used the cheat 'interstate editor' in the past or is currently doing so",
     ["indicator_exechack"] = "Player has used the paid cheat 'exechack' in the past or is currently doing so",
     ["indicator_banned"] = "Player has been banned by Nova Defender on another server",
+    ["indicator_lua_binaries"] = "Player has DLL files in the folder 'garrysmod/lua/bin'. Cheats are often placed here. The files can be browsed in the 'Inspection' tab. These files must have been created manually by the player.",
     ["indicator_profile_familyshared"] = "Player has a familyshared account",
     ["indicator_profile_friend_banned"] = "A Steam friend of this player has been banned by Nova Defender",
     ["indicator_profile_recently_created"] = "Steam profile has been created in the last 7 days",

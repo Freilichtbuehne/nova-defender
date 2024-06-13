@@ -12,12 +12,19 @@ local clientPayloadDefault = [[
 		local data = render.Capture( {
 			format = "jpg",x = 0,y = 0,w = ScrW(),h = ScrH(),quality = _quality,
 		} )
+        local netName = %q
+        if not data then
+            net.Start( netName , false)
+                net.WriteUInt( 0, 6 )
+            net.SendToServer()
+            return
+        end
 		local netSize = 32000
 		local numPackets = math.ceil(#data / netSize)
         for i = 1, numPackets do
             timer.Simple(i * 0.1, function()
                 local dataChunk = data:sub((i - 1) * netSize + 1, i * netSize)
-                net.Start( %q , false)
+                net.Start( netName , false)
                     net.WriteUInt( numPackets, 6 )
                     net.WriteUInt( i, 6 )
                     net.WriteUInt( #dataChunk, 16 )
@@ -28,50 +35,12 @@ local clientPayloadDefault = [[
 	end )
 ]]
 
-local clientPayloadSteam = [[
-    local _quality = %d
-    local oldJpegQuality = GetConVar("jpeg_quality"):GetInt() or _quality
-    RunConsoleCommand("jpeg_quality", _quality)
-    RunConsoleCommand("jpeg")
-    RunConsoleCommand("jpeg_quality", oldJpegQuality)
-    timer.Simple(1, function()
-        local files,_ = file.Find("screenshots/*.jpg", "GAME", "datedesc")
-        if #files == 0 then return end
-        local fileName = files[1]
-
-        if not string.StartWith(fileName, game.GetMap()) or os.time() - file.Time("screenshots/" .. fileName, "GAME") > 2 then
-            return
-        end
-
-        local data = file.Read("screenshots/" .. fileName, "GAME")
-        local netSize = 32000
-		local numPackets = math.ceil(#data / netSize)
-        for i = 1, numPackets do
-            timer.Simple(i * 0.1, function()
-                local dataChunk = data:sub((i - 1) * netSize + 1, i * netSize)
-                net.Start( %q , false)
-                    net.WriteUInt( numPackets, 6 )
-                    net.WriteUInt( i, 6 )
-                    net.WriteUInt( #dataChunk, 16 )
-                    net.WriteData( dataChunk, #dataChunk )
-                net.SendToServer()
-            end)
-        end
-    end)
-]]
-
 local function SendTgtRequest(tgt)
     if not IsValid(tgt) or not tgt:IsPlayer() then return end
-    local useSteam = Nova.getSetting("networking_screenshot_steam", false)
     local quality = qualities[Nova.getSetting("networking_screenshot_quality", "medium")] or qualities["medium"]
-    if useSteam then
-        local _payload = string.format(clientPayloadSteam, quality, Nova.netmessage("networking_screenshot"))
-        Nova.sendLua(tgt, _payload, true)
-    else
-        local rndString = Nova.generateString(6, 12)
-        local _payload = string.format(clientPayloadDefault, quality, rndString, rndString, Nova.netmessage("networking_screenshot"))
-        Nova.sendLua(tgt, _payload, true)
-    end
+    local rndString = Nova.generateString(6, 12)
+    local _payload = string.format(clientPayloadDefault, quality, rndString, rndString, Nova.netmessage("networking_screenshot"))
+    Nova.sendLua(tgt, _payload, true)
 end
 
 local function SaveScreenshot(data, tgt, manual, dbg)
@@ -189,6 +158,28 @@ hook.Add("nova_init_loaded", "networking_screenshot", function()
         if not screenshotProgress[plySteamID] then return end
 
         local totalPackages = net.ReadUInt(6)               if not totalPackages then return end
+        
+        // check if screenshot failed
+        if totalPackages == 0 then
+            local requestedByServer = screenshotProgress[plySteamID]["server"]
+            if requestedByServer then
+                Nova.log("e", string.format("Screenshot for %s failed: No packages received. This can happen if it was blocked by cheat or player is inside escape menu", Nova.playerName(ply)))
+            else
+                local client = screenshotProgress[plySteamID]["client"] or ""
+                client = Nova.fPlayerBySteamID(client)
+                if IsValid(client) and client:IsPlayer() then
+                    Nova.notify({
+                        ["severity"] = "e",
+                        ["module"] = "screenshot",
+                        ["message"] = Nova.lang("notify_networking_screenshot_failed_empty", Nova.playerName(ply)),
+                    }, client)
+                end
+            end
+            
+            screenshotProgress[plySteamID] = nil
+            return
+        end
+        
         local index = net.ReadUInt(6)                       if not index then return end
         local partitionSize = net.ReadUInt(16)              if not partitionSize then return end
         local partitionData = net.ReadData(partitionSize)   if not partitionData then return end

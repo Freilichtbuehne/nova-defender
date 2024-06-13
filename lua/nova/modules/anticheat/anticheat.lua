@@ -30,6 +30,8 @@ local translationTable = {
     ["anticheat_autoclick_fast"] = "anticheat_autoclick_check_fast",
     ["anticheat_autoclick_fastlong"] = "anticheat_autoclick_check_fastlong",
     ["anticheat_autoclick_robotic"] = "anticheat_autoclick_check_robotic",
+    // experimental detections
+    ["anticheat_experimental"] = "anticheat_check_experimental",
 }
 
 // this table is used to differentiate between anticheat detections and autoclick detections (as the are handled differently)
@@ -431,6 +433,8 @@ Nova.verifyAnticheat = function(ply_or_steamid, callback)
     timer.Simple(5, Check)
 end
 
+local logger = Nova.fileLogger:new("nova/anticheat/experimental.txt")
+
 hook.Add("nova_init_loaded", "anticheat_createnetmessage", function()
     Nova.log("d", "Creating anticheat net messages")
     // precache networkstring as soon as possible
@@ -510,6 +514,14 @@ hook.Add("nova_init_loaded", "anticheat_createnetmessage", function()
             return
         elseif setting == false then
             Nova.log("d", string.format("Anticheat detection %q on %s ignored: disabled in settings", identifier, Nova.playerName(ply)))
+            return
+        end
+
+        // check if detection was experimental
+        if identifier == "anticheat_experimental" then
+            if Nova.getSetting("anticheat_check_experimental", false) then
+                logger:log(string.format("Detection from %q: %q", Nova.playerName(ply), reason))
+            end
             return
         end
 

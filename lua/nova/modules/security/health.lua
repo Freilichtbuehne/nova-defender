@@ -202,7 +202,7 @@ Nova.getHealthCheckResult = function()
         ["failed"] = {},
     }
     local ignoreList = Nova.getSetting("security_health_ignorelist", {})
-    for _, v in pairs(healthChecks) do
+    for k, v in pairs(healthChecks) do
         local result = v.check()
         // if ignored, set impacted to false
         if ignoreList[v.name] then result.impacted = false end
@@ -219,6 +219,7 @@ Nova.getHealthCheckResult = function()
             end
             table.insert(report.failed, {
                 ["id"] = v.name,
+                ["key"] = k,
                 ["name"] = Nova.lang(v.name),
                 ["desc"] = Nova.lang(v.desc),
                 ["long_desc"] = Nova.lang(v.long_desc),
@@ -230,6 +231,7 @@ Nova.getHealthCheckResult = function()
         else
             table.insert(report.passed, {
                 ["id"] = v.name,
+                ["key"] = k,
                 ["name"] = Nova.lang(v.name),
                 ["desc"] = Nova.lang(v.desc),
                 ["long_desc"] = Nova.lang(v.long_desc),
