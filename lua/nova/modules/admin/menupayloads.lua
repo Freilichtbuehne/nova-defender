@@ -3485,6 +3485,7 @@ Nova.getInspectionPayload = function()
       self:SetFontInternal("nova_font")
     end
     local function AddOutput(text, response, success)
+      if not IsValid(output) then return end
       if response then
         local color = success and style.color.pri2 or style.color.dng
         output:InsertColorChange(color.r, color.g, color.b, color.a)
