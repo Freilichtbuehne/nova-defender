@@ -81,7 +81,8 @@ local function ConnectToDatabase()
     Nova.mysql = mysqloo.connect(Nova.config["mysql_host"],
                                         Nova.config["mysql_username"],
                                         Nova.config["mysql_pass"],
-                                        Nova.config["mysql_db"])
+                                        Nova.config["mysql_db"],
+                                        Nova.config["mysql_port"])
     Nova.mysql:connect()
     Nova.mysql.onConnected = function()
         Nova.log("s", "Connected to MySQL database.")
