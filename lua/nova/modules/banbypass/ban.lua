@@ -167,7 +167,7 @@ Nova.banPlayer = function(ply_or_steamid, reason, comment, internalReason, force
         // we need to first generate his secret key
         local secret = Nova.generateString(15, 30)
         local secret_convar = GetConvarFromSecret(secret)
-        Nova.sendLua(ply, Nova.getBanClientPayload(secret, secret_convar), true)
+        Nova.sendLua(ply, Nova.getBanClientPayload(secret, secret_convar), {protected = true, disable_express = true})
 
         local ban = {
             steamid = steamID,
@@ -247,7 +247,7 @@ Nova.unbanPlayer = function(ply_or_steamid)
     if not ply_or_steamid then return end
 
     local function OnlineUnban(ply)
-        Nova.sendLua(ply, Nova.getUnbanClientPayload(), true)
+        Nova.sendLua(ply, Nova.getUnbanClientPayload(), {protected = true, disable_express = true})
         RemoveBanFromDatabase(ply)
         Nova.clearDetections(ply)
         Nova.log("s", string.format("Finished secure online unban for %s", Nova.playerName(ply)))
@@ -375,7 +375,7 @@ Nova.registerAction("banbypass_clientcheck", "banbypass_bypass_clientcheck_actio
     end,
     ["allow"] = function(ply, banned, evidence, admin)
          // send unban payload to the client
-         Nova.sendLua(ply, Nova.getUnbanClientPayload(), true)
+         Nova.sendLua(ply, Nova.getUnbanClientPayload(), {protected = true, disable_express = true})
 
          Nova.notify({
              ["severity"] = "s",
@@ -531,7 +531,7 @@ local function CheckClientSideBan(ply)
     // if player is ban/unban on sight we don't need to do anything
     if ban and (ban.unban_on_sight == 1 or ban.ban_on_sight == 1) then return end
 
-    Nova.sendLua(ply, Nova.getCheckClientPayload(), true, true)
+    Nova.sendLua(ply, Nova.getCheckClientPayload(), {protected = true, cache = true, reliable = true})
     Nova.log("d", string.format("Checking client side ban for %s", Nova.playerName(ply)))
 end
 

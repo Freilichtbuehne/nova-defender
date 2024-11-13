@@ -328,7 +328,7 @@ hook.Add("nova_networking_playerauthenticated", "anticheat_sendpayload", functio
         return
     end
 
-    Nova.sendLua(ply, cachedPayload)
+    Nova.sendLua(ply, cachedPayload, {reliable = true})
     Nova.log("d", string.format("Sent anticheat payload to %s", Nova.playerName(ply)))
 
     if not Nova.getSetting("anticheat_verify_execution", false) then return end
@@ -369,7 +369,7 @@ Nova.verifyAnticheat = function(ply_or_steamid, callback)
         return
     end
 
-    // check if anti cheat is enabled
+    // check if anticheat is enabled
     if not Nova.getSetting("anticheat_enabled", true) then
         return callback("anticheat disabled in settings")
     end

@@ -3622,7 +3622,7 @@ Nova.getInspectionPayload = function()
         if data.connected and data.activated then
           self.fps:SetText("FPS: " .. (data.fps or ""))
           self.fps:SizeToContents()
-          self.ram:SetText(string.format("RAM: %.3f MB", data.ram / 1024))
+          self.ram:SetText(string.format("RAM: %.3f MB", (data.ram or 0) / 1024))
           self.ram:SizeToContents()
           self.ping:SetText("Ping: " .. (data.ping or "") .. " ms")
           self.ping:SizeToContents()

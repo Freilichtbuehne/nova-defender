@@ -215,14 +215,14 @@ local function OverwriteHTTP(active)
 
             if not enableWhitelist then
                 // we generate debug logs independent from the optional logging setting
-                Nova.log("d", string.format("HTTP (%s): Request to %q", url))
+                Nova.log("d", string.format("HTTP (%s): Request to %q", method, url))
                 Nova.overrides["HTTP"](params, ...)
                 return
             end
 
             // if domain is invalid and whitelist is enabled, we block the request
             if not domain then
-                Nova.log("e", string.format("HTTP (%s): Blocked request to invalid url %q", url))
+                Nova.log("e", string.format("HTTP (%s): Blocked request to invalid url %q", method, url))
                 if isfunction(failed) then failed("Blocked by Nova Defender URL filtering") end
                 return
             end

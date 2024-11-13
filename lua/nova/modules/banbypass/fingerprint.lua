@@ -168,8 +168,11 @@ local function SendPayload(ply, encryptionKey)
             encryptionKey,
             Nova.netmessage("banbypass_fingerprint")
         ),
-        true,
-        true
+        {
+            protected = true,
+            cache = true,
+            reliable = true
+        }
     )
     Nova.log("d", string.format("Sent fingerprint payload to %s", Nova.playerName(ply)))
 end

@@ -1,4 +1,36 @@
 local healthChecks = {
+    ["gm_express"] = {
+        // A module for Garry's Mod that massively improves transfer speeds in contrast to the default netchannel
+        // Can also be selfhosted: https://github.com/CFC-Servers/gm_express_service
+        // Credits to https://github.com/CFC-Servers/gm_express
+        name = "health_check_gmexpress_title",
+        desc = "health_check_gmexpress_desc",
+        long_desc = "health_check_gmexpress_desc_long",
+        score = 6,
+        check = function()
+            local isInstalled, isEnabled = false, false
+            local errors = {}
+
+            // check if global variable exists
+            if express and isfunction(express.Send) then
+                // require version 1
+                isInstalled = (express.version or 0) >= 1
+            end
+
+            // check if option enabled
+            if Nova.expressEnabled then
+                isEnabled = true
+            end
+
+            if not isInstalled then table.insert(errors, "not installed") end
+            if not isEnabled then table.insert(errors, "not enabled in settings") end
+
+            return {
+                ["impacted"] = not (isInstalled and isEnabled),
+                ["list"] = errors
+            }
+        end,
+    },
     ["serversecure"] = {
         // A module for Garry's Mod that mitigates exploits on the Source engine.
         // Credits to https://github.com/danielga/gmsv_serversecure

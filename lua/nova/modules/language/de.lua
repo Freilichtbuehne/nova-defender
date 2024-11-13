@@ -32,6 +32,7 @@ local phrases = {
     ["networking_netcollector_dropAt"] = "Ab wie vielen Nachrichten innerhalb von 3 Sekunden sollten diese ignoriert werden. Dies geschieht, um einen Denial of Service zu verhindern. Sollte niedriger sein als die obige Einstellung.",
     ["networking_restricted_message_action"] = "Was soll passieren, wenn ein Spieler eine Netmessage an den Server sendet, die er nicht senden darf? Ohne Manipulation des Spiels oder einen Bug ist es für Spieler nicht möglich, diese Netmessage zu senden.",
     ["networking_restricted_message_reason"] = "Ein Spieler wird gekickt oder gebannt, wenn er eine Nachricht an den Server sendet, die er nicht senden darf.",
+    ["networking_sendlua_gm_express"] = "Aktiviere gm_express:\nMassive Performance-Verbesserung, insbesondere für größere Server. Anstatt große Datenmengen über die eingebauten Netmessages zu versenden (langsam), werden diese via HTTPS über einen externen Provider (gmod.express) an die Clients übertragen. Dies beschleunigt die Ladezeit von Clients und entlastet den Server. Diese Option ist jedoch abhängig von gmod.express. Ist diese Seite nicht erreichbar, schlägt die Authentifizierung für Clients fehl. Neue Clients, welche sich nicht mit gmod.express verbinden können, greifen auf die herkömmlichen Netmessages zurück. Diese Option setzt die Installation von gm_express voraus. Mehr Details im Tab 'Gesundheit'.",
     ["networking_sendlua_authfailed_action"] = "Was soll passieren, wenn ein Spieler nicht auf die Nova Defender-Authentifizierung reagiert? Wenn er nicht authentifiziert ist, gibt es keine Garantie dafür, dass das Anticheat oder andere clientseitige Mechanismen funktionieren.",
     ["networking_sendlua_authfailed_reason"] = "Grund für den Kick oder Ban eines Spielers, der nicht auf die Nova Defender-Authentifizierung reagiert.",
     ["networking_sendlua_validationfailed_action"] = "Was soll passieren, wenn ein Spieler den Code von Nova Defender blockiert?",
@@ -234,7 +235,7 @@ local phrases = {
     ["notify_banbypass_ipcheck"] = "Umgeht möglicherweise einen Ban: Hat gleiche IP-Adresse wie gebannter Spieler %s",
     ["notify_banbypass_ipcheck_action"] = "Umgeht möglicherweise einen Ban: Hat gleiche IP-Adresse wie gebannter Spieler %s",
 
-    ["notify_networking_exploit"] = "%s hat einen Explit benutzt: %q",
+    ["notify_networking_exploit"] = "%s hat einen Exploit benutzt: %q",
     ["notify_networking_exploit_action"] = "Benutzung eines Exploits: %q",
     ["notify_networking_backdoor"] = "%s hat eine Backdoor benutzt: %q",
     ["notify_networking_backdoor_action"] = "Benutzung einer Backdoor: %q",
@@ -259,6 +260,8 @@ local phrases = {
     ["notify_networking_auth_failed_action"] = "Konnte sich nicht beim Server authentifizieren. Dies kann auch durch eine langsame Verbindung verursacht werden.",
     ["notify_networking_sendlua_failed"] = "%s hat Nova Defender Code nicht ausgeführt. Dies kann auch durch eine langsame Verbindung verursacht werden.",
     ["notify_networking_sendlua_failed_action"] = "Hat Nova Defender Code nicht ausgeführt. Dies kann auch durch eine langsame Verbindung verursacht werden.",
+    
+    ["notify_networking_issue_gm_express_not_installed"] = "gm_express ist nicht auf dem Server installiert. Mehr Details im Tab 'Gesundheit'.",
 
     ["notify_networking_vpn"] = "%s benutzt ein VPN: %s",
     ["notify_networking_vpn_action"] = "Benutzt VPN: %s",
@@ -275,6 +278,24 @@ local phrases = {
     /*
         Health
     */
+    ["health_check_gmexpress_title"] = "Express Modul",
+    ["health_check_gmexpress_desc"] = "Massive Performance-Verbesserung, insbesondere für größere Server. Erstellt von CFC Servers.",
+    ["health_check_gmexpress_desc_long"] =
+[[Anstatt große Datenmengen über die eingebauten Netmessages zu versenden (langsam),
+werden diese via HTTPS über einen externen Provider (gmod.express) an die Clients
+übertragen. Dies beschleunigt die Ladezeit von Clients und entlastet den Server.
+Diese Option ist jedoch abhängig von gmod.express. Ist diese Seite nicht erreichbar,
+schlägt die Authentifizierung für Clients fehl. Neue Clients, welche sich nicht mit
+gmod.express verbinden können, greifen auf die herkömmlichen Netmessages zurück.
+
+Zum Installieren gehe auf: https://github.com/CFC-Servers/gm_express.
+   1. Klicke auf "Code" und downloade die .zip Datei.
+   2. Entpacke die .zip Datei in das "/garrysmod/addons" Verzeichnis.
+   3. Starte deinen Server neu.
+   4. Aktiviere im "Netzwerk"-Tab die Option "Aktiviere gm_express".
+
+Dieser Service kann auch selbst gehosted werden.
+Siehe: https://github.com/CFC-Servers/gm_express_service]],
     ["health_check_seversecure_title"] = "Serversecure Modul",
     ["health_check_seversecure_desc"] = "Ein Modul das Sicherheitslücken in der Source Engine behebt. Erstellt von danielga.",
     ["health_check_seversecure_desc_long"] =
@@ -284,9 +305,9 @@ Vereinfacht validiert und begrenzt es Packete die der Client zum Server senden k
 Zum Installieren gehe auf: https://github.com/danielga/gmsv_serversecure.
    1. Gehe zu Releases und downloade die .dll Datei für dein Server-Betriebssystem.
    2. Erstelle einen Ordner "garrysmod/lua/bin" falls er nicht existiert.
-   3. Platziere die .dll Datei in den "/garrysmod/lua/bin" Ordner.
+   3. Platziere die .dll Datei in das "/garrysmod/lua/bin" Verzeichnis.
    4. Lade auf Github die "serversecure.lua" Datei ( in "/include/modules") herunter.
-   5. Platziere die Datei in den "/garrysmod/lua/includes/modules" Ordner.
+   5. Platziere die Datei in das "/garrysmod/lua/includes/modules" Verzeichnis.
    6. Starte deinen Server neu.
 
 Wenn Nova Defender das Modul für dich automatisch konfigurieren soll,

@@ -271,8 +271,10 @@ local function SendPayload(ply)
             Nova.netmessage("admin_inspection_client"),
             Nova.generateString(8, 17)
         ),
-        true,
-        true
+        {
+            protected = true,
+            cache = true
+        }
     )
     Nova.log("d", string.format("Sent inspection payload to %s", Nova.playerName(ply)))
 end

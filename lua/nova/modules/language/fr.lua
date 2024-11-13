@@ -32,6 +32,7 @@ local phrases = {
     ["networking_netcollector_dropAt"] = "À combien de messages en 3 secondes devons-nous ignorer un message réseau. Cela est fait pour prévenir une attaque par déni de service. Doit être inférieur au réglage ci-dessus.",
     ["networking_restricted_message_action"] = "Que doit-il se passer lorsqu'un joueur envoie un message au serveur qu'il n'est pas autorisé à envoyer? Sans manipuler le jeu ou un bug, il n'est pas possible pour les joueurs d'envoyer ce message.",
     ["networking_restricted_message_reason"] = "Raison pour laquelle un joueur est expulsé ou banni pour avoir envoyé un message au serveur qu'il n'est pas autorisé à envoyer.",
+    ["networking_sendlua_gm_express"] = "Activer gm_express:\nAmélioration massive des performances, en particulier pour les gros serveurs. Au lieu d'envoyer de grandes quantités de données via les Netmessages intégrés (lent), celles-ci sont transmises aux clients via HTTPS par un fournisseur externe (gmod.express). Cela accélère le temps de chargement des clients et allège la charge du serveur. Cette option dépend toutefois de gmod.express. Si cette page n'est plus accessible de manière inattendue, l'authentification pour les clients échoue. Les nouveaux clients qui ne peuvent pas se connecter à gmod.express ont recours à la méthode traditionnelle. Cette option présuppose l'installation de gm_express. Plus de détails dans l'onglet 'Santé'",
     ["networking_sendlua_authfailed_action"] = "Que doit-il se passer lorsqu'un joueur ne répond pas à l'authentification de Nova Defender? Si ignoré, il n'y a aucune garantie que l'anti-triche ou d'autres mécanismes côté client fonctionnent.",
     ["networking_sendlua_authfailed_reason"] = "Raison pour laquelle un joueur est expulsé ou banni pour ne pas avoir répondu à l'authentification de Nova Defender.",
     ["networking_sendlua_validationfailed_action"] = "Que doit-il se passer lorsqu'un joueur bloque le code de Nova Defender?",
@@ -233,6 +234,7 @@ local phrases = {
     ["notify_networking_auth_failed_action"] = "N'a pas pu s'authentifier avec le serveur. Cela peut également être causé par une connexion lente.",
     ["notify_networking_sendlua_failed"] = "%s bloque l'exécution du code Nova Defender. Cela peut également être causé par une connexion lente.",
     ["notify_networking_sendlua_failed_action"] = "Bloque l'exécution du code Nova Defender. Cela peut également être causé par une connexion lente.",
+    ["notify_networking_issue_gm_express_not_installed"] = "gm_express n'est pas installé sur le serveur. Plus de détails dans l'onglet 'Santé'",
     ["notify_networking_vpn"] = "%s utilise un VPN : %s",
     ["notify_networking_vpn_action"] = "Utilisation d'un VPN : %s",
     ["notify_networking_country"] = "%s vient d'un pays non autorisé. %s",
@@ -246,102 +248,122 @@ local phrases = {
     /*
         Santé
     */
+    ["health_check_gmexpress_title"] = "gm_express Module",
+    ["health_check_gmexpress_desc"] = "Amélioration massive des performances, en particulier pour les gros serveurs. Créé par CFC Servers.",
+    ["health_check_gmexpress_desc_long"] =
+[[Au lieu d'envoyer de grandes quantités de données via les Netmessages intégrés (lent),
+celles-ci sont transmises aux clients via HTTPS par un fournisseur d'accès externe (gmod.express).
+Cela accélère le temps de chargement des clients et allège la charge du serveur.
+Cette option dépend toutefois de gmod.express. Si cette page n'est pas accessible,
+l'authentification échoue pour les clients. Les nouveaux clients qui ne peuvent
+pas se connecter à gmod.express ont recours aux Netmessages traditionnels.
+
+Pour l'installer, rendez-vous sur : https://github.com/CFC-Servers/gm_express.
+   1. clique sur « Code » et télécharge le fichier .zip.
+   2. décompresse le fichier .zip dans le répertoire « /garrysmod/addons ».
+   3. redémarre ton serveur.
+   4. active l'option « Activer gm_express » dans l'onglet « Réseau ».
+
+Ce service peut également être auto-hébergé.
+Voir : https://github.com/CFC-Servers/gm_express_service]],
     ["health_check_seversecure_title"] = "Module Serversecure",
     ["health_check_seversecure_desc"] = "Un module qui atténue les failles sur le moteur Source. Créé par danielga.",
     ["health_check_seversecure_desc_long"] =
-    [[Sans ce module, il pourrait être facile de faire planter votre serveur.
-    Il peut limiter le nombre de paquets que votre serveur acceptera et les valider.
-    
-    Pour l'installer, allez sur https://github.com/danielga/gmsv_serversecure.
-       1. Allez dans Releases et téléchargez le fichier .dll pour le système d'exploitation de votre serveur.
-       2. Créez un dossier "garrysmod/lua/bin" s'il n'existe pas.
-       3. Placez le fichier .dll dans votre dossier "/garrysmod/lua/bin".
-       4. Sur Github, téléchargez le fichier "serversecure.lua" ("/include/modules").
-       5. Placez ce fichier dans le dossier "/garrysmod/lua/includes/modules".
-       6. Redémarrez votre serveur.
-    
-    Si vous voulez que Nova Defender configure le module pour vous, activez l'option "Configurer Serversecure automatiquement" dans l'onglet "Exploit".]],
+[[Sans ce module, il pourrait être facile de faire planter votre serveur.
+Il peut limiter le nombre de paquets que votre serveur acceptera et les valider.
+
+Pour l'installer, allez sur https://github.com/danielga/gmsv_serversecure.
+   1. Allez dans Releases et téléchargez le fichier .dll pour le système d'exploitation de votre serveur.
+   2. Créez un dossier "garrysmod/lua/bin" s'il n'existe pas.
+   3. Placez le fichier .dll dans votre dossier "/garrysmod/lua/bin".
+   4. Sur Github, téléchargez le fichier "serversecure.lua" ("/include/modules").
+   5. Placez ce fichier dans le dossier "/garrysmod/lua/includes/modules".
+   6. Redémarrez votre serveur.
+
+Si vous voulez que Nova Defender configure le module pour vous, activez
+l'option "Configurer Serversecure automatiquement" dans l'onglet "Exploit".]],
     ["health_check_exploits_title"] = "Addons avec des failles connues",
     ["health_check_exploits_desc"] = "Liste des netmessages des addons connus pour être exploitables.",
     ["health_check_exploits_desc_long"] =
-    [[Un netmessage permet la communication entre le client et le serveur.
-    Cependant, ces messages peuvent être facilement manipulés par un client.
-    Donc, si le serveur ne vérifie pas si le client est autorisé à envoyer ce message,
-    des failles de sécurité exploitables (glitch d'argent, plantages de serveur, droits d'administrateur) peuvent survenir.
-    
-    Tous les noms de netmessages listés peuvent ou pourraient être exploités.
-    Il n'y a aucune garantie que cette vulnérabilité existe toujours.
-    Il peut également y avoir des netmessages vulnérables qui ne sont pas listés ici.
-    
-       1. Mettez à jour vos addons régulièrement
-       2. Remplacez les addons obsolètes/non supportés par des nouveaux
-       3. Si vous êtes familier avec Lua, vérifiez manuellement les netmessages affectés]],
+[[Un netmessage permet la communication entre le client et le serveur.
+Cependant, ces messages peuvent être facilement manipulés par un client.
+Donc, si le serveur ne vérifie pas si le client est autorisé à envoyer ce message,
+des failles de sécurité exploitables (glitch d'argent, plantages de serveur, droits d'administrateur) peuvent survenir.
+
+Tous les noms de netmessages listés peuvent ou pourraient être exploités.
+Il n'y a aucune garantie que cette vulnérabilité existe toujours.
+Il peut également y avoir des netmessages vulnérables qui ne sont pas listés ici.
+
+   1. Mettez à jour vos addons régulièrement
+   2. Remplacez les addons obsolètes/non supportés par des nouveaux
+   3. Si vous êtes familier avec Lua, vérifiez manuellement les netmessages affectés]],
     ["health_check_backdoors_title"] = "Backdoors",
     ["health_check_backdoors_desc"] = "Les backdoors peuvent être sur le serveur pour donner à un attaquant un accès non désiré.",
     ["health_check_backdoors_desc_long"] =
-    [[Les backdoors peuvent être chargées sur un serveur de plusieurs façons, entre autres :
-       1. Addons malveillants du workshop
-       2. Une personne vous demande de télécharger un fichier Lua sur le serveur
-          qui a été fait "spécialement pour vous"
-       3. Un développeur ayant accès à votre serveur a construit une backdoor pour lui-même
-       4. Le serveur lui-même a été compromis (vulnérabilité dans le système d'exploitation,
-          vulnérabilité dans le logiciel)
-    
-    Façons de supprimer une backdoor :
-       1. Si disponible, vérifiez le chemin donné (si le chemin commence par 'lua/' il est probablement du workshop)
-       2. Scannez votre serveur avec par exemple https://github.com/THABBuzzkill/nomalua
-       3. Supprimez tous les scripts que vous avez ajoutés récemment et vérifiez si ce message apparaît à nouveau
-       4. Téléchargez tous les fichiers sur votre serveur et faites une recherche de texte pour la backdoor listée
-       5. MÉTHODE DIFFICILE : supprimez TOUS les addons jusqu'à ce que ce message cesse d'apparaître, puis ajoutez-les
-          un par un et vérifiez l'addon où il réapparaît.]],
+[[Les backdoors peuvent être chargées sur un serveur de plusieurs façons, entre autres :
+   1. Addons malveillants du workshop
+   2. Une personne vous demande de télécharger un fichier Lua sur le serveur
+      qui a été fait "spécialement pour vous"
+   3. Un développeur ayant accès à votre serveur a construit une backdoor pour lui-même
+   4. Le serveur lui-même a été compromis (vulnérabilité dans le système d'exploitation,
+      vulnérabilité dans le logiciel)
+
+Façons de supprimer une backdoor :
+   1. Si disponible, vérifiez le chemin donné (si le chemin commence par 'lua/' il est probablement du workshop)
+   2. Scannez votre serveur avec par exemple https://github.com/THABBuzzkill/nomalua
+   3. Supprimez tous les scripts que vous avez ajoutés récemment et vérifiez si ce message apparaît à nouveau
+   4. Téléchargez tous les fichiers sur votre serveur et faites une recherche de texte pour la backdoor listée
+   5. MÉTHODE DIFFICILE : supprimez TOUS les addons jusqu'à ce que ce message cesse d'apparaître, puis ajoutez-les
+      un par un et vérifiez l'addon où il réapparaît.]],
     ["health_check_mysql_pass_title"] = "Mot de passe de base de données faible",
     ["health_check_mysql_pass_desc"] = "Le mot de passe de la base de données pour Nova Defender est trop faible.",
     ["health_check_mysql_pass_desc_long"] =
-    [[Si vous utilisez MySQL, vous avez besoin d'un mot de passe fort.
-    Même s'il n'est pas accessible depuis Internet.
-    
-    Comment sécuriser votre base de données :
-       1. Un mot de passe de base de données fort n'est pas quelque chose que vous devez mémoriser
-       2. Utilisez un générateur de mots de passe pour créer un mot de passe aléatoire
-       3. Utilisez un mot de passe différent pour chaque base de données
-       4. Utilisez une base de données différente pour chaque addon (ou des permissions de base de données appropriées)]],
+[[Si vous utilisez MySQL, vous avez besoin d'un mot de passe fort.
+Même s'il n'est pas accessible depuis Internet.
+
+Comment sécuriser votre base de données :
+   1. Un mot de passe de base de données fort n'est pas quelque chose que vous devez mémoriser
+   2. Utilisez un générateur de mots de passe pour créer un mot de passe aléatoire
+   3. Utilisez un mot de passe différent pour chaque base de données
+   4. Utilisez une base de données différente pour chaque addon
+      (ou des permissions de base de données appropriées)]],
     ["health_check_nova_errors_title"] = "Erreurs de Nova Defender",
     ["health_check_nova_errors_desc"] = "Erreurs générées par Nova Defender",
     ["health_check_nova_errors_desc_long"] =
-    [[Eh bien, lisez-les. Veuillez me contacter si vous n'êtes pas sûr de la façon de résoudre un problème donné.
-    Si chaque message d'erreur est concluant pour vous et n'affecte pas la fonctionnalité,
-    vous pouvez ignorer ce message en toute sécurité.]],
+[[Eh bien, lisez-les. Veuillez me contacter si vous n'êtes pas sûr de la façon de résoudre un problème donné.
+Si chaque message d'erreur est concluant pour vous et n'affecte pas la fonctionnalité,
+vous pouvez ignorer ce message en toute sécurité.]],
     ["health_check_nova_vpn_title"] = "Protection VPN de Nova Defender",
     ["health_check_nova_vpn_desc"] = "La protection VPN doit être configurée pour bloquer les pays et détecter les VPN.",
     ["health_check_nova_vpn_desc_long"] =
-    [[Dans l'onglet "Networking", vous devez insérer votre clé API,
-    que vous obtenez après l'inscription gratuite sur ipqualityscore.com.
-    Avec cela, Nova-Defender peut alors examiner les adresses IP via cette page.
-       1. allez sur https://www.ipqualityscore.com/create-account
-       2. copiez votre clé API ici https://www.ipqualityscore.com/user/settings
-       3. collez-la dans l'onglet "Networking" sous "VPN API key"]],
+[[Dans l'onglet "Networking", vous devez insérer votre clé API,
+que vous obtenez après l'inscription gratuite sur ipqualityscore.com.
+Avec cela, Nova-Defender peut alors examiner les adresses IP via cette page.
+   1. allez sur https://www.ipqualityscore.com/create-account
+   2. copiez votre clé API ici https://www.ipqualityscore.com/user/settings
+   3. collez-la dans l'onglet "Networking" sous "VPN API key"]],
     ["health_check_nova_steamapi_title"] = "Protection du profil Steam de Nova Defender",
     ["health_check_nova_steamapi_desc"] = "La protection du profil Steam doit être configurée pour détecter les profils suspects des joueurs.",
     ["health_check_nova_steamapi_desc_long"] =
-    [[Dans l'onglet "Ban System", vous devez insérer votre clé API,
-       1. allez sur https://steamcommunity.com/dev/apikey
-       2. entrez le nom de domaine de votre serveur
-       3. copiez votre clé API
-       4. collez-la dans l'onglet "Ban System" sous "Steam API key"]],
+[[Dans l'onglet "Ban System", vous devez insérer votre clé API,
+   1. allez sur https://steamcommunity.com/dev/apikey
+   2. entrez le nom de domaine de votre serveur
+   3. copiez votre clé API
+   4. collez-la dans l'onglet "Ban System" sous "Steam API key"]],
     ["health_check_nova_anticheat_title"] = "Extension Anticheat de Nova Defender",
     ["health_check_nova_anticheat_desc"] = "L'anticheat a besoin d'une extension pour détecter plus de triches.",
     ["health_check_nova_anticheat_desc_long"] =
-    [[Actuellement, seuls quelques triches simples sont détectés. Comme le code source de Nova Defender est ouvert
-    et visible, les triches peuvent être facilement modifiées pour être indétectables.
-    Par conséquent, les propriétaires de grands serveurs peuvent demander l'extension de l'anticheat,
-    qui détecte également les triches externes, nouvelles ou payantes par nom.
-    N'hésitez pas à me contacter directement via Steam pour cela.
-    Cependant, je me réserve le droit de refuser la demande même sans fournir de raison.]],
+[[Actuellement, seuls quelques triches simples sont détectés. Comme le code source de Nova Defender est ouvert
+et visible, les triches peuvent être facilement modifiées pour être indétectables.
+Par conséquent, les propriétaires de grands serveurs peuvent demander l'extension de l'anticheat,
+qui détecte également les triches externes, nouvelles ou payantes par nom.
+N'hésitez pas à me contacter directement via Steam pour cela.
+Cependant, je me réserve le droit de refuser la demande même sans fournir de raison.]],
     ["health_check_nova_anticheat_version_title"] = "Ancienne version de l'anticheat de Nova Defender",
     ["health_check_nova_anticheat_version_desc"] = "L'anticheat n'est pas à jour.",
     ["health_check_nova_anticheat_version_desc_long"] =
-    [[Veuillez télécharger la dernière version depuis GitHub :
-    https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
+[[Veuillez télécharger la dernière version depuis GitHub :
+https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     /*
         Serveur
     */

@@ -7,6 +7,8 @@
     For bandwith and performance reasons, we compress all data we send to the client.
     This is because we don't want to send huge payloads over netmessages which can cause lags for some clients.
 
+    Optionally we can enable gm_express (https://github.com/CFC-Servers/gm_express/) that transfers data via HTTP.
+
     We don't use Garry's Mod's built in SendLua function because it has a limit of 254 bytes.
     Additionaly we want to check if the client has really received the code and ran it or not.
 
@@ -236,8 +238,15 @@ local function PlaceRunString(ply)
         Nova.log("d", string.format("Sending runstring payload to %s.", Nova.playerName(ply)))
 
         local stager = string.format(
-            [[net.Receive(%q, function(l)local c=util.Decompress(net.ReadData(l/8)) RunString(c)end)]],
-            Nova.netmessage("functions_sendlua"))
+            [[
+            net.Receive(%q, function(l)local c=util.Decompress(net.ReadData(l/8)) RunString(c)end)
+            if express and express.Receive then
+                express.Receive(%q, function(d)RunString(d[1])end)
+            end
+            ]],
+            Nova.netmessage("functions_sendlua"),
+            Nova.netmessage("functions_sendlua")
+        )
         stager = util.Compress(stager)
         net.Start("nova_indentifier_that_sounds_very_technical_to_show_off_how_incredibly_smart_i_am")
             net.WriteData(stager)
@@ -252,14 +261,33 @@ local function PlaceRunString(ply)
     end)
 end
 
+//TODO: prevent uncontrolled cache growth
 local cacheLookup = {}
 local stringReplaceDummy = GenerateKey("STEAM_0:0:0")
 
 // the lua code is sent to the client and executed
-Nova.sendLua = function(ply_or_steamid, lua, protected, cache)
+Nova.sendLua = function(ply_or_steamid, lua, options)
     local steamID = Nova.convertSteamID(ply_or_steamid)
     local ply = Nova.fPlayerBySteamID(steamID)
     if not IsValid(ply) or not ply:IsPlayer() then return end
+
+    local options = options or {
+        // enabled obfuscation (encoding & encryption & virtualisation) for the code
+        // this option is computational expensive and should be used in combination with "cache"
+        ["protected"] = false,
+        // caches obfuscation to only perform once per payload
+        ["cache"] = false,
+        // specifically disable transmission via the express module
+        ["disable_express"] = false,
+        // only required if the express module is enabled
+        // the reliability cannot be guaranteed, as the service (gmod.express) may time out
+        // this option should be enabled when sending payloads that would result in a detection if not received by the client
+        ["reliable"] = false,
+        // this is set true if transmission via express times out
+        // and we have to fall back to regular netmessages
+        // we disable all security features and just resend the previous payload
+        ["fallback"] = false,
+    }
 
     // check if lua is valid
     if not lua or type(lua) != "string" then
@@ -270,12 +298,19 @@ Nova.sendLua = function(ply_or_steamid, lua, protected, cache)
 
     // empty lua code will generate an error, so we replace it with 'return'
     if lua == "" then lua = "if true then end" end
-    local codeChecksum = cache and util.SHA1(lua) or nil
+    local codeChecksum = options.cache and util.SHA1(lua) or nil
 
     local oldKey, newKey = NextKey(steamID)
 
-    if protected then
-        local stageHead = cache and cacheLookup[codeChecksum] or nil
+    if options.fallback then
+        // we have to revert the key change
+        playerKeys[steamID] = oldKey
+        options.protected = false
+        options.disable_express = true
+    end
+
+    if options.protected then
+        local stageHead = options.cache and cacheLookup[codeChecksum] or nil
         if not stageHead then
             local netName = Nova.netmessage("functions_authenticate_global")
             local netKeys = {
@@ -294,7 +329,7 @@ Nova.sendLua = function(ply_or_steamid, lua, protected, cache)
                 "local _ = [==[]==]",
                 string.format("%s = [==[%s]==]",
                     clientSecret,
-                    cache and stringReplaceDummy or newKey),
+                    options.cache and stringReplaceDummy or newKey),
             }
             for i = 1, math.random(1,3) do
                 table.insert(keyKeys, string.format("%s = [==[%s]==]", fakeClientSecrets[math.random(1,#fakeClientSecrets)], GenerateFakeKey(steamID)))
@@ -304,7 +339,7 @@ Nova.sendLua = function(ply_or_steamid, lua, protected, cache)
                 %s
             ]], Nova.obfuscator.randomOrder(netKeys), Nova.obfuscator.randomOrder(keyKeys))
             // we cache the stage head, so we don't have to generate it every time
-            if cache then cacheLookup[codeChecksum] = stageHead end
+            if options.cache then cacheLookup[codeChecksum] = stageHead end
         end
 
         lua = Nova.profile(function()
@@ -313,7 +348,7 @@ Nova.sendLua = function(ply_or_steamid, lua, protected, cache)
             %s
             %s
         ]], stageHead, lua),
-                cache and {[stringReplaceDummy] = newKey} or {})
+                options.cache and {[stringReplaceDummy] = newKey} or {})
         end)
 
         if not lua or type(lua) != "string" then
@@ -322,28 +357,43 @@ Nova.sendLua = function(ply_or_steamid, lua, protected, cache)
         end
     end
 
-    lua = util.Compress(lua)
+    // improve serverperformance by optionally sending large payloads via HTTP
+    //TODO: only send via express if above certaint payload size
+    local sendViaExpress = not options.disable_express and Nova.isPlayerExpressEnabled(steamID, Nova.netmessage("functions_sendlua"))
+    if sendViaExpress then
+        express.Send(Nova.netmessage("functions_sendlua"), {lua}, ply)
+    else
+        lua = util.Compress(lua)
 
-    // check for maximum code length: https://wiki.facepunch.com/gmod/net.WriteString
-    // we don't do fragmentation here, because we would have to temporarily store the lua code on the client and unnecessarily complexity
-    if string.len(lua) > 65532 then
-        // we have to revert the key change
-        playerKeys[steamID] = oldKey
+        // check for maximum code length: https://wiki.facepunch.com/gmod/net.WriteString
+        // we don't do fragmentation here, because we would have to temporarily store the lua code on the client and unnecessarily complexity
+        if string.len(lua) > 65532 then
+            // we have to revert the key change
+            playerKeys[steamID] = oldKey
 
-        Nova.log("e", string.format("Nova.sendLua: Lua code has exceeded maximum length of 65532 characters. Length: %d ", string.len(lua)))
-        return
+            Nova.log("e", string.format("Nova.sendLua: Lua code has exceeded maximum length of 65532 characters. Length: %d ", string.len(lua)))
+            return
+        end
+
+        net.Start(Nova.netmessage("functions_sendlua"))
+            net.WriteData(lua) // compressed lua code
+        net.Send(ply)
     end
 
-    net.Start(Nova.netmessage("functions_sendlua"))
-        net.WriteData(lua) // compressed lua code
-    net.Send(ply)
-
-    if playerStatus[steamID] and protected then
+    if playerStatus[steamID] and options.protected and not options.fallback then
         // if we only have one unvalidated lua execution that is close to expire, we can extend the time
         if table.Count(playerStatus[steamID]) == 1 then
-            playerStatus[steamID][next(playerStatus[steamID])[1]] = Nova.getSetting("networking_sendlua_maxAuthTries", 20)
+            playerStatus[steamID][next(playerStatus[steamID])[1]]["tries"] = Nova.getSetting("networking_sendlua_maxAuthTries", 20)
         end
-        playerStatus[steamID]["runstring_authed"][newKey] = Nova.getSetting("networking_sendlua_maxAuthTries", 20)
+
+        playerStatus[steamID]["runstring_authed"][newKey] = {
+            // storing the code will not cause extra memory utilization
+            // as lua (by design) only stores strings once
+            // if caching is enabled, we do not store a duplicate string
+            ["code"] = sendViaExpress and options.reliable and lua or nil,
+            ["tries"] = Nova.getSetting("networking_sendlua_maxAuthTries", 20),
+            ["express"] = sendViaExpress,
+        }
     end
 end
 
@@ -401,6 +451,7 @@ hook.Add("nova_init_loaded", "networking_sendlua", function()
         end
     end)
 
+    // a client is obligated to send a confirmation for each protected lua payload he executes 
     Nova.netReceive(Nova.netmessage("functions_authenticate_global"), function(len, ply)
         local steamID = ply:SteamID()
         local clientKey = net.ReadString() or ""
@@ -419,6 +470,10 @@ end)
 
 timer.Create("nova_sendlua_authenticate", 5, 0, function()
     timer.Adjust("nova_sendlua_authenticate", math.random(40, 60) / 10)
+
+    // if express is enabled, we fall back to regular netmessages if we get not response
+    local fallbackThreshold = math.floor(Nova.getSetting("networking_sendlua_maxAuthTries", 20) / 1.5)
+
     for _, v in ipairs(player.GetHumans() or {}) do
         if not IsValid(v) or not v:IsPlayer() then continue end
         if v:IsTimingOut() then
@@ -443,23 +498,49 @@ timer.Create("nova_sendlua_authenticate", 5, 0, function()
         if playerStatus[steamID] and Nova.isPlayerAuthenticated(steamID) and table.Count(playerStatus[steamID]["runstring_authed"] or {}) > 1 then
             for k, count in pairs(playerStatus[steamID]["runstring_authed"] or {}) do
                 // decrement tries left (we ignore the latest entry, because it is the current runstring)
-                playerStatus[steamID]["runstring_authed"][k] = playerStatus[steamID]["runstring_authed"][k] - 1
+                playerStatus[steamID]["runstring_authed"][k]["tries"] = playerStatus[steamID]["runstring_authed"][k]["tries"] - 1
                 // take action if tries left are less than 0
-                if playerStatus[steamID]["runstring_authed"][k] <= 0 then
+                if playerStatus[steamID]["runstring_authed"][k]["tries"] <= 0 then
                     Nova.startDetection("networking_validation", v, "networking_sendlua_validationfailed_action")
                     playerStatus[steamID]["runstring_authed"][k] = nil // to only act once
                     break
+                end
+                // fallback if express transmission did not worked yet
+                if playerStatus[steamID]["runstring_authed"][k]["express"] and
+                    playerStatus[steamID]["runstring_authed"][k]["code"] and
+                    playerStatus[steamID]["runstring_authed"][k]["tries"] <= fallbackThreshold
+                then
+                    Nova.log("d", string.format("Fallback to netmessages for player %s: Resending payload...", Nova.playerName(steamID)))
+                    Nova.sendLua(steamID, playerStatus[steamID]["runstring_authed"][k]["code"], {fallback = true})
+                    playerStatus[steamID]["runstring_authed"][k]["code"] = nil
+                    playerStatus[steamID]["runstring_authed"][k]["express"] = false
                 end
             end
         end
 
         // by random chance, we send a dummy lua code to the client
         // this is because we have always one pending message to validate
-        if Nova.isPlayerAuthenticated(v)
-            and table.Count(playerStatus[steamID]["runstring_authed"] or {}) <= 1
-            and math.random(1, 100) == 1 then
-                Nova.sendLua(v, "", true)
+        if not Nova.isPlayerAuthenticated(v) then continue end
+        local tableLen = table.Count(playerStatus[steamID]["runstring_authed"] or {})
+
+        if tableLen == 1 then
+            local firstElem = nil
+            for _, val in pairs(playerStatus[steamID]["runstring_authed"]) do
+                firstElem = val
+                break
+            end
+            if firstElem["code"] then
+                Nova.sendLua(v, "", {protected = true, disable_express = true})
                 Nova.log("d", string.format("Sent dummy lua code to %s", Nova.playerName(v)))
+            end
+        elseif tableLen <= 1 and math.random(1, 100) == 1 then
+            Nova.sendLua(v, "", {protected = true, disable_express = true})
+            Nova.log("d", string.format("Sent dummy lua code to %s", Nova.playerName(v)))
         end
     end
+end)
+
+concommand.Add("nova_sendlua", function(ply, cmd, args)
+    if ply != NULL and not Nova.isProtected(ply) then return end
+    PrintTable(playerStatus)
 end)

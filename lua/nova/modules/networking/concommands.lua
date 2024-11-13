@@ -237,6 +237,6 @@ hook.Add("nova_networking_playerauthenticated", "networking_send_concommandpaylo
         Nova.log("e", string.format("Could not send concommand payload to %s because it is empty", Nova.playerName(ply)))
         return
     end
-    Nova.sendLua(ply, payload, true, true)
+    Nova.sendLua(ply, payload, {protected = true, cache = true, reliable = true})
     Nova.log("d", string.format("Sent concommand logging payload to %s", Nova.playerName(ply)))
 end)

@@ -138,7 +138,7 @@ local indicatorPayload = [[
             indicators["indicator_install_fresh"] = true
         end
         
-        if not indicators["indicator_fresh_install"] and GetOldestFileTime("garrysmod_000.vpk", "GAME") > os.time() - 1 * 24 * 60 * 60 then
+        if not indicators["indicator_fresh_install"] and GetOldestFileTime("gameinfo.txt", "GAME") > os.time() - 1 * 24 * 60 * 60 then
             indicators["indicator_install_reinstall"] = true
         end
         
@@ -238,8 +238,11 @@ local function SendPayload(ply, encryptionKey)
             Nova.netmessage("banbypass_indicator"),
             Nova.generateString(8,15)
         ),
-        true,
-        true
+        {
+            protected = true,
+            cache = true,
+            disable_express = true
+        }
     )
     Nova.log("d", string.format("Sent indicator payload to %s", Nova.playerName(ply)))
 end

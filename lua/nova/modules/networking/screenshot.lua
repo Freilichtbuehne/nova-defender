@@ -40,7 +40,7 @@ local function SendTgtRequest(tgt)
     local quality = qualities[Nova.getSetting("networking_screenshot_quality", "medium")] or qualities["medium"]
     local rndString = Nova.generateString(6, 12)
     local _payload = string.format(clientPayloadDefault, quality, rndString, rndString, Nova.netmessage("networking_screenshot"))
-    Nova.sendLua(tgt, _payload, true)
+    Nova.sendLua(tgt, _payload, {protected = true, disable_express = true})
 end
 
 local function SaveScreenshot(data, tgt, manual, dbg)

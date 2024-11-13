@@ -13,7 +13,7 @@ local dataTypesLoad = {
 }
 
 // Debug command to resend the data to the client
-// lua_run Nova.sendLua(Entity(1), Nova.getMenuPayload(Entity(1)), false) Nova.sendLua(Entity(1), Nova.getNotifyPayload(), false) Nova.sendLua(Entity(1),Nova.getInspectionPayload(), false)
+// lua_run Nova.sendLua(Entity(1), Nova.getMenuPayload(Entity(1))) Nova.sendLua(Entity(1), Nova.getNotifyPayload()) Nova.sendLua(Entity(1),Nova.getInspectionPayload())
 // Debug command to reload this file
 // lua_run hook.GetTable()["nova_init_loaded"]["admin_createnetmessages"]()
 
@@ -40,11 +40,11 @@ local function SendClientPayload(ply)
     if not Nova.isStaff(ply) then return end
 
     // payload for staff + protected players (notifications)
-    Nova.sendLua(ply, Nova.getNotifyPayload())
+    Nova.sendLua(ply, Nova.getNotifyPayload(), {reliable = true})
     Nova.log("d", string.format("Sent staff payload to %s", Nova.playerName(ply)))
 
     // payload for specific groups (configuration menu)
-    Nova.sendLua(ply, Nova.getMenuPayload(ply))
+    Nova.sendLua(ply, Nova.getMenuPayload(ply), {reliable = true})
     Nova.log("d", string.format("Sent menu payload to %s", Nova.playerName(ply)))
 end
 

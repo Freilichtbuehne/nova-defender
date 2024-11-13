@@ -38,7 +38,6 @@ Nova.setSetting("menu_notify_showstaff", true, true, true)
 Nova.setSetting("menu_action_timeopen", 80, true, true)
 Nova.setSetting("menu_action_showstaff", false, true, true)
 
-
 /*===============================
 	Netcollector
 ===============================*/
@@ -70,6 +69,8 @@ Nova.setSetting("networking_fakenets_exploits_block", false, true, true, nil, tr
 /*===============================
 	Sendlua
 ===============================*/
+
+Nova.setSetting("networking_sendlua_gm_express", false, true, true)
 
 Nova.setSetting("networking_sendlua_authfailed_action", "ask", true, true, {"kick", "ban", "notify", "ask", "nothing"})
 Nova.setSetting("networking_sendlua_authfailed_reason", "Authentication Error", true, true, nil, true)
@@ -113,6 +114,7 @@ Nova.setSetting("networking_http_whitelistdomains", {
 	"vcmod.org",
 	"m4dsolutions.com",
 	"api.gmod-integration.com",
+	"gmod.express",
 }, true, true, nil, true)
 
 Nova.setSetting("networking_fetch_overwrite", false, true, true)

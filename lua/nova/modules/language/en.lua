@@ -32,6 +32,7 @@ local phrases = {
     ["networking_netcollector_dropAt"] = "At how many messages within 3 seconds should we ignore a netmessage. This is done to prevent a denial of service. Should be lower then above setting.",
     ["networking_restricted_message_action"] = "What should happen when a player sents a message to the server which he is not allowed to? Without manipulating the game or a bug it is not possible for players to send this message.",
     ["networking_restricted_message_reason"] = "Reason for a player get's kicked or banned by sending a message to the server which he is not allowed to.",
+    ["networking_sendlua_gm_express"] = "Activate gm_express:\nMassive performance improvement, especially for larger servers. Instead of sending large amounts of data via the built-in netmessages (slow), they are transferred to the clients via HTTPS via an external provider (gmod.express). This speeds up the loading time of clients and reduces the load on the server. However, this option is dependent on gmod.express. If this page cannot be reached, authentication for clients will fail. New clients that cannot connect to gmod.express fall back to the conventional netmessages. This option requires the installation of gm_express. More details in the 'Health' tab.",
     ["networking_sendlua_authfailed_action"] = "What should happen when a player doesn't respond to Nova Defender authentication? If ignored there is no guarantee that the anticheat or other client-side mechanisms are working.",
     ["networking_sendlua_authfailed_reason"] = "Reason for a player get's kicked or banned by not responding to Nova Defender authentication.",
     ["networking_sendlua_validationfailed_action"] = "What should happen when a player blocks code from Nova Defender?",
@@ -260,6 +261,8 @@ local phrases = {
     ["notify_networking_sendlua_failed"] = "%s blocks Nova Defender code from being run. This could also be caused by a slow connection.",
     ["notify_networking_sendlua_failed_action"] = "Blocks Nova Defender code from being run. This could also be caused by a slow connection.",
 
+    ["notify_networking_issue_gm_express_not_installed"] = "gm_express is not installed on the server. More details in the 'Health' tab.",
+
     ["notify_networking_vpn"] = "%s is using a VPN: %s",
     ["notify_networking_vpn_action"] = "Using VPN: %s",
     ["notify_networking_country"] = "%s is from a not allowed country. %s",
@@ -275,6 +278,24 @@ local phrases = {
     /*
         Health
     */
+    ["health_check_gmexpress_title"] = "gm_express Module",
+    ["health_check_gmexpress_desc"] = "Massive performance improvement, especially for larger servers. Created by CFC Servers.",
+    ["health_check_gmexpress_desc_long"] =
+[[Instead of sending large amounts of data via the built-in netmessages (slow),
+they are transferred to the clients via HTTPS using an external provider (gmod.express).
+This speeds up the loading time of clients and reduces the load on the server.
+However, this option is dependent on gmod.express. If this host cannot be reached,
+the authentication for clients fails. New clients that cannot connect to gmod.express,
+fall back on the conventional netmessages.
+
+To install, go to: https://github.com/CFC-Servers/gm_express.
+   1. Click on "Code" and download the .zip file.
+   2. Unzip the .zip file into the "/garrysmod/addons" directory.
+   3. Restart your server.
+   4. Activate the option "Activate gm_express" in the "Network" tab.
+
+This service can also be self-hosted.
+See: https://github.com/CFC-Servers/gm_express_service]],
     ["health_check_seversecure_title"] = "Serversecure Module",
     ["health_check_seversecure_desc"] = "A module that mitigates exploits on the Source engine. Created by danielga.",
     ["health_check_seversecure_desc_long"] =

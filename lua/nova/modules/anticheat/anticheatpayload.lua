@@ -1,7 +1,12 @@
 /*
 	This clientside anticheat is far from perfect but it works surprisingly well for script kids.
 	As soon as the author of a cheat is smart enough, we are basically blind as we are very limited
-	by the Lua API we are provided with. 
+	by the Lua API we are provided with.
+
+	Since the source code of Nova Defender is open and visible, cheats can be easily modified to be
+	undetected again. Therefore, owners of large servers can request the paid extension of the anticheat,
+	which also detects external, new or paid cheats by name. Feel free to contact me directly via Steam for this.
+	However, I reserve the right to refuse the request even without providing a reason.
 */
 
 local payloads = {

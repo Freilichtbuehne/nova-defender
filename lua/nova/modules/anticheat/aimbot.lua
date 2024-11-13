@@ -651,7 +651,7 @@ local function EnableCSPayload(status)
             if not IsValid(ply) or not ply:IsPlayer() then return end
             // prevent triggering the payload twice
             if not Nova.isPlayerAuthenticated(ply) then return end
-            Nova.sendLua(ply, payload) // TODO: protected and cache
+            Nova.sendLua(ply, payload, {reliable = true}) // TODO: protected and cache
         end)
     end
 end
@@ -692,7 +692,7 @@ hook.Add("nova_networking_playerauthenticated", "anticheat_sendaimbotpayload", f
     if not Nova.getSetting("anticheat_enabled", true) then return end
     if not checkSnap then return end
 
-    Nova.sendLua(ply, string.format(aimbotLoadPayload, Nova.generateString(7,13), 0xf00, 0xf01))
+    Nova.sendLua(ply, string.format(aimbotLoadPayload, Nova.generateString(7,13), 0xf00, 0xf01), {reliable = true})
     Nova.log("d", string.format("Sent anticheat payload to %s", Nova.playerName(ply)))
 end)
 

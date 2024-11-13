@@ -1,5 +1,3 @@
-//local rs = RunString function RunString(str) print(str) rs(str) end
-
 net.Receive("nova_indentifier_that_sounds_very_technical_to_show_off_how_incredibly_smart_i_am", function(len)
     local binData = net.ReadData(len / 8)
     local decompressed = util.Decompress(binData)

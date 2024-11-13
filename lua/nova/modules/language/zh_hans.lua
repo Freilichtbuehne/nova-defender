@@ -28,6 +28,7 @@ local phrases = {
     ["networking_netcollector_dropAt"] = "在3秒内我们应该忽略多少条消息。这样做是为了防止拒绝服务。应该低于上面的设置。",
     ["networking_restricted_message_action"] = "当玩家向服务器发送他不被允许的消息时应该发生什么？如果没有操纵游戏或bug，玩家不可能发送此消息。",
     ["networking_restricted_message_reason"] = "玩家因向服务器发送他不被允许的消息而被踢出或封禁的原因。",
+    ["networking_sendlua_gm_express"]="激活 gm_express:\n性能大幅提升，尤其是对于大型服务器。不再通过内置的 Netmessages（速度慢）发送大量数据，而是通过外部提供商（gmod.express）通过 HTTPS 将这些数据传输到客户端。这将加快客户端的加载时间并减轻服务器的负担。不过，该选项依赖于 gmod.express。如果该页面意外无法访问，客户端的身份验证将失败。无法连接到 gmod.express 的新客户端将退回到传统方法。此选项需要安装 gm_express。更多详情请参阅'健康'选项卡",
     ["networking_sendlua_authfailed_action"] = "当玩家没有响应Nova Defender认证时应该发生什么？如果忽略，不能保证反作弊或其他客户端机制的工作。",
     ["networking_sendlua_authfailed_reason"] = "玩家因没有响应Nova Defender认证而被踢出或封禁的原因。",
     ["networking_sendlua_validationfailed_action"] = "当玩家阻止Nova Defender代码时应该发生什么？",
@@ -244,6 +245,8 @@ local phrases = {
     ["notify_networking_sendlua_failed"] = "%s 阻止了运行Nova Defender代码。这也可能是由于连接慢导致的。",
     ["notify_networking_sendlua_failed_action"] = "阻止了运行Nova Defender代码。这也可能是由于连接慢导致的。",
 
+    ["notify_networking_issue_gm_express_not_installed"] = "服务器上未安装 gm_express。更多详情请查看 “健康”选项卡。",
+
     ["notify_networking_vpn"] = "%s 正在使用VPN：%s",
     ["notify_networking_vpn_action"] = "使用VPN：%s",
     ["notify_networking_country"] = "%s 来自不允许的国家。%s",
@@ -257,55 +260,68 @@ local phrases = {
     ["notify_functions_allow_success"] = "成功排除检测。",
     ["notify_functions_allow_failed"] = "无法排除此检测。",
     -- Health
+    ["health_check_gmexpress_title"] = "gm_express 模块",
+    ["health_check_gmexpress_desc"] = "性能大幅提升，尤其适用于大型服务器。由 CFC 服务器创建。",
+    ["health_check_gmexpress_desc_long"] =
+[[我们不再通过内置的 Netmessages（速度慢）发送大量数据，而是使用外部提供商（gmod.express）通过 HTTPS 将这些数据传输到客户端
+这样可以加快客户端的加载时间，减轻服务器的负担。不过，该选项依赖于 gmod.express。如果无法访问该页面，客户端的身份验证将失败
+无法连接到 gmod.express 的新客户端将退回到传统的 Netmessages。
+
+要安装，请访问：https://github.com/CFC-Servers/gm_express。
+   1. 点击 “代码 ”并下载 .zip 文件。
+   2. 将 .zip 文件解压到“/garrysmod/addons ”目录下。
+   3. 重新启动服务器。
+   4. 激活 “网络 ”选项卡中的 “激活 gm_express ”选项。
+
+该服务也可自行托管。
+请参见： https://github.com/CFC-Servers/gm_express_service]],
     ["health_check_seversecure_title"] = "服务器安全模块",
     ["health_check_seversecure_desc"] = "一个用于减轻Source引擎漏洞利用的模块，由danielga创建。",
-    ["health_check_seversecure_desc_long"] = [[
-        如果没有这个模块，您的服务器可能很容易被崩溃。
-        它能够限制服务器接受的数据包数量并进行验证。
-    
-        要安装，请访问 https://github.com/danielga/gmsv_serversecure。
-        1. 前往Releases并下载适合您服务器操作系统的.dll文件。
-        2. 如果不存在，则创建文件夹"garrysmod/lua/bin"。
-        3. 将.dll文件放在"/garrysmod/lua/bin"文件夹中。
-        4. 在Github下载"serversecure.lua"文件（"/include/modules"）。
-        5. 将此文件放置在"/garrysmod/lua/includes/modules"文件夹内。
-        6. 重启您的服务器。
-    
-        如果您希望Nova Defender为您自动配置该模块，请在"Exploit"标签中激活
-        "自动设置Serversecure"选项。
-    ]],
+    ["health_check_seversecure_desc_long"] =
+[[如果没有这个模块，您的服务器可能很容易被崩溃。
+它能够限制服务器接受的数据包数量并进行验证。
+
+要安装，请访问 https://github.com/danielga/gmsv_serversecure。
+   1. 前往Releases并下载适合您服务器操作系统的.dll文件。
+   2. 如果不存在，则创建文件夹"garrysmod/lua/bin"。
+   3. 将.dll文件放在"/garrysmod/lua/bin"文件夹中。
+   4. 在Github下载"serversecure.lua"文件（"/include/modules"）。
+   5. 将此文件放置在"/garrysmod/lua/includes/modules"文件夹内。
+   6. 重启您的服务器。
+
+如果您希望Nova Defender为您自动配置该模块，请在"Exploit"标签中激活
+"自动设置Serversecure"选项。]],
     ["health_check_exploits_title"] = "已知存在漏洞的插件",
     ["health_check_exploits_desc"] = "已知可被利用的插件netmessages列表。",
-    ["health_check_exploits_desc_long"] = [[
-        Netmessage使客户端与服务器之间的通信成为可能。
-        然而，这些消息很容易被客户端操纵。
-        因此，如果服务器没有检查客户端是否有权发送此消息，
-        就可能出现可被利用的安全漏洞（金钱漏洞、服务器崩溃、管理员权限）。
-    
-        所有列出的netmessages名称都可以或可能被利用。
-        不能保证这个漏洞仍然存在。
-        此外，还有可能存在未列出的可被利用的netmessages。
-    
-        1. 定期更新您的插件
-        2. 用新的替换过时/不受支持的插件
-        3. 如果您熟悉Lua，手动检查受影响的netmessages
+    ["health_check_exploits_desc_long"] =
+[[Netmessage使客户端与服务器之间的通信成为可能。
+然而，这些消息很容易被客户端操纵。
+因此，如果服务器没有检查客户端是否有权发送此消息，
+就可能出现可被利用的安全漏洞（金钱漏洞、服务器崩溃、管理员权限）。
+
+所有列出的netmessages名称都可以或可能被利用。
+不能保证这个漏洞仍然存在。
+此外，还有可能存在未列出的可被利用的netmessages。
+
+   1. 定期更新您的插件
+   2. 用新的替换过时/不受支持的插件
+   3. 如果您熟悉Lua，手动检查受影响的netmessages
     ]],
     ["health_check_backdoors_title"] = "后门",
     ["health_check_backdoors_desc"] = "服务器上的后门可能会给攻击者提供不受欢迎的访问权限。",
-    ["health_check_backdoors_desc_long"] = [[
-        后门可以通过以下几种方式之一加载到服务器上：
-        1. 恶意的工作坊插件
-        2. 有人要求您上传一个“特别为您制作”的Lua文件到服务器
-        3. 有访问您服务器的开发者为自己设置了后门
-        4. 服务器本身已被泄露（操作系统的漏洞，软件的漏洞）
+    ["health_check_backdoors_desc_long"] =
+[[后门可以通过以下几种方式之一加载到服务器上：
+   1. 恶意的工作坊插件
+   2. 有人要求您上传一个“特别为您制作”的Lua文件到服务器
+   3. 有访问您服务器的开发者为自己设置了后门
+   4. 服务器本身已被泄露（操作系统的漏洞，软件的漏洞）
     
-        移除后门的方法：
-        1. 如果可用，检查给定路径（如果路径以'lua/'开头，很可能来自工作坊）
-        2. 使用例如https://github.com/THABBuzzkill/nomalua等工具扫描您的服务器
-        3. 移除您最近添加的所有脚本，并检查此消息是否再次出现
-        4. 下载服务器上的所有文件，并对列出的后门进行文本搜索
-        5. 困难方式：移除所有插件，直到此消息停止出现，然后逐一添加回插件并检查它再次出现的插件。
-    ]],
+移除后门的方法：
+   1. 如果可用，检查给定路径（如果路径以'lua/'开头，很可能来自工作坊）
+   2. 使用例如https://github.com/THABBuzzkill/nomalua等工具扫描您的服务器
+   3. 移除您最近添加的所有脚本，并检查此消息是否再次出现
+   4. 下载服务器上的所有文件，并对列出的后门进行文本搜索
+   5. 困难方式：移除所有插件，直到此消息停止出现，然后逐一添加回插件并检查它再次出现的插件。]],
     ["health_check_mysql_pass_title"] = "数据库密码弱",
     ["health_check_mysql_pass_desc"] = "Nova Defender的数据库密码太弱。",
     ["health_check_mysql_pass_desc_long"] = [[

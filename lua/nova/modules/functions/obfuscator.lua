@@ -1,5 +1,4 @@
 local payloads = {
-    //["check"] = [==[function(b,c,identifier)local d=util.SHA256;local function e(f)local g,h={},jit.util.funcinfo(f)for i=0,h.bytecodes-1 do local j,k=jit.util.funcbc(f,i)g[#g+1]="ins"..j g[#g+1]=" op"..k end;local l=-1;local m=jit.util.funck(f,l)while m do local n=type(m)if n=="number"then g[#g+1]=m elseif n=="string"then g[#g+1]=string.format("%q",m)elseif n=="boolean"then g[#g+1]=m and 1 or 0 end;l,m=l-1,jit.util.funck(f,l)end;print(identifier, table.concat(g,","))return table.concat(g,",")end;local h=jit.util.funcinfo(d)local o="@addons/"local p=h.source;if p and string.sub(p,1,#o)~=o then return false,"sha detour"end;local q=type(b)local r=q=="function"and d(e(b))or q=="string"and d(b)or nil;if not r then return false,"invalid input"end;if r~=c then return false,"hash mismatch"end;return true end]==],
     ["check"] = [==[function(b,c)local d=util.SHA256;local function e(f)local q=table.concat if type(f)=="table"then return q(f,",")end local l=-1;local g,m={},jit.util.funck(f,l);while m do local n=type(m)if n=="number"then g[#g+1]=m elseif n=="string"then g[#g+1]=string.format("%q",m)elseif n=="boolean"then g[#g+1]=m and 1 or 0 end;l,m=l-1,jit.util.funck(f,l)end;return q(g,",")end;local h=jit.util.funcinfo(d)local o="@addons/"local p=h.source;if p and string.sub(p,1,#o)~=o then return false,"sha detour"end;local q=type(b)local r=q=="function"and d(e(b))or q=="string"and d(b)or nil;if not r then return false,"invalid input"end;if r~=c then return false,"hash mismatch"end;return true end]==],
     ["decode"] = [==[function(s)local d=""local i=1 while i<=#s do local c=string.sub(s,i,i)if c=="\\" then local cc=tonumber(string.sub(s,i+1,i+3))d=d..string.char(cc)i=i+3 else d=d..c end i=i+1 end return d end]==],
     ["getfenv"] = [==[getfenv(0)]==],
@@ -159,19 +158,19 @@ Nova.obfuscator.obfuscate = function(source, replaceText)
         lines:Register("code", vars:Set("code", encrypted, false, true))
 
         // Step 5.2: Defining integrity checks
-        lines:Register("integrity_cipher", string.format("local s,e = %s(%s.cipher, %q) if not s then %s('cipher integrity check failed: ' .. e)  end ",
+        lines:Register("integrity_cipher", string.format("local s1,e = %s(%s.cipher, %q) if not s1 then %s('cipher integrity check failed: ' .. e)  end ",
             vars:Get("integrityCheck"),
             vars:Get("cipher"),
             Nova.obfuscator.getFunctionChecksum(NOVA_SHARED.decrypt.cipher),
             vars:Get("banme")
         ))
-        lines:Register("integrity_interpreter", string.format("local s,e = %s(%s, %q) if not s then %s('interpreter integrity check failed: ' .. e)  end ",
+        lines:Register("integrity_interpreter", string.format("local s2,e = %s(%s, %q) if not s2 then %s('interpreter integrity check failed: ' .. e)  end ",
             vars:Get("integrityCheck"),
             vars:Get("interpreter"),
             Nova.obfuscator.getFunctionChecksum(NOVA_SHARED.interpreter),
             vars:Get("banme")
         ))
-        lines:Register("integrity_decompress", string.format("local s,e = %s(%s, %q) if not s then %s('decompress integrity check failed: ' .. e)  end ",
+        lines:Register("integrity_decompress", string.format("local s3,e = %s(%s, %q) if not s3 then %s('decompress integrity check failed: ' .. e)  end ",
             vars:Get("integrityCheck"),
             vars:Get("decompress"),
             Nova.obfuscator.getFunctionChecksum(NOVA_SHARED.decompress),
@@ -183,9 +182,11 @@ Nova.obfuscator.obfuscate = function(source, replaceText)
         lines:Register("decrypted", vars:Set("decrypted", string.format("%s[%s](%s,%s)", vars:Get("cipher"), string.format("%s(%s)", vars:Get("decode"), vars:Get("cipherAttribute")), vars:Get("decoded"), vars:Get("key"))))
         lines:Register("decompressed", vars:Set("decompressed", string.format("%s(%s)", vars:Get("decompress"), vars:Get("decrypted"))))
         if enable_debugging then
-            lines:Register("run", vars:Set("run", string.format("RunString(%s)", vars:Get("decompressed"))))
+            lines:Register("run", vars:Set("run", string.format("s1 and s2 and s3 and RunString(%s) or nil;", vars:Get("decompressed"))))
         else
-            lines:Register("run", vars:Set("run", string.format("%s(%s)()", vars:Get("interpreter"), vars:Get("decompressed"))))
+            // The code will not run if any of the integrity checks failed
+            // We do this because a client could just block the reporting to the server
+            lines:Register("run", vars:Set("run", string.format("s1 and s2 and s3 and %s(%s)() or nil;", vars:Get("interpreter"), vars:Get("decompressed"))))
         end
 
         // Step 5.4: Assembling functions
