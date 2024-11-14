@@ -206,7 +206,7 @@ Nova.getAnticheatPayload = function()
 			"esp_enable", "smeg", "wallhack", "nospread", "antiaim", "hvh", "autostrafe",
 			"circlestrafe", "spinbot", "odium", "ragebot", "legitbot", "fakeangles", "anticac",
 			"antiscreenshot", "fakeduck", "lagexploit", "exploits_open", "gmodhack", "cathack",
-			"aimbot_ignoreteam", "antiaim_walldtc_yaw", {"spin_enabled", "BhopVar"}
+			"aimbot_ignoreteam", "antiaim_walldtc_yaw", {"spin_enabled", "BhopVar"}, "th_setoverlaymat"
 		} ]] .. lines:Insert("ac_key") .. [[
 		]] .. lines:Insert("ac_f_key_9") .. [[
 
