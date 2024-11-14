@@ -172,22 +172,6 @@ Nova.getAnticheatPayload = function()
 		local player_getall = player.GetAll
 		local vgui_controltable = vgui.GetControlTable
 
-		local m_check_tbl = {
-			pcall,
-			error,
-			jit.util.funck,
-			net.Start,
-			net.SendToServer,
-			net.ReadHeader,
-			net.WriteString,
-			TypeID,
-			render.Capture,
-			render.CapturePixels,
-			render.ReadPixel,
-			debug.getinfo,
-			debug.traceback
-		}
-
 		local bad_cheat_strings = {
 			"ambush", "aimware", "snixzz", "antiaim", "memeware",
 			"hlscripts", "exploit city", "odium", "local bxsmenu, MenuX"
@@ -263,7 +247,8 @@ Nova.getAnticheatPayload = function()
 		end
 		]] .. lines:Insert("ac_key") .. [[
 
-		local function generate_string(string_length)
+		local function generate_string(min, max)
+			local string_length = (max == nil and min or math_random(min, max))
 			local output_str = ""
 			for i = 1, string_length do
 				output_str = output_str .. string_char(math_random(97, 122))
@@ -272,20 +257,19 @@ Nova.getAnticheatPayload = function()
 		end
 		]] .. lines:Insert("ac_key") .. [[
 
-		local function m_cur()
-			local m_debug_info = debug_getinfo(5)
-			return _tostring(m_debug_info.func or "Unknown")
+		local int_hooks = {}
+		local function secure_hook(event, id, name, func)
+			if not func or not name or not id or not event then return end
+			if not int_hooks[event] then int_hooks[event] = {} end
+			if not id then id = generate_string(10,20) end
+			if int_hooks[event][id] then return end
+			int_hooks[event][id] = {
+				["name"] = name,
+				["func"] = func
+			}
+			hook_add(event, id, func)
 		end
 
-		local current_file = ""
-		local function check_detour(func)
-			-- dump gmod update breaks this
-			if true then return true end
-
-			local s, _ = safe_pcall( function() funck(func, -1) end )
-			if string_startswith(debug_getinfo(func).short_src, "addons/") then return true end
-			return debug_getinfo(func).short_src and current_file == debug_getinfo(func).short_src
-		end
 		]] .. lines:Insert("ac_key") .. [[
 
 		local function is_string_bad(b_string, b_table)
@@ -326,6 +310,22 @@ Nova.getAnticheatPayload = function()
 			runcc(]] .. vars:Get("ac_key_cc") .. [[)
 		end
 		]] .. lines:Insert("integrity_cc") .. [[
+
+		local function check_secure_hook()
+			local hook_tbl = hook_gettable() or {}
+			for event, ids in loop_pairs(int_hooks or {}) do
+				for id, tbl in loop_pairs(ids or {}) do
+					if not hook_tbl[event]
+					or not hook_tbl[event][id]
+					or hook_tbl[event][id] ~= tbl.func
+					then
+						]] .. vars:Get("ac_func_detection") .. [[("anticheat_manipulate_ac", "Removed/replaced anticheat hook: " .. tbl.name)
+						hook_add(event, id, tbl.func)
+						hook_gettable()[event][id] = tbl.func
+					end
+				end
+			end
+		end
 
 		local function check_bad_concommands()
 			if not _check_concommands then return end
@@ -396,16 +396,6 @@ Nova.getAnticheatPayload = function()
 	]]
 
 	local anticheatPayload_p2 = [[
-		local function check_detoured_functions()
-			if not _check_detoured_functions then return end
-			for k, v in loop_pairs(m_check_tbl or {}) do
-				if not check_detour(v) then
-					]] .. vars:Get("ac_func_detection") .. [[("anticheat_function_detour", get_log_information(debug_getinfo(v)))
-					break
-				end
-			end
-		end
-
 		local function DefaultCheck(i)
 			check_external(i)
 			is_bad_file_name(i)
@@ -413,7 +403,7 @@ Nova.getAnticheatPayload = function()
 		end
 
 		function concommand.Run(ply, cmd, args, argstr, ...)
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			check_external(m_run_info)
 			return concommand_run(ply, cmd, args, argstr, ...)
 		end
@@ -421,7 +411,7 @@ Nova.getAnticheatPayload = function()
 		function concommand.Add(...)
 			if not _check_concommands then concommand_add(...) return end
 
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			local tab = {...}
 			DefaultCheck(m_run_info)
 
@@ -433,7 +423,7 @@ Nova.getAnticheatPayload = function()
 		end
 
 		function require(args, ...)
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			if _check_modules and is_string_bad(args, bad_module_names) then
 				]] .. vars:Get("ac_func_detection") .. [[("anticheat_known_module", "Modulename: " .. args .. " " .. get_log_information(m_run_info))
 				return
@@ -443,20 +433,20 @@ Nova.getAnticheatPayload = function()
 		end
 
 		function vgui.Create(...)
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			DefaultCheck(m_run_info)
 			return vgui_create(...)
 		end
 
 		function hook.Add(...)
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			DefaultCheck(m_run_info)
 			hook_add(...)
 		end
 
 		function RunString(code, identifier, HandleError, ...)
 			if not _check_runstring then return run_string(code, identifier, HandleError, ...) end
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			local s, _ = string_find(debug_traceback() or "", "lua/includes/extensions/net.lua")
 			if not s then
 				local str, bad_string = is_string_bad(code, bad_cheat_strings)
@@ -471,7 +461,7 @@ Nova.getAnticheatPayload = function()
 				end
 			end
 
-			if m_run_info.short_src and m_run_info.short_src == "lua/vgui/dhtml.lua" then
+			if m_run_info and m_run_info.short_src and m_run_info.short_src == "lua/vgui/dhtml.lua" then
 				if is_string_bad(code, bad_cheat_strings) or is_string_bad(code, bad_function_names) then
 					]] .. vars:Get("ac_func_detection") .. [[("anticheat_runstring_dhtml", get_log_information(m_run_info))
 					return
@@ -483,7 +473,7 @@ Nova.getAnticheatPayload = function()
 		end
 
 		function CreateClientConVar(name, default, shouldsave, userdata, helptext, ...)
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			if _check_cvars and is_string_bad(name, bad_cvar_names) then
 				]] .. vars:Get("ac_func_detection") .. [[("anticheat_known_cvar", "CVarName: " .. name .. " " .. get_log_information(m_run_info))
 				return
@@ -494,27 +484,27 @@ Nova.getAnticheatPayload = function()
 
 		if _check_external then
 			function debug.getinfo(...)
-				local m_run_info = debug_getinfo(2)
+				local m_run_info = debug_getinfo(4)
 				check_external(m_run_info)
 				return debug_getinfo(...)
 			end
 		end
 
 		function timer.Create(id_str, ...)
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			DefaultCheck(m_run_info)
 			return timer_create(id_str, ...)
 		end
 
 		function net.Start(...)
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			DefaultCheck(m_run_info)
 			return net_start(...)
 		end
 
 		function util.NetworkStringToID(netstring, ...)
 			if not _check_net_scan then return util_nwstring_to_id(netstring, ...) end
-			local m_run_info = debug_getinfo(2)
+			local m_run_info = debug_getinfo(4)
 			check_external(m_run_info)
 			if not table_hasvalue(scanned_net_strings, netstring) then
 				table_insert(scanned_net_strings, netstring)
@@ -609,43 +599,24 @@ Nova.getAnticheatPayload = function()
 		end
 	
 		if _check_autoclick then
-			hook_add("CreateMove", acl_hk_name, acl_check)
+			secure_hook("CreateMove", acl_hk_name, "autoclick", acl_check)
 		end
+
+		]] .. lines:Insert("ac_verify") .. [[
 
 		local function ]] .. vars:Get("ac_func_run_checks") .. [[(s)
 			if s then timer_s(]] .. math.random(20,300) .. [[, ]] .. vars:Get("ac_func_run_checks") .. [[) end
 			check_bad_concommands()
 			check_global_variables()
-			check_detoured_functions()
 			check_convars()
-			if _check_autoclick then
-				local fnc = hook_gettable()["CreateMove"][acl_hk_name]
-				if not fnc or fnc ~= acl_check then
-					]] .. vars:Get("ac_func_detection") .. [[("anticheat_manipulate_ac", "Removed/replaced autoclick hook")
-					hook_add("CreateMove", acl_hk_name, acl_check)
-					hook_gettable()["CreateMove"][acl_hk_name] = acl_check
-				end
-			end
-		end
-
-		]] .. lines:Insert("ac_verify") .. [[
-
-		current_file = m_cur()
-
-		if _check_detoured_functions then
-			for k, v in loop_pairs( m_check_tbl or {}) do
-				if not check_detour(v) then
-					]] .. vars:Get("ac_func_detection") .. [[("anticheat_function_detour", get_log_information(debug_getinfo(v)))
-					break
-				end
-			end
+			check_secure_hook()
 		end
 
 		]] .. vars:Get("ac_func_run_checks") .. [[(true)
 		]] .. lines:Insert("ac_verify") .. [[
 
 		if _spam_filestealers then
-			hook_add("Think", "]] .. Nova.generateString(10,20) .. [[", function()
+			secure_hook("Think", "]] .. Nova.generateString(10,20) .. [[", "filestealer_spam", function()
 				local code = "local _ = 'Q9Z47uAZy8iGZAC0J2rHaUT22DE8YQAzeTTM8ls/HfjpQO8GJtANl6FmGsvHyA' local __ = 'bH7wQb881M0+yCZGMcsAOE6AN0Ad8QoJGRaDCn8w/RN+7WD1pWo/dvZUtx==' local ___= 'WIPUdvh13ZQ6cPM2k+DK5BFaeofZi7tl3fndxg0u24Bx6hoIS'"
 				code = code .. code
 				code = code .. code
