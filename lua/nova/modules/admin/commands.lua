@@ -227,6 +227,7 @@ commands = {
             PrintTable(protectedPlayers or {})
         end,
     },
+    //TODO: implement
     /*["status"] = {
         ["category"] = "Server",
         ["description"] = "Prints the current status of Nova Defender",
@@ -237,7 +238,7 @@ commands = {
             // bans total
         end,
     },*/
-   ["detections"] = {
+    ["detections"] = {
         ["category"] = "Detections",
         ["description"] = "List last 10 detections",
         ["callback"] = function(admin)

@@ -472,7 +472,7 @@ timer.Create("nova_sendlua_authenticate", 5, 0, function()
     timer.Adjust("nova_sendlua_authenticate", math.random(40, 60) / 10)
 
     // if express is enabled, we fall back to regular netmessages if we get not response
-    local fallbackThreshold = math.floor(Nova.getSetting("networking_sendlua_maxAuthTries", 20) / 1.5)
+    local fallbackThreshold = math.floor(Nova.getSetting("networking_sendlua_maxAuthTries", 20) * 0.125)
 
     for _, v in ipairs(player.GetHumans() or {}) do
         if not IsValid(v) or not v:IsPlayer() then continue end

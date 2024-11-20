@@ -9,7 +9,14 @@ Nova.isFamilyShared = function(ply)
 
     // nowadays we don't need to make an api call to get the owner of the game anymore
     // we can just use the (recently) added OwnerSteamID function
-    return ply:SteamID64() != ply:OwnerSteamID64()
+    local ownerSteamID64 = ply:OwnerSteamID64()
+
+    // returns "0" in singleplayer (undocumented)
+    if not ownerSteamID64 or ownerSteamID64 == "0" then
+        return false
+    end
+
+    return ply:SteamID64() != ownerSteamID64
 end
 
 Nova.getFamilyOwner = function(ply)
@@ -18,7 +25,7 @@ Nova.getFamilyOwner = function(ply)
     local steamID = ply:SteamID()
     local owner = ply:OwnerSteamID64()
 
-    if not owner then return false end
+    if not owner or owner == "0" then return false end
 
     local ownerSteamID = Nova.convertSteamID(owner)
 

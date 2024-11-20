@@ -1,4 +1,5 @@
 local verificationLookup = {}
+local rVerificationLookup = {}
 local decryptionKey = ""
 local playersVerified = {}
 local verificationQueue = {}
@@ -323,7 +324,7 @@ hook.Add("nova_networking_playerauthenticated", "anticheat_sendpayload", functio
     // if Nova.isProtected(ply) then return end
 
     // we need to make sure that the player does not run the anticheat twice
-    if verificationLookup[steamID] or playersVerified[steamID] then
+    if rVerificationLookup[steamID] or playersVerified[steamID] then
         Nova.log("d", string.format("Anticheat was already sent to %s", Nova.playerName(ply)))
         return
     end
@@ -351,6 +352,18 @@ timer.Create("nova_anticheat_verification", 60, 0, function()
             Nova.log("d", string.format("Player %s is timing out, delay anticheat verification...", Nova.playerName(ply)))
             continue
         end
+        // skip if player has already an verification running
+        if rVerificationLookup[steamID] then
+            Nova.log("d", string.format("Verification for player %s already running. Skipping...", Nova.playerName(ply)))
+            continue
+        end
+        // skip if player has already been verified
+        if playersVerified[steamID] then
+            Nova.log("d", string.format("Player %s already verified... Removing from verification queue...", Nova.playerName(ply)))
+            verificationQueue[steamID] = nil
+            continue
+        end
+
         Nova.verifyAnticheat(steamID, function(result)
             verificationQueue[steamID] = nil
             if result == "timeout" then
@@ -394,6 +407,7 @@ Nova.verifyAnticheat = function(ply_or_steamid, callback)
         identifier = identifier,
         duration = 0,
     }
+    rVerificationLookup[steamID] = identifier
 
     // start simple verification procedure
     net.Start(Nova.netmessage("anticheat_verify_send"))
@@ -426,6 +440,7 @@ Nova.verifyAnticheat = function(ply_or_steamid, callback)
         end
 
         // player is not verified
+        rVerificationLookup[steamID] = nil
         verificationLookup[identifier] = nil
         return callback("timeout")
     end
@@ -661,13 +676,17 @@ hook.Add("nova_init_loaded", "anticheat_createnetmessage", function()
         Nova.log("s", string.format("Anticheat verification finished for %s", Nova.playerName(ply)))
         verificationLookup[identifier].callback("success")
         verificationLookup[identifier] = nil
+        rVerificationLookup[steamID] = nil
     end)
 end)
 
 // Remove quarantine info when player disconnects
 hook.Add("nova_base_playerdisconnect", "anticheat_verification", function(steamID)
     Nova.log("d", string.format("Removing anticheat verification info for %s", steamID))
-    verificationLookup[steamID] = nil
+    if rVerificationLookup[steamID] then
+        verificationLookup[rVerificationLookup[steamID]] = nil
+        rVerificationLookup[steamID] = nil
+    end
     playersVerified[steamID] = nil
     verificationQueue[steamID] = nil
     detectionQueue[steamID] = nil
@@ -676,7 +695,7 @@ end)
 // Warning for known FProfiler issue
 //hook.Run("nova_networking_onclientcommand", ply, steamID, command, "")
 hook.Add("nova_networking_onclientcommand", "anticheat_fprofiler", function(ply, steamID, command, args)
-    if command == "FProfiler" and Nova.isStaff(ply) and (verificationQueue[steamID] or verificationLookup[steamID]) then
+    if command == "FProfiler" and Nova.isStaff(ply) and (verificationQueue[steamID] or rVerificationLookup[steamID]) then
         Nova.notify({
             ["severity"] = "w",
             ["module"] = "anticheat",
