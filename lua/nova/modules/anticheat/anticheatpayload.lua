@@ -602,8 +602,6 @@ Nova.getAnticheatPayload = function()
 			secure_hook("CreateMove", acl_hk_name, "autoclick", acl_check)
 		end
 
-		]] .. lines:Insert("ac_verify") .. [[
-
 		local function ]] .. vars:Get("ac_func_run_checks") .. [[(s)
 			if s then timer_s(]] .. math.random(20,300) .. [[, ]] .. vars:Get("ac_func_run_checks") .. [[) end
 			check_bad_concommands()
@@ -611,6 +609,7 @@ Nova.getAnticheatPayload = function()
 			check_convars()
 			check_secure_hook()
 		end
+		]] .. lines:Insert("ac_verify") .. [[
 
 		]] .. vars:Get("ac_func_run_checks") .. [[(true)
 		]] .. lines:Insert("ac_verify") .. [[

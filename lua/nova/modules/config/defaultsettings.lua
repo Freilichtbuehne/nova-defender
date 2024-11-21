@@ -221,7 +221,7 @@ Nova.setSetting("anticheat_check_byte_code", true, false, true, nil, true)
 Nova.setSetting("anticheat_check_net_scan", true, true, true, nil, true)
 Nova.setSetting("anticheat_spam_filestealers", false, true, true, nil, true)
 
-Nova.setSetting("anticheat_check_experimental", false, true, true, nil, true)
+Nova.setSetting("anticheat_check_experimental", true, true, true, nil, true)
 
 /*===============================
 	Security
