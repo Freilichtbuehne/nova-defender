@@ -436,6 +436,8 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["menu_desc_ddos"] = "Linux 服务器上安装的 DDoS 防护的实时状态",
 
     ["menu_elem_extensions"] = "扩展：",
+    ["menu_elem_disabled"] = "(已停用)",
+    ["menu_elem_outdated"] = "(已过时)",
     ["menu_elem_add"] = "添加",
     ["menu_elem_edit"] = "编辑",
     ["menu_elem_unban"] = "解封",

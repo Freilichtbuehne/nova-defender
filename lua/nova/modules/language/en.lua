@@ -457,6 +457,8 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["menu_desc_ddos"] = "Live status of DDoS Protection installed on Linux server",
 
     ["menu_elem_extensions"] = "Extensions:",
+    ["menu_elem_disabled"] = "(disabled)",
+    ["menu_elem_outdated"] = "(outdated)",
     ["menu_elem_add"] = "Add",
     ["menu_elem_edit"] = "Edit",
     ["menu_elem_unban"] = "Unban",
