@@ -9,7 +9,7 @@ Nova.extensions = Nova.extensions or {
         ["up_to_date"] = false,
         ["version"] = "",
         ["enabled"] = false,
-        ["url"] = "https://github.com/Freilichtbuehne/nova-defender?tab=readme-ov-file#extended-anticheat"
+        ["url"] = "https://github.com/Freilichtbuehne/nova-defender?tab=readme-ov-file#-extended-anticheat"
     },
     ["priv_ddos_protection"] = {
         ["name"] = "DDoS Protection",
@@ -17,7 +17,7 @@ Nova.extensions = Nova.extensions or {
         ["up_to_date"] = false,
         ["version"] = "",
         ["enabled"] = false,
-        ["url"] = "https://github.com/Freilichtbuehne/nova-defender?tab=readme-ov-file#ddos-protection"
+        ["url"] = "https://github.com/Freilichtbuehne/nova-defender?tab=readme-ov-file#-ddos-protection"
     },
 }
 
