@@ -1,24 +1,3 @@
-local anticheatOutdated = nil
-
-local function IsAnticheatOutdated()
-  if anticheatOutdated != nil then
-    return anticheatOutdated
-  end
-
-  // set the default value
-  anticheatOutdated = false
-
-  local health = Nova.getHealthCheckResult()
-  for k, v in ipairs(health["failed"] or {}) do
-    if v["key"] == "nova_anticheat_version" then
-      anticheatOutdated = true
-      break
-    end
-  end
-
-  return anticheatOutdated
-end
-
 Nova.getMenuPayload = function(ply_or_steamid)
     local isProtected = Nova.isProtected(ply_or_steamid)
 
@@ -27,6 +6,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
     local bansAccess = Nova.getSetting("menu_access_bans", false) or isProtected
     local healthAccess = Nova.getSetting("menu_access_health", false) or isProtected
     local inspectionAccess = Nova.getSetting("menu_access_health", false) or isProtected
+    local ddosAccess = Nova.extensions["priv_ddos_protection"]["enabled"] and (Nova.getSetting("menu_access_ddos", false) or isProtected)
 
     if
           not isProtected
@@ -35,6 +15,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
       and not bansAccess
       and not healthAccess
       and not inspectionAccess
+      and not ddosAccess
     then
       return [[
         concommand.Remove("nova_defender")
@@ -45,21 +26,12 @@ Nova.getMenuPayload = function(ply_or_steamid)
       ]]
     end
 
-    local anticheatVersion = Nova.extensions["anticheat"] or "default"
-    if not isstring(anticheatVersion) then anticheatVersion = "0.0.0" end
-    if anticheatVersion != "default" then
-      anticheatVersion = "v." .. anticheatVersion
-      if IsAnticheatOutdated() then
-        anticheatVersion = anticheatVersion .. " (OUTDATED)"
-      end
-    end
+    // TODO: Better display of extensions 
 
     local payload = [[
   ------------------------------
   --  Global Variables
   ------------------------------
-  NOVA_VERSION = "]] .. Nova["version"] .. [["
-  NOVA_UID = "]] .. (isProtected and Nova.getSetting("uid", "unknown") or "") .. [["
   NOVA_MENU = NOVA_MENU or nil
   NOVA_LANG = NOVA_LANG or nil
   NOVA_ACTIVE_TAB = NOVA_ACTIVE_TAB or nil
@@ -121,6 +93,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
       [[["bans"] = { title = "menu_title_bans", description = "menu_desc_bans", custom = "nova_admin_page_bans", color = style.color.pri},]]) .. [[
     ]] .. (not inspectionAccess and "" or
       [[["inspection"] = { title = "menu_title_inspection", description = "menu_desc_inspection", custom = "nova_admin_page_inspection", color = style.color.pri},]]) .. [[
+    ]] .. (not ddosAccess and "" or
+      [[["ddos"] = { title = "menu_title_ddos", description = "menu_desc_ddos", custom = "nova_admin_page_ddos", color = style.color.pri},]]) .. [[
     ]] .. (not healthAccess and "" or
       [[["health"] = { title = "menu_title_health", description = "menu_desc_health", custom = "nova_admin_page_health", color = style.color.pri},]]) .. [[
     ]] .. (not detectionsAccess and "" or
@@ -326,6 +300,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
     description:SetWrap(true)
     description:SetAutoStretchVertical(true)
 
+    NOVA_STYLE_TAB_INNERHEIGHT = tabElement:GetTall() - description:GetTall() - style.margins.tb * 2
 
     -- Existsing tab from configuration
     if not tabs[tabName] or not tabs[tabName].custom then
@@ -1223,6 +1198,83 @@ Nova.getMenuPayload = function(ply_or_steamid)
   function MENU_TAB:Paint(_w, _h) end
   vgui.Register("nova_admin_menu_tab", MENU_TAB, "DScrollPanel")
 
+  local MENU_STATUS = {}
+  function MENU_STATUS:Init()
+    self:Dock(TOP)
+  end
+  function MENU_STATUS:Load()
+    local function AddExtension(text, url)
+      local extension = vgui.Create("DPanel", self)
+      extension:DockPadding(style.margins.lr/2, 0, style.margins.lr/2, 0)
+      extension:DockMargin(0, 0, style.margins.lr, 0)
+      extension:Dock(LEFT)
+      extension.color = style.color.sec
+      extension.bgColor = style.color.bg
+      extension.Paint = function(s, _w, _h)
+        draw.RoundedBox(0, 0, 0, _w, _h, s.bgColor)
+        draw.RoundedBox(0, _w-4, 0, 4, _h, s.color)
+        --draw.RoundedBox(0, _w/4, _h-3, _w/2, 3, s.color)
+      end
+      
+      local label = vgui.Create("DLabel", extension)
+      label:SetFont("nova_font")
+      label:SetText(text)
+      label:SetTextColor(style.color.ft)
+      label:SizeToContents()
+      label:Dock(FILL)
+      extension.text = label
+
+      surface.SetFont("nova_font")
+      local w, h = surface.GetTextSize(text) 
+      extension:SetSize(w + style.margins.lr, style.margins.tb * 2)
+
+      if url and url != "" then
+        extension:SetCursor("hand")
+        label:SetMouseInputEnabled( true )
+        label.DoClick = function() gui.OpenURL(url) end
+      end
+
+      return extension
+    end
+
+    LoadData("]] .. Nova.netmessage("admin_get_status") .. [[", nil, function(data)
+      if not IsValid(self) then return end
+      self:Clear()
+
+      local nova = AddExtension(string.format("Nova Defender v.%s", data.version))
+      nova.color = style.color.tr
+      nova:DockMargin(0, 0, style.margins.lr/2, 0)
+      local exts = AddExtension(Lang("menu_elem_extensions"))
+      exts.color = style.color.tr
+      exts.bgColor = style.color.tr
+      exts:DockMargin(0, 0, style.margins.lr/2, 0)
+      for k, v in pairs(data.extensions or {}) do
+        local text = v.name
+        if v.enabled then
+          text = text .. " v." .. v.version
+          if not v.up_to_date then text = text .. " " .. Lang("menu_elem_outdated") end
+        else text = text .. " " .. Lang("menu_elem_disabled") end
+        local extension = AddExtension(text, v.url)
+        if v.enabled then
+          if v.up_to_date then extension.color = style.color.scc
+          else extension.color = style.color.wrn end
+        else
+          extension.color = style.color.sec
+          extension.text:SetTextColor(style.color.dis)
+        end
+      end
+
+      if data["ddos"] and data["ddos"]["mode"] == "start" then
+        local ddos = AddExtension(Lang("menu_elem_ddos_active"))
+        ddos.color = style.color.dng
+        ddos.bgColor = style.color.dng
+      end
+    end)
+    
+  end
+  function MENU_STATUS:Paint(_w, _h) end
+  vgui.Register("nova_admin_menu_status", MENU_STATUS, "DPanel")
+
   local DIALOG_BOX = {}
   function DIALOG_BOX:Init()
     if NOVA_ACTIVE_CONTEXT then NOVA_ACTIVE_CONTEXT:Remove() end
@@ -1606,9 +1658,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
   end
 
   function PAGE_BANS:Init()
-    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb)
-    local _, parentHeight = self:GetParent():GetParent():GetSize()
-    self:SetSize(0, parentHeight - style.margins.tb * 2 )
+    self:Dock(FILL)
+    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb * 2)
 
     local filterSelection = vgui.Create("nova_admin_option_list_select", self)
     filterSelection:Dock(TOP)
@@ -1642,9 +1693,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
 
   local PAGE_PLAYERS = {}
   function PAGE_PLAYERS:Init()
-    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb)
-    local _, parentHeight = self:GetParent():GetParent():GetSize()
-    self:SetSize(0, parentHeight - style.margins.tb * 2 )
+    self:Dock(FILL)
+    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb * 2)
     
     LoadData("]] .. Nova.netmessage("admin_get_players") .. [[", nil, function(data)
       if not IsValid(self) then return end
@@ -2136,9 +2186,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
 
   local PAGE_HEALTH = {}
   function PAGE_HEALTH:Init()
-    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb)
-    local _, parentHeight = self:GetParent():GetParent():GetSize()
-    self:SetSize(0, parentHeight - style.margins.tb * 2 )
+    self:Dock(FILL)
+    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb * 2)
     LoadData("]] .. Nova.netmessage("admin_get_health") .. [[", nil, function(data) 
       if not IsValid(self) then return end
       if not data then return end
@@ -2416,9 +2465,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
   local PAGE_INSPECTION = {}
   PAGE_INSPECTION.loading = true
   function PAGE_INSPECTION:Init()
-    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb)
-    local _, parentHeight = self:GetParent():GetParent():GetSize()
-    self:SetSize(0, parentHeight - style.margins.tb * 2 )
+    self:Dock(FILL)
+    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb * 2)
     local loading = vgui.Create( "DLabel", self )
     loading:Dock( TOP )
     loading:SetText("Loading code from server...")
@@ -2441,9 +2489,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
 
   local PAGE_DETECTIONS = {}
   function PAGE_DETECTIONS:Init()
-    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb)
-    local _, parentHeight = self:GetParent():GetParent():GetSize()
-    self:SetSize(0, parentHeight - style.margins.tb * 2 )
+    self:Dock(FILL)
+    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb * 2)
 
     local curPage = 0
     local limitReached = false
@@ -2732,6 +2779,32 @@ Nova.getMenuPayload = function(ply_or_steamid)
   function PAGE_DETECTIONS:Paint(_w, _h) end
   vgui.Register("nova_admin_page_detections", PAGE_DETECTIONS, "DPanel")
 
+  local PAGE_DDOS = {}
+  PAGE_DDOS.loading = true
+  function PAGE_DDOS:Init()
+    self:Dock(FILL)
+    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb * 2)
+    local loading = vgui.Create( "DLabel", self )
+    loading:Dock( TOP )
+    loading:SetText("Loading code from server...")
+    loading:SetFont("nova_font")
+    loading:SetTextColor( style.color.pri )
+    loading:DockMargin(style.margins.lr, style.margins.tb * 2, style.margins.lr * 2, style.margins.tb)
+    net.Start("]] .. Nova.netmessage("admin_get_ddos") .. [[")
+    net.SendToServer()
+    timer.Create("nova_client_load_ddos", 0.1, 100, function()
+      if vgui.Exists and not vgui.Exists("nova_admin_menu_ddos") then return end
+      if vgui.GetControlTable and not vgui.GetControlTable("nova_admin_menu_ddos") then return end
+      vgui.Register("nova_admin_page_ddos", vgui.GetControlTable("nova_admin_menu_ddos"), "DPanel")
+      timer.Remove("nova_client_load_ddos")
+      ReloadFrame()
+    end)
+    self:SizeToChildren(true, true)
+  end
+  function PAGE_DDOS:Paint(_w, _h) end
+  vgui.Register("nova_admin_page_ddos", PAGE_DDOS, "DPanel")
+
+  
 
   --------------------------------
   --  Concommands
@@ -2745,20 +2818,19 @@ Nova.getMenuPayload = function(ply_or_steamid)
 
     local function OpenMenu(data)
       NOVA_MENU = vgui.Create("nova_admin_menu")
-      local info = vgui.Create("DLabel", NOVA_MENU)
-      local headerText = NOVA_PROTECTED and "Nova Defender v.%s | Anticheat: %s | UID: %s" or "Nova Defender v.%s"
-      info:SetText(string.format(headerText, NOVA_VERSION, "]] .. anticheatVersion .. [[", NOVA_UID))
-      info:SetFont("nova_font")
-      info:SizeToContents()
-      info:SetPos(NOVA_MENU:GetWide() - info:GetWide() - style.margins.lr, style.margins.tb)
-      info:SetTextColor(style.color.]] .. (IsAnticheatOutdated() and "dng" or "dis") .. [[)
-      info:SetZPos(1000)
+      local content = vgui.Create("DPanel", NOVA_MENU)
+      content:Dock(FILL)
+      content.Paint = function(_, _w, _h) end
+
+      local tab = vgui.Create( "nova_admin_menu_tab", content )
+      tab:Dock( FILL )
+      local sortedData = NOVA_PROTECTED and SortData(data) or {}
 
       local scrollPanel = vgui.Create( "nova_admin_scroll_panel", NOVA_MENU )
       scrollPanel:Dock( LEFT )
 
-      local tab = vgui.Create( "nova_admin_menu_tab", NOVA_MENU )
-      local sortedData = NOVA_PROTECTED and SortData(data) or {}
+      local status = vgui.Create("nova_admin_menu_status", content)
+      status:Load()
 
       -- add icon above menu buttons
       local icon = vgui.Create("DImageButton", scrollPanel)
@@ -3188,12 +3260,11 @@ Nova.getInspectionPayload = function()
       self:Init()
     end
   
-    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb)
-    local _, parentHeight = self:GetParent():GetParent():GetSize()
-    self:SetSize(0, parentHeight - style.margins.tb * 2 )
+    self:Dock(FILL)
+    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb * 2)
 
     local container = vgui.Create("DPanel", self)
-    container:SetSize(style.tab.w - style.margins.lr * 3, style.frame.h - style.margins.tb * 8)
+    container:SetSize(style.tab.w - style.margins.lr * 3, NOVA_STYLE_TAB_INNERHEIGHT - style.margins.tb * 2)
     container.Paint = style.color.paint_tr
     
     local statusBar = vgui.Create("DPanel", container)

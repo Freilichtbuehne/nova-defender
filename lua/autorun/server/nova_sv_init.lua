@@ -1,9 +1,24 @@
 Nova = Nova or {
-    ["version"] = "1.9.2"
+    ["version"] = "1.9.3"
 }
 
 Nova.extensions = Nova.extensions or {
-    ["latest_version_anticheat"] = "1.1.2"
+    ["priv_anticheat"] = {
+        ["name"] = "Anticheat",
+        ["latest_version"] = "1.1.3",
+        ["up_to_date"] = false,
+        ["version"] = "",
+        ["enabled"] = false,
+        ["url"] = "https://github.com/Freilichtbuehne/nova-defender?tab=readme-ov-file#extended-anticheat"
+    },
+    ["priv_ddos_protection"] = {
+        ["name"] = "DDoS Protection",
+        ["latest_version"] = "1.0.0",
+        ["up_to_date"] = false,
+        ["version"] = "",
+        ["enabled"] = false,
+        ["url"] = "https://github.com/Freilichtbuehne/nova-defender?tab=readme-ov-file#ddos-protection"
+    },
 }
 
 local lines = {

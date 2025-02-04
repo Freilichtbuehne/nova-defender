@@ -10,6 +10,7 @@
 // false positives
 local falsePositives = {
     ["mCasino_interface"] = true,
+    ["Photon2:SetControllerChannelState"] = true,
 }
 
 // we only store 3 seconds of netmessages in this table to prevent accessing large tables

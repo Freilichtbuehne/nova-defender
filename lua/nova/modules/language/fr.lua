@@ -14,9 +14,11 @@ local phrases = {
     ["menu_access_bans"] = "Le personnel a accès à l'onglet 'Bannissements'.",
     ["menu_access_health"] = "Le personnel a accès à l'onglet 'Santé'.",
     ["menu_access_inspection"] = "Le personnel a accès à l'onglet 'Inspection des joueurs'.",
+    ["menu_access_ddos"] = "Le personnel a accès à l'onglet 'DDoS'.",
+    
     ["menu_action_timeopen"] = "Durée d'affichage de l'invite de punition en secondes.",
     ["menu_action_showstaff"] = "Demander au personnel une action de punition si aucun joueur protégé n'est présent (ou AFK).",
-    
+
     /*
         Réseau
     */
@@ -67,6 +69,9 @@ local phrases = {
     ["networking_post_overwrite"] = "Inspecter http.post (envoi de données):\nRemplacer la fonction http.post. L'envoi de requêtes HTTP peut être utilisé par des attaquants pour voler des fichiers sur le serveur. Cependant, cette méthode peut également être contournée ou désactiver les systèmes DRM.",
     ["networking_post_whitelist"] = "Activer la liste blanche:\nSeuls les domaines et adresses IP ajoutés à la liste sont autorisés.",
     ["networking_post_blockunsafe"] = "Bloquer les requêtes non sécurisées:\nLes requêtes provenant de sources non sécurisées telles que la console ou RunString sont bloquées.",    
+    
+    ["networking_ddos_collect_days"] = "Jours de collecte des adresses IP:\nLa protection DDoS collecte les adresses IP de tous les joueurs connectés au cours des n derniers jours. Lorsqu'une attaque DDoS est détectée, toutes les communications avec le serveur sont bloquées, à l'exception des joueurs connectés au cours des n derniers jours. Le serveur ignore tous les joueurs qui ne se sont pas connectés au serveur au cours des n derniers jours. Le serveur sera invisible pour eux.",
+    ["networking_ddos_notify"] = "Afficher des notifications si une attaque DDoS est détectée ou stoppée.",
     /*
         Contournement de bannissement
     */
@@ -245,6 +250,9 @@ local phrases = {
     ["notify_functions_action_notify"] = "L'administrateur %s a pris la mesure suivante contre la détection %q de %s : %q.",
     ["notify_functions_allow_success"] = "Détection exclue avec succès.",
     ["notify_functions_allow_failed"] = "Impossible d'exclure cette détection.",
+    
+    ["notify_custom_extension_ddos_protection_attack_started"] = "Attaque DDoS détectée. Ouvrir le menu avec !nova pour un statut en direct",
+    ["notify_custom_extension_ddos_protection_attack_stopped"] = "Attaque DDoS stoppée. Ouvrir le menu avec !nova pour les détails",
     /*
         Santé
     */
@@ -355,15 +363,25 @@ Avec cela, Nova-Defender peut alors examiner les adresses IP via cette page.
     ["health_check_nova_anticheat_desc_long"] =
 [[Actuellement, seuls quelques triches simples sont détectés. Comme le code source de Nova Defender est ouvert
 et visible, les triches peuvent être facilement modifiées pour être indétectables.
-Par conséquent, les propriétaires de grands serveurs peuvent demander l'extension de l'anticheat,
+Par conséquent, les propriétaires de serveurs peuvent demander l'extension de l'anticheat,
 qui détecte également les triches externes, nouvelles ou payantes par nom.
-N'hésitez pas à me contacter directement via Steam pour cela.
-Cependant, je me réserve le droit de refuser la demande même sans fournir de raison.]],
+Cliquez sur le bouton correspondant en haut du menu ou rejoignez notre Discord pour en savoir plus.]],
     ["health_check_nova_anticheat_version_title"] = "Ancienne version de l'anticheat de Nova Defender",
     ["health_check_nova_anticheat_version_desc"] = "L'anticheat n'est pas à jour.",
     ["health_check_nova_anticheat_version_desc_long"] =
 [[Veuillez télécharger la dernière version depuis GitHub :
 https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
+    ["health_check_nova_ddos_protection_title"] = "Nova Defender DDoS protection extension",
+    ["health_check_nova_ddos_protection_desc"] = "Défendez votre serveur Linux contre les attaques DDoS.",
+    ["health_check_nova_ddos_protection_desc_long"] =
+    [[Protection DDoS basée sur l'hôte pour les serveurs Linux.
+Les propriétaires de serveurs peuvent demander cette extension.
+Cliquez sur le bouton correspondant en haut du menu ou rejoignez notre Discord pour en savoir plus.]],
+    ["health_check_nova_ddos_protection_version_title"] = "Ancienne version de la protection DDoS de Nova Defender",
+    ["health_check_nova_ddos_protection_version_desc"] = "La protection DDoS n'est pas à jour.",
+    ["health_check_nova_ddos_protection_version_desc_long"] =
+[[Veuillez télécharger la dernière version depuis GitHub :
+https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     /*
         Serveur
     */
@@ -392,6 +410,8 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["menu_title_players"] = "Joueurs en ligne",
     ["menu_title_server"] = "Serveur",
     ["menu_title_inspection"] = "Inspecter les joueurs",
+    ["menu_title_ddos"] = "Protection DDoS",
+
     ["menu_desc_banbypass"] = "Techniques pour empêcher les joueurs de contourner un bannissement de Nova Defender",
     ["menu_desc_network"] = "Restreindre, contrôler et enregistrer l'activité réseau",
     ["menu_desc_security"] = "Protéger contre les escalades de privilèges des utilisateurs",
@@ -404,6 +424,9 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["menu_desc_detections"] = "Toutes les détections en attente qui doivent être examinées",
     ["menu_desc_server"] = "Gérer l'accès à votre serveur",
     ["menu_desc_inspection"] = "Exécuter des commandes sur les joueurs et rechercher des fichiers",
+    ["menu_desc_ddos"] = "Statut en direct de la protection DDoS installée sur le serveur Linux",
+
+    ["menu_elem_extensions"] = "Extensions:",
     ["menu_elem_add"] = "Ajouter",
     ["menu_elem_edit"] = "Éditer",
     ["menu_elem_unban"] = "Débannir",
@@ -515,6 +538,17 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["menu_elem_download_started"] = "Téléchargement du fichier : %q",
     ["menu_elem_download_confirmbutton"] = "Télécharger",
     ["menu_elem_canceldel"] = "Annuler et supprimer",
+    
+    ["menu_elem_ddos_active"] = "Protection DDoS activée!",
+    ["menu_elem_ddos_inactive"] = "Protection DDoS désactivée",
+    ["menu_elem_ddos_duration"] = "Durée: %s",
+    ["menu_elem_ddos_avg"] = "RX moyen: %s",
+    ["menu_elem_ddos_max"] = "RX max: %s",
+    ["menu_elem_ddos_stopped"] = "Stopped at: %s",
+    ["menu_elem_ddos_stats"] = "Stats de la dernière attaque:",
+    ["menu_elem_ddos_cpu_util"] = "Utilisation CPU",
+    ["menu_elem_ddos_net_util"] = "Utilisation réseau",
+
     ["indicator_pending"] = "Le joueur n'a pas encore envoyé ses indicateurs au serveur. Soit il les bloque, soit il a besoin de plus de temps.",
     ["indicator_install_fresh"] = "Le joueur a récemment installé ce jeu",
     ["indicator_install_reinstall"] = "Le joueur a récemment réinstallé ce jeu",

@@ -47,9 +47,9 @@ local function LoadFakeNets()
             // we assume these are already patched
             // Nova Defender does not protect you from not keeping your server up to date
             if snte then
-                Nova.log("w", string.format("Detected exploit %q on the server! It is likely created by SNTE", key))
+                Nova.log("w", string.format("Detected potential exploit %q on the server! It is likely created by SNTE", key))
             else
-                Nova.log("w", string.format("Detected exploit %q on the server", key))
+                Nova.log("w", string.format("Detected potential exploit %q on the server! Please check if your scripts are up-to-date.", key))
                 Nova.fakenets_exploits[key] = false
             end
             continue

@@ -165,7 +165,7 @@ local healthChecks = {
         long_desc = "health_check_nova_anticheat_desc_long",
         score = 6,
         check = function()
-            local impacted = not Nova.extensions["anticheat"]
+            local impacted = not Nova.extensions["priv_anticheat"]["enabled"]
             return {
                 ["impacted"] = impacted,
                 ["list"] = {},
@@ -178,30 +178,43 @@ local healthChecks = {
         long_desc = "health_check_nova_anticheat_version_desc_long",
         score = 6,
         check = function()
-            local latestACVersion = Nova.extensions["latest_version_anticheat"]
-            local currentACVersion = Nova.extensions["anticheat"]
-            if currentACVersion == true then currentACVersion = "0.0.0" end
-            local impacted = Nova.extensions["anticheat"] and not Nova.isVersionHigherOrEqual(currentACVersion, latestACVersion)
+            local impacted = not Nova.extensions["priv_anticheat"]["up_to_date"]
+            local cur_version = Nova.extensions["priv_anticheat"]["version"]
+            local latest_version = Nova.extensions["priv_anticheat"]["latest_version"]
             return {
                 ["impacted"] = impacted,
-                ["list"] = {string.format("Current: v.%s, Latest: v.%s", currentACVersion, latestACVersion)},
+                ["list"] = {string.format("Current: v.%s, Latest: v.%s", cur_version, latest_version)},
             }
         end,
     },
-    /*["nova_config"] = {
-        name = "health_check_nova_config_title",
-        desc = "health_check_nova_config_desc",
-        long_desc = "health_check_nova_config_desc_long",
-        score = 1,
+    ["nova_ddos_protection"] = {
+        name = "health_check_nova_ddos_protection_title",
+        desc = "health_check_nova_ddos_protection_desc",
+        long_desc = "health_check_nova_ddos_protection_desc_long",
+        score = 6,
         check = function()
-            local impacted = false
-            local checks = {}
+            local impacted = not Nova.extensions["priv_ddos_protection"]["enabled"]
             return {
                 ["impacted"] = impacted,
-                ["list"] = checks,
+                ["list"] = {},
             }
         end,
-    },*/
+    },
+    ["nova_ddos_protection_version"] = {
+        name = "health_check_nova_ddos_protection_version_title",
+        desc = "health_check_nova_ddos_protection_version_desc",
+        long_desc = "health_check_nova_ddos_protection_version_desc_long",
+        score = 6,
+        check = function()
+            local impacted = not Nova.extensions["priv_ddos_protection"]["up_to_date"]
+            local cur_version = Nova.extensions["priv_ddos_protection"]["version"]
+            local latest_version = Nova.extensions["priv_ddos_protection"]["latest_version"]
+            return {
+                ["impacted"] = impacted,
+                ["list"] = {string.format("Current: v.%s, Latest: v.%s", cur_version, latest_version)},
+            }
+        end,
+    },
 }
 
 // Based on NISTs CVSS v3.0 Ratings

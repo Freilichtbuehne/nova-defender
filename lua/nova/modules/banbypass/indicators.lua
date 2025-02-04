@@ -474,13 +474,13 @@ hook.Add("nova_init_loaded", "banbypass_indicator", function()
     function(len, ply)
         // we ignore the case where the player has already sent us indicators
         // we take into account that the player could potentially overwrite the indicators with fake ones
-        Nova.log("d", string.format("Received indicator check from %s", Nova.playerName(ply)))
         local indicator = net.ReadString() or ""
-
         if not indicator or indicator == "" then
             Nova.log("w", string.format("Indicator response from %s is empty: Indicates manipulation", Nova.playerName(ply)))
             return
         end
+
+        Nova.log("d", string.format("Received indicator check from %s", Nova.playerName(ply)))
 
         // decrypt the indicators and parse them
         indicator = Nova.cipher.decrypt(Nova.decode(indicator), encryptionKey)

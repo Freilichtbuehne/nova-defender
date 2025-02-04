@@ -12,6 +12,7 @@ local phrases = {
     ["menu_access_bans"] = "管理员可以访问“封禁”标签页",
     ["menu_access_health"] = "管理员可以访问“健康”标签页",
     ["menu_access_inspection"] = "管理员可以访问“检查玩家”标签页",
+    ["menu_access_ddos"] = "工作人员可访问 “DDoS ”选项卡",
 
     ["menu_action_timeopen"] = "处罚提示显示时长（秒）。",
     ["menu_action_showstaff"] = "如果没有受保护的玩家（或AFK），询问管理员进行处罚操作。",
@@ -66,6 +67,9 @@ local phrases = {
     ["networking_post_overwrite"] = "检查http.post（发送数据）：\n覆盖http.post函数。发送HTTP请求可以被攻击者用来窃取服务器上的文件。然而，这种方法也可以被绕过或禁用DRM系统。",
     ["networking_post_whitelist"] = "启用白名单：\n只允许已添加到列表中的域名和IP地址。",
     ["networking_post_blockunsafe"] = "阻止不安全的请求：\n来自不安全来源（如控制台或RunString）的请求被阻止。",
+    
+    ["networking_ddos_collect_days"] = "IP 地址收集天数：\n DDoS 防护会收集过去 n 天内所有已连接玩家的 IP 地址。当检测到 DDoS 攻击时，除了过去 n 天内连接的玩家外，所有与服务器的通信都会被阻止。服务器会忽略过去 n 天内未连接服务器的所有玩家。他们将看不到服务器。",
+    ["networking_ddos_notify"] = "检测到或阻止 DDoS 攻击时显示通知。",
     -- Banbypass
     ["banbypass_ban_banstaff"] = "管理员可以被封禁",
     ["banbypass_ban_default_reason"] = "如果没有指定原因，玩家被封禁的原因",
@@ -259,6 +263,10 @@ local phrases = {
     ["notify_functions_action_notify"] = "管理员 %s 针对 %s 的检测 %q 采取了以下行动：%q。",
     ["notify_functions_allow_success"] = "成功排除检测。",
     ["notify_functions_allow_failed"] = "无法排除此检测。",
+    
+    
+    ["notify_custom_extension_ddos_protection_attack_started"] = "检测到 DDoS 攻击。使用 !nova 打开菜单，查看实时状态",
+    ["notify_custom_extension_ddos_protection_attack_stopped"] = "DDoS 攻击停止。用 !nova 打开菜单，了解详情",
     -- Health
     ["health_check_gmexpress_title"] = "gm_express 模块",
     ["health_check_gmexpress_desc"] = "性能大幅提升，尤其适用于大型服务器。由 CFC 服务器创建。",
@@ -370,9 +378,21 @@ local phrases = {
     ]],
     ["health_check_nova_anticheat_version_title"] = "Nova Defender反作弊旧版本",
     ["health_check_nova_anticheat_version_desc"] = "反作弊不是最新的。",
-    ["health_check_nova_anticheat_version_desc_long"] = [[
-        请从GitHub下载最新版本：'https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest'
-    ]],
+    ["health_check_nova_anticheat_version_desc_long"] =
+    [[请从GitHub下载最新版本：
+https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
+    ["health_check_nova_ddos_protection_title"] = "Nova Defender DDoS 防护扩展",
+    ["health_check_nova_ddos_protection_desc"] = "保护您的 Linux 服务器免受 DDoS 攻击",
+    ["health_check_nova_ddos_protection_desc_long"] =
+    [[为 Linux 服务器提供基于主机的 DDoS 保护。
+服务器所有者可以申请此扩展。
+请单击菜单顶部的相应按钮或加入我们的 Discord 了解更多信息]],
+    ["health_check_nova_ddos_protection_version_title"] = "Nova Defender DDoS 防护旧版本",
+    ["health_check_nova_ddos_protection_version_desc"] = "DDoS 防护不是最新版本",
+    ["health_check_nova_ddos_protection_version_desc_long"] =
+    [[请从GitHub下载最新版本：
+ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
+    
     -- Server
     ["server_general_suffix"] = "每次踢出、封禁或拒绝消息时附加的文本。例如您的Teamspeak、Discord或其他支持站点。",
 
@@ -399,6 +419,7 @@ local phrases = {
     ["menu_title_players"] = "在线玩家",
     ["menu_title_server"] = "服务器",
     ["menu_title_inspection"] = "检查玩家",
+    ["menu_title_ddos"] = "DDoS 保护",
 
     ["menu_desc_banbypass"] = "防止玩家绕过Nova Defender封禁的技术",
     ["menu_desc_network"] = "限制、控制和记录网络活动",
@@ -412,7 +433,9 @@ local phrases = {
     ["menu_desc_detections"] = "所有需要审查的待处理检测",
     ["menu_desc_server"] = "管理对您服务器的访问",
     ["menu_desc_inspection"] = "对玩家执行命令和搜索文件",
+    ["menu_desc_ddos"] = "Linux 服务器上安装的 DDoS 防护的实时状态",
 
+    ["menu_elem_extensions"] = "扩展：",
     ["menu_elem_add"] = "添加",
     ["menu_elem_edit"] = "编辑",
     ["menu_elem_unban"] = "解封",
@@ -528,6 +551,16 @@ local phrases = {
     ["menu_elem_download_started"] = "正在下载文件：%q",
     ["menu_elem_download_confirmbutton"] = "下载",
     ["menu_elem_canceldel"] = "取消并删除",
+
+    ["menu_elem_ddos_active"] = "DDoS 保护已启用！",
+    ["menu_elem_ddos_inactive"] = "DDoS 保护已禁用",
+    ["menu_elem_ddos_duration"] = "持续时间：%s",
+    ["menu_elem_ddos_avg"] = "Avg RX: %s",
+    ["menu_elem_ddos_max"] = "最大 RX：%s",
+    ["menu_elem_ddos_stopped"] = "Stopped at： %s",
+    ["menu_elem_ddos_stats"] = "上次攻击的统计信息：",
+    ["menu_elem_ddos_cpu_util"] = "CPU 使用率",
+    ["menu_elem_ddos_net_util"] = "网络利用率",
 
     ["indicator_pending"] = "玩家尚未将其指示器发送到服务器。他可能阻止了它们，或者需要更多时间。",
     ["indicator_install_fresh"] = "玩家最近安装了这款游戏",

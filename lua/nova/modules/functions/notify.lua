@@ -259,12 +259,13 @@ hook.Add("nova_banbypass_cookieloaded", "notify_hello", function(ply)
 
     local isProtected = Nova.isProtected(ply)
 
-    local playerAccess = Nova.setSetting("menu_access_player", false, true, true, nil, true)
-    local detectionAccess = Nova.setSetting("menu_access_detections", false, true, true, nil, true)
-    local banAccess = Nova.setSetting("menu_access_bans", false, true, true, nil, true)
-    local healthAccess = Nova.setSetting("menu_access_health", false, true, true, nil, true)
-    local inspectionAccess = Nova.setSetting("menu_access_inspection", false, true, true, nil, true)
-    local menuAccess = playerAccess or detectionAccess or banAccess or healthAccess or inspectionAccess or isProtected
+    local playerAccess = Nova.getSetting("menu_access_player", false)
+    local detectionAccess = Nova.getSetting("menu_access_detections", false)
+    local banAccess = Nova.getSetting("menu_access_bans", false)
+    local healthAccess = Nova.getSetting("menu_access_health", false)
+    local inspectionAccess = Nova.getSetting("menu_access_inspection", false)
+    local ddosAccess = Nova.extensions["priv_ddos_protection"]["enabled"] and Nova.getSetting("menu_access_ddos", false)
+    local menuAccess = playerAccess or detectionAccess or banAccess or healthAccess or inspectionAccess or ddosAccess or isProtected
 
     local message = "%s %s"
     if isProtected then

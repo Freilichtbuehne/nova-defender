@@ -13,12 +13,16 @@ local dataTypesLoad = {
 }
 
 // Debug command to resend the data to the client
-// lua_run Nova.sendLua(Entity(1), Nova.getMenuPayload(Entity(1))) Nova.sendLua(Entity(1), Nova.getNotifyPayload()) Nova.sendLua(Entity(1),Nova.getInspectionPayload())
+// lua_run Nova.sendLua(Entity(1), Nova.getMenuPayload(Entity(1))) Nova.sendLua(Entity(1), Nova.getNotifyPayload()) Nova.sendLua(Entity(1),Nova.getInspectionPayload()) Nova.sendLua(Entity(1),Nova.getDDoSPayload())
 // Debug command to reload this file
 // lua_run hook.GetTable()["nova_init_loaded"]["admin_createnetmessages"]()
 
+// if lua refresh is broken:
+// lua_refresh_file nova/modules/admin/menupayloads.lua
+// lua_refresh_file nova/modules/custom/extension_ddos_protection.lua
+
 // for bandwith and performance reasons, we compress all data we send to the admin
-local function SendClientSettings(ply, data, messageName)
+local function SendDataToClient(ply, data, messageName)
     local dataType = type(data)
     if not dataTypesSave[dataType] then
         Nova.log("e", string.format("Attempted to send invalid data type %q to %s", dataType, Nova.playerName(ply)))
@@ -180,7 +184,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
         // failed to get setting, return
         if not result then return end
 
-        SendClientSettings(ply, result, Nova.netmessage("admin_get_setting", "protected"))
+        SendDataToClient(ply, result, Nova.netmessage("admin_get_setting", "protected"))
     end)
 
     /*
@@ -273,7 +277,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
         end
 
         // Step 4: Send the bans to the client
-        SendClientSettings(ply, filteredBans, Nova.netmessage("admin_get_bans", "staff"))
+        SendDataToClient(ply, filteredBans, Nova.netmessage("admin_get_bans", "staff"))
     end)
 
     /*
@@ -283,7 +287,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
         // only staff players can get settings
         if not Nova.isStaff(ply) then return end
 
-        SendClientSettings(ply, Nova.config["language"], Nova.netmessage("admin_get_language", "staff"))
+        SendDataToClient(ply, Nova.config["language"], Nova.netmessage("admin_get_language", "staff"))
     end)
 
     /*
@@ -422,7 +426,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
 
             Nova.queryIPScore(ip, target, function(data)
                 if not data or not data.success then data = {} end
-                SendClientSettings(ply, data, Nova.netmessage("admin_get_players", "staff"))
+                SendDataToClient(ply, data, Nova.netmessage("admin_get_players", "staff"))
             end)
 
             return "hold" // messy way to delay the api response
@@ -433,7 +437,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
             local target = Nova.fPlayerBySteamID(steamID)
             if not IsValid(target) or not target:IsPlayer() then return end
             Nova.verifyAnticheat(target, function(result)
-                SendClientSettings(ply, {["Status"] = result or "unknown"}, Nova.netmessage("admin_get_players", "staff"))
+                SendDataToClient(ply, {["Status"] = result or "unknown"}, Nova.netmessage("admin_get_players", "staff"))
             end)
 
             return "hold" // messy way to delay the api response
@@ -482,7 +486,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
 
             local res = player_actions[action](ply, args)
             if res == "hold" then return end
-            SendClientSettings(ply, res, Nova.netmessage("admin_get_players", "staff"))
+            SendDataToClient(ply, res, Nova.netmessage("admin_get_players", "staff"))
             return
         end
 
@@ -507,7 +511,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
             }
         end
 
-        SendClientSettings(ply, players, Nova.netmessage("admin_get_players", "staff"))
+        SendDataToClient(ply, players, Nova.netmessage("admin_get_players", "staff"))
     end)
 
     /*
@@ -566,7 +570,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
         if type(action) == "string" and action != "" then
             if not detection_actions[action] then return end
             local res = detection_actions[action](ply, args)
-            SendClientSettings(ply, res, Nova.netmessage("admin_get_players", "staff"))
+            SendDataToClient(ply, res, Nova.netmessage("admin_get_players", "staff"))
             return
         end
 
@@ -613,7 +617,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
                     ["action_taken_by"] = v.action_taken_by == "" and "CONSOLE" or v.action_taken_by,
                 }
             end
-            SendClientSettings(ply, detections, Nova.netmessage("admin_get_detections", "staff"))
+            SendDataToClient(ply, detections, Nova.netmessage("admin_get_detections", "staff"))
         end)
     end)
 
@@ -648,7 +652,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
         end
 
         local health = Nova.getHealthCheckResult() or {}
-        SendClientSettings(ply, health, Nova.netmessage("admin_get_health", "staff"))
+        SendDataToClient(ply, health, Nova.netmessage("admin_get_health", "staff"))
     end)
 
     /*
@@ -669,5 +673,50 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
 
         local action = net.ReadString() or ""
         Nova.inspectionRequest(ply, action)
+    end)
+
+    /*
+        This is called whenever a admin opens the menu.
+        Returns a list of all extensions and their versions.
+    */
+    Nova.netReceive(Nova.netmessage("admin_get_status", "staff"), function(len, ply)
+        // only staff players can get settings
+        if not Nova.isStaff(ply) then return end
+
+        local isProtected = Nova.isProtected(ply)
+
+        local status = {
+            ["extensions"] = Nova.extensions,
+            ["version"] = Nova.version,
+            ["uid"] = isProtected and Nova.getSetting("uid", "ERROR") or "",
+        }
+
+        if isfunction(Nova.getDDoSStatus) then
+            local ddosStatus = Nova.getDDoSStatus()
+            if ddosStatus then
+                status["ddos"] = ddosStatus
+            end
+        end
+
+        SendDataToClient(ply, status, Nova.netmessage("admin_get_status", "staff"))
+    end)
+
+    /*
+        Logic of the ddos feature
+    */
+    Nova.netReceive(Nova.netmessage("admin_get_ddos", "staff"), function(len, ply)
+        // specific permission check
+        if not StaffCheck("menu_access_ddos", ply) then
+            // TODO
+            return
+        end
+
+        if not Nova.extensions["priv_ddos_protection"]["enabled"] or not isfunction(Nova.getDDoSPayload) then
+            Nova.log("e", string.format("Player %s requested DDoS payload, but the extension is not enabled on this server", Nova.playerName(ply)))
+            return
+        end
+
+        // if no data is sent, we first sent the inspection payload
+        Nova.sendLua(ply, Nova.getDDoSPayload())
     end)
 end)

@@ -14,6 +14,7 @@ local phrases = {
     ["menu_access_bans"] = "Администраторы имеют доступ к вкладке «Блокировки»",
     ["menu_access_health"] = "Администраторы имеют доступ к вкладке «Здоровье»",
     ["menu_access_inspection"] = "Администраторы имеют доступ к вкладке «Проверка игроков»",
+    ["menu_access_ddos"] = "Администраторы имеют доступ к вкладке «DDoS»",
 
     ["menu_action_timeopen"] = "Длительность отображения наказания в секундах.",
     ["menu_action_showstaff"] = "Спрашивать администраторов принять меры наказания, если ни один из защищённых игроков не находится на месте (или AFK).",
@@ -70,6 +71,10 @@ local phrases = {
     ["networking_post_overwrite"] = "Проверка http.post (получение данных):\nПереписать функцию http.post. Отправка HTTP-запросов может быть использована злоумышленниками для кражи файлов на сервере. Однако этот метод можно также обойти или отключить системы DRM.",
     ["networking_post_whitelist"] = "Включить белый список:\nДопускаются только домены и IP-адреса, добавленные в список.",
     ["networking_post_blockunsafe"] = "Блокировать небезопасные запросы:\nЗапросы, поступающие из небезопасных источников, таких как консоль или RunString, блокируются.",
+
+    ["networking_ddos_collect_days"] = "Дни сбора IP-адресов:\nЗащита от DDoS-атак собирает IP-адреса всех подключенных игроков за последние n дней. При обнаружении DDoS-атаки все соединения с сервером блокируются, за исключением подключенных игроков за последние n дней. Сервер игнорирует всех игроков, которые не подключались к серверу в течение последних n дней. Сервер будет невидим для них.",
+    ["networking_ddos_notify"] = "Отображение уведомлений об обнаружении или прекращении DDoS-атаки.",
+    /*
     /*
         Banbypass
     */
@@ -276,6 +281,9 @@ local phrases = {
     ["notify_functions_action_notify"] = "Администратор %s предпринял следующее действие против обнаружения (%q) игрока %s: %q.",
     ["notify_functions_allow_success"] = "Обнаружение успешно исключено.",
     ["notify_functions_allow_failed"] = "Невозможно исключить это обнаружение.",
+    
+    ["notify_custom_extension_ddos_protection_attack_started"] = "Обнаружена DDoS-атака. Открыть меню с помощью !nova для просмотра статуса в реальном времени",
+    ["notify_custom_extension_ddos_protection_attack_stopped"] = "DDoS-атака остановлена. Откройте меню с помощью !nova для получения подробной информации",
     /*
         Health
     */
@@ -386,16 +394,26 @@ local phrases = {
    ["health_check_nova_anticheat_desc_long"] =
    [[В настоящее время обнаруживаются только некоторые простые читы. Поскольку исходный код Nova Defender открыт
 и виден, читы могут быть легко модифицированы так, чтобы их нельзя было обнаружить.
-Поэтому владельцы крупных серверов могут запросить продление античита,
+Поэтому владельцы серверов могут запросить продление античита,
 который также обнаруживает внешние, новые или платные читы по названию.
 Не стесняйтесь обращаться ко мне по этому поводу напрямую через Steam.
-(принимаются запросы только на английском языке)
-Однако я оставляю за собой право отклонить запрос даже без объяснения причины.]],
+Нажмите на соответствующую кнопку в верхней части меню или присоединитесь к нашему Discord, чтобы узнать больше.]],
    ["health_check_nova_anticheat_version_title"] = "Nova Defender Anticheat старая версия",
    ["health_check_nova_anticheat_version_desc"] = "Античит не обновлен.",
    ["health_check_nova_anticheat_version_desc_long"] =
    [[Пожалуйста, загрузите последнюю версию с GitHub:
 https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
+    ["health_check_nova_ddos_protection_title"] = "Расширение Nova Defender для защиты от DDoS-атак",
+    ["health_check_nova_ddos_protection_desc"] = "Защитите свой Linux-сервер от DDoS-атак.",
+    ["health_check_nova_ddos_protection_desc_long"] =
+    [[Защита от DDoS на основе хоста для серверов Linux.
+Владельцы серверов могут запросить это расширение.
+Нажмите на соответствующую кнопку в верхней части меню или присоединитесь к нашему Discord, чтобы узнать больше.]],
+    ["health_check_nova_ddos_protection_version_title"] = "Nova Defender DDoS protection старая версия",
+    ["health_check_nova_ddos_protection_version_desc"] = "Защита от DDoS не соответствует современным требованиям.",
+    ["health_check_nova_ddos_protection_version_desc_long"] =
+    [[Пожалуйста, загрузите последнюю версию с GitHub:
+https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     /*
         Server
     */
@@ -426,6 +444,7 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["menu_title_players"] = "Игроки на сервере",
     ["menu_title_server"] = "Сервер",
     ["menu_title_inspection"] = "Проверка игроков",
+    ["menu_title_ddos"] = "Защита от DDoS-атак",
 
     ["menu_desc_banbypass"] = "Способы, позволяющие игрокам обойти блокировку Nova Defender",
     ["menu_desc_network"] = "Ограничение, контроль и журнал сетевой активности",
@@ -439,7 +458,9 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["menu_desc_detections"] = "Все ожидающие обнаружения, которые необходимо просмотреть",
     ["menu_desc_server"] = "Управление доступом к вашему серверу",
     ["menu_desc_inspection"] = "Выполнение команд на игроках и поиск файлов",
+    ["menu_desc_ddos"] = "Живой статус DDoS Protection, установленной на сервере Linux",
 
+    ["menu_elem_extensions"] = "Расширения:",
     ["menu_elem_add"] = "Добавить",
     ["menu_elem_edit"] = "Изменить",
     ["menu_elem_unban"] = "Снять блокировку",
@@ -553,6 +574,16 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["menu_elem_download_started"] = "Скачивание файла: %q",
     ["menu_elem_download_confirmbutton"] = "Скачать",
     ["menu_elem_canceldel"] = "Отменить и удалить",
+
+    ["menu_elem_ddos_active"] = "Защита от DDoS включена!",
+    ["menu_elem_ddos_inactive"] = "Защита от DDoS отключена",
+    ["menu_elem_ddos_duration"] = "Продолжительность: %s",
+    ["menu_elem_ddos_avg"] = "Avg RX: %s",
+    ["menu_elem_ddos_max"] = "Максимальный RX: %s",
+    ["menu_elem_ddos_stopped"] = "Остановлено на: %s",
+    ["menu_elem_ddos_stats"] = "Статистика последней атаки:",
+    ["menu_elem_ddos_cpu_util"] = "Использование процессора",
+    ["menu_elem_ddos_net_util"] = "Использование сети",
 
     ["indicator_pending"] = "Игрок ещё не отправил свои показатели на сервер. Либо он блокирует их, либо ему нужно ещё немного времени.",
     ["indicator_install_fresh"] = "Игрок недавно установил эту игру",
