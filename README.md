@@ -78,6 +78,34 @@ Want to support my work?
   <img src="https://i.imgur.com/buaoJDg.png" width="550" title="Banner">
 </p>
 
+## Extensions
+
+- **All extensions are private and exclusive for server owners!**
+- For a donation I grant access to individual extensions.
+- I reserve the right to refuse the request even without providing a reason.
+- [Join our Discord](https://discord.gg/zEMuB6kN9g) to get instructions on how to request access.
+- Feel free to contact me directly via Discord: `_samuel`
+
+### ✨ Extended Anticheat
+
+* Adds 25+ cheat detections (too lazy to update this number)
+* Utilizes advanced methods for detecting populat cheats
+* Adds new indicators for cheats (including by name) players have used in the past
+* Contains both public and paid cheats
+* Some cheats are fully detected, some only partially
+* All cheats are detected by name, so that no one can argue their way out
+
+### ✨ DDoS Protection
+
+* Host-based DDoS protection for Linux servers
+* Requires Root access!
+* Integration into `!nova` menu with realtime status
+* Supports tcpdump capturing
+* Notifications via Nextcloud Talk
+
+<img src="https://i.imgur.com/Oinv1EU.png" width="400" title="Preview">
+<img src="https://i.imgur.com/a6poEXg.png" width="400" title="Preview">
+
 ## Installation
 
 ### 🔧 First Install
@@ -112,7 +140,7 @@ Check troubleshooting page: https://freilichtbuehne.gitbook.io/nova-defender/tro
 ## FAQ
 
 ### How is an open source anticheat supposed to work?
-Currently **only some simple cheats are detected**. Since the source code of Nova Defender is open and visible, cheats can be easily modified to be undetected again. Therefore, **owners of large servers can request the paid extension of the anticheat, which also detects external, new or paid cheats by name**. Feel free to contact me directly via Steam for this. However, I reserve the right to refuse the request even without providing a reason.
+Currently **only some simple cheats are detected**. Since the source code of Nova Defender is open and visible, cheats can be easily modified to be undetected again. **Therefore, serverowners can request the extension of the anticheat, which also detects external, new or paid cheats by name**. See "Extensions" section.
 
 ### Does it detect C++ cheats?
 Yes. Of course not all, but many of the most commonly used cheats. However most advanced cheats are only detected with the extended version (see question above). It is not bound to the programming language like C++. It can also detect external cheats that are written in Rust.
