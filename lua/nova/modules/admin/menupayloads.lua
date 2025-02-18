@@ -5,7 +5,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
     local detectionsAccess = Nova.getSetting("menu_access_detections", false) or isProtected
     local bansAccess = Nova.getSetting("menu_access_bans", false) or isProtected
     local healthAccess = Nova.getSetting("menu_access_health", false) or isProtected
-    local inspectionAccess = Nova.getSetting("menu_access_health", false) or isProtected
+    local inspectionAccess = Nova.getSetting("menu_access_inspection", false) or isProtected
     local ddosAccess = Nova.extensions["priv_ddos_protection"]["enabled"] and (Nova.getSetting("menu_access_ddos", false) or isProtected)
 
     if
