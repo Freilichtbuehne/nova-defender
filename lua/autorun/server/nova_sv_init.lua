@@ -13,7 +13,7 @@ Nova.extensions = Nova.extensions or {
     },
     ["priv_ddos_protection"] = {
         ["name"] = "DDoS Protection",
-        ["latest_version"] = "1.0.0",
+        ["latest_version"] = "1.0.1",
         ["up_to_date"] = false,
         ["version"] = "",
         ["enabled"] = false,
