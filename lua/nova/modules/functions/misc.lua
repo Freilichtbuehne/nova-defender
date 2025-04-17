@@ -197,9 +197,9 @@ Nova.getNetmessageDefinition = function(name)
     return string.format("%s:%i", info.short_src or "unknown_file", info.linedefined or "unknown_line")
 end
 
-Nova.profile = function(func)
+Nova.profile = function(func, ...)
     local startTime = SysTime()
-    local res = {func()}
+    local res = {func(...)}
     local endTime = SysTime()
     Nova.log("d", string.format("Time elapsed: %.6f", endTime - startTime))
     return unpack(res)
@@ -298,4 +298,21 @@ Nova.isVersionHigherOrEqual = function(version1, version2)
         end
     end
     return false
+end
+
+Nova.bytesToHumanReadable = function(num_bytes, decimal_places)
+    local units = {"B", "KB", "MB", "GB", "TB", "PB"}
+    local index = 1
+
+    if num_bytes == nil then
+        num_bytes = 0
+    end
+
+    while num_bytes >= 1000 and index < #units do
+        num_bytes = num_bytes / 1000
+        index = index + 1
+    end
+
+    local format_str = "%." .. (decimal_places or 1) .. "f %s"
+    return string.format(format_str, num_bytes, units[index])
 end

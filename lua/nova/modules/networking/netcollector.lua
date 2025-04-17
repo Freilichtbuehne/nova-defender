@@ -108,11 +108,9 @@ local function MoveOldMessages()
 end
 
 local nextCheck = 0
-hook.Add("nova_networking_incoming", "networking_counter", function(client, strName, len)
+hook.Add("nova_networking_incoming", "networking_counter", function(client, steamID, strName, len)
     // we don't want to intercept messages from Nova Defender
     if Nova.isInternalNetmessage(strName) then return end
-
-    local steamID = client:SteamID()
 
     // first message from this client
     if not activeNetCounter[steamID] then

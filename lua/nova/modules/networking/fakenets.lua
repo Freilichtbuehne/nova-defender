@@ -195,7 +195,7 @@ Nova.getExistingExploits = function()
     return exploits
 end
 
-hook.Add("nova_networking_incoming", "networking_fakenets", function(client, strName, len)
+hook.Add("nova_networking_incoming", "networking_fakenets", function(client, steamID, strName, len)
     // not loaded or unknown netmessage
     if not Nova.fakeNetsLoaded or (Nova.fakenets_exploits[strName] == nil and Nova.fakenets_backdoors[strName] == nil) then
         return
@@ -207,9 +207,9 @@ hook.Add("nova_networking_incoming", "networking_fakenets", function(client, str
 
     if isFakeNet then
         if isBackdoor then
-            Nova.startDetection("networking_backdoor", client:SteamID(), strName, "networking_fakenets_backdoors_action")
+            Nova.startDetection("networking_backdoor", steamID, strName, "networking_fakenets_backdoors_action")
         elseif isExploit then
-            Nova.startDetection("networking_exploit", client:SteamID(), strName, "networking_fakenets_exploits_action")
+            Nova.startDetection("networking_exploit", steamID, strName, "networking_fakenets_exploits_action")
         end
     end
 

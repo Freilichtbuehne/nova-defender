@@ -35,13 +35,13 @@ end)
 
 
 // Effects during quarantine
-hook.Add("nova_networking_incoming", "networking_quarantine", function(client, strName, len)
+hook.Add("nova_networking_incoming", "networking_quarantine", function(client, steamID, strName, len)
     // we don't want to intercept messages from Nova Defender
     if Nova.isInternalNetmessage(strName) then return end
 
     // block all messages from quarantined players
     // we don't use Nova.isQuarantined here because it's faster to check the table directly
-    if quarantinedPlayers[client:SteamID()] then
+    if quarantinedPlayers[steamID] then
         return false
     end
 end)

@@ -15,7 +15,7 @@ if not Nova.overrides["net.Incoming"] then
         local messageName = util.NetworkIDToString(header)
         if not messageName then return end
 
-        local res = hook.Run("nova_networking_incoming", client, messageName, len)
+        local res = hook.Run("nova_networking_incoming", client, client:SteamID(), messageName, len)
         if res == false then return end
 
         // remove header from length
@@ -233,7 +233,7 @@ Nova.registerAction("networking_restricted_message", "networking_restricted_mess
     end,
 })
 
-hook.Add("nova_networking_incoming", "networking_permission", function(client, strName, len)
+hook.Add("nova_networking_incoming", "networking_permission", function(client, steamID, strName, len)
     local messageName = Nova.getNetmessage(strName)
     // if the message is not in our pool, we don't care
     if not netMessages[messageName] then return end

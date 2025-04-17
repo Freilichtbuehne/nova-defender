@@ -29,6 +29,12 @@ local phrases = {
     ["networking_dos_action"] = "What should happen when player tried to cause server lags?",
     ["networking_dos_reason"] = "Reason for a player get's kicked or banned by causing server lags.",
     ["networking_dos_sensivity"] = "How sensitive should the detection be?",
+    ["networking_dos_crash_enabled"] = "Detect Decompression Attacks:\nClients can send highly compressed data to the server. When unpacked it can easily reach up to 400 MB of data and will cause the server to lag or crash. A client can send a maximum of 65 KB to the server. The compression used in Gmod (LZMA2) has usually a compression ration of about 20:1 (depends on data). So we would expect about 1 MB of decompressed data. A compression ratio of 1000:1 or even 7000:1 has no legitimate usecase. This options overwrites util.Decompress and does not require a restart. ",
+    ["networking_dos_crash_action"] = "What should happen if a player tries to crash the server?",
+    ["networking_dos_crash_ignoreprotected"] = "Ignore protected players.",
+    ["networking_dos_crash_maxsize"] = "Maximum decompressed size in MB:\nWhen reached, the decompression will be aborted.",
+    ["networking_dos_crash_ratio"] = "Maximum compression ratio:\nNormal data will have a compression ratio of about 20:1. A compression ratio of 1000:1 or even 7000:1 has no legitimate usecase. Do not set this too low as it will cause false positives.",
+    ["networking_dos_crash_whitelist"] = "Whitelisted netmessages that will be ignored.",
     ["networking_netcollector_actionAt"] = "At how many messages from a single client within 3 seconds should we take action? NEVER SET THIS TOO LOW!",
     ["networking_netcollector_dropAt"] = "At how many messages within 3 seconds should we ignore a netmessage. This is done to prevent a denial of service. Should be lower then above setting.",
     ["networking_restricted_message_action"] = "What should happen when a player sents a message to the server which he is not allowed to? Without manipulating the game or a bug it is not possible for players to send this message.",
@@ -162,6 +168,7 @@ local phrases = {
     ["config_detection_networking_backdoor"] = "Using a fake backdoor",
     ["config_detection_networking_spam"] = "Spamming netmessages",
     ["config_detection_networking_dos"] = "Causing Serverlags",
+    ["config_detection_networking_dos_crash"] = "Tried crashing server with large message",
     ["config_detection_networking_authentication"] = "Client can't authenticate with server",
     ["config_detection_networking_restricted_message"] = "Client sent admin-only message to server",
     ["config_detection_networking_exploit"] = "Using a fake exploit",
@@ -251,6 +258,9 @@ local phrases = {
 
     ["notify_networking_dos"] = "%s has caused a serverlag. Duration: %s within %d seconds",
     ["notify_networking_dos_action"] = "Causing serverlags. Duration: %s within %d seconds",
+
+    ["notify_networking_dos_crash"] = "%s tried to crash server with large message. Message: %q, Size: %s, Compression ratio: %s",
+    ["notify_networking_dos_crash_action"] = "Tried to crash server with large message. Message: %q ,Size: %s, Compression ratio: %s",
 
     ["notify_networking_restricted"] = "%s tried to send netmessage %q restricted to %q. This cannot be done without manipulation.",
     ["notify_networking_restricted_action"] = "Sent netmessage %q that only %q are allowed to. This cannot be done without manipulation.",

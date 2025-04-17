@@ -45,6 +45,13 @@ local patches = {
     ["1.8.0"] = function()
         Nova.log("i", "Deleting obsolete setting")
         Nova.deleteSetting("networking_screenshot_steam")
+    end,
+    ["1.10.0"] = function()
+        local cur = Nova.getSetting("banbypass_bypass_fingerprint_action", "ask")
+        if cur == "ban" then
+            Nova.log("i", "Disabling 'ban' action for fingerprint bypass")
+            Nova.setSetting("banbypass_bypass_fingerprint_action", "ask")
+        end
     end
 }
 

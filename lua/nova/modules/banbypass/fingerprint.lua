@@ -10,6 +10,10 @@
 // we only store the fingerprints of all players during runtime
 local fingerprintCache = {}
 
+// we store the frequency distribution of each fingerprint parameter
+local parameterCache = {}
+local parameterCacheCounts = {}
+
 // percentage of similarity to be considered a match
 local sensitivities = {
     ["very high"] = 79,
@@ -19,31 +23,28 @@ local sensitivities = {
 
 local minimumProperties = 12
 
-local allowedParams = {
-    ["sys_screen"] = true,
-    ["sys_os"] = true,
-    ["sys_arch"] = true,
-    ["sys_jit"] = true,
-    ["sys_win"] = true,
-    ["sys_country"] = true,
+local allParams = {
+    ["sys_screen"] = { ["match"] = 0, ["nomatch"] = 10, ["importance"] = 1 },
+    ["sys_os"] = { ["match"] = 0, ["nomatch"] = 100, ["importance"] = 1 },
+    ["sys_arch"] = { ["match"] = 0, ["nomatch"] = 0, ["importance"] = 1 },
+    ["sys_jit"] = { ["match"] = 0, ["nomatch"] = 0, ["importance"] = 1 },
+    ["sys_win"] = { ["match"] = 0, ["nomatch"] = 0, ["importance"] = 1 },
+    ["sys_country"] = { ["match"] = 0, ["nomatch"] = 5, ["importance"] = 1 },
 
-    ["gm_dx"] = true,
-    ["gm_games"] = true,
-    ["gm_window"] = true,
+    ["gm_dx"] = { ["match"] = 0, ["nomatch"] = 2, ["importance"] = 1 },
+    ["gm_games"] = { ["match"] = 0, ["nomatch"] = 0, ["importance"] = 1 },
+    ["gm_window"] = { ["match"] = 0, ["nomatch"] = 0, ["importance"] = 1 },
 
-    ["fl_auto"] = true,
-    ["fl_time_gminfo"] = true,
-    ["fl_time_lights"] = true,
-    ["fl_time_veh"] = true,
-    ["fl_time_se"] = true,
+    ["fl_auto"] = { ["match"] = 0, ["nomatch"] = 0, ["importance"] = 1 },
+    ["fl_time_gminfo"] = { ["match"] = 5, ["nomatch"] = 0, ["importance"] = 0.1 },
+    ["fl_time_lights"] = { ["match"] = 5, ["nomatch"] = 0, ["importance"] = 0.1 },
+    ["fl_time_veh"] = { ["match"] = 5, ["nomatch"] = 0, ["importance"] = 0.1 },
+    ["fl_time_se"] = { ["match"] = 5, ["nomatch"] = 0, ["importance"] = 0.1 },
 
-    ["net_asn"] = true,
-    ["net_port"] = true,
-    ["steam_info"] = true,
-    ["dummy"] = true,
+    ["net_asn"] = { ["match"] = 0, ["nomatch"] = 0, ["importance"] = 1 },
+    ["net_port"] = { ["match"] = 0, ["nomatch"] = 0, ["importance"] = 1 },
+    ["steam_info"] = { ["match"] = 0, ["nomatch"] = 0, ["importance"] = 1 },
 }
-
-// TODO: Add fixed properties (plus options) that raise similarity to max or min
 
 local fingerprintPayload = [[
     local seed, mod = 0, 2 ^ 32
@@ -178,16 +179,36 @@ local function SendPayload(ply, encryptionKey)
 end
 
 local function CompareSimilarity(a, b, minEntries)
-    local hits = 0
+    local numerator = 0
+    local denominator = 0
+
     for k, v in pairs(a or {}) do
         local toCompare = b[k]
         if not toCompare then continue end
-        //TODO: if specific parameters mismatch, set similarity to 0
+
+        // check if parameter is present in distribution
+        if not parameterCache[k] then continue end
+
+        // check if both values are present in frequency distribution
+        if not parameterCache[k][v] then
+            parameterCache[k][v] = math.log(parameterCacheCounts[k] / 2) * (allParams[k] or 1)
+        end
+        if not parameterCache[k][toCompare] then
+            parameterCache[k][toCompare] = math.log(parameterCacheCounts[k] / 2) * (allParams[k] or 1)
+        end
+
+        // calculate inverse frequency
+        denominator = denominator + parameterCache[k][v]
+
         if toCompare == v then
-            hits = hits + 1
+            numerator = numerator + parameterCache[k][v] + allParams[k]["match"]
+        else
+            numerator = numerator - allParams[k]["nomatch"]
         end
     end
-    return math.floor(hits / minEntries * 100)
+
+    if denominator == 0 then return 0 end
+    return math.Clamp(math.floor((numerator / denominator) * 100), 0, 100)
 end
 
 local function FingerprintResponse(ply, fp)
@@ -233,6 +254,51 @@ local function FingerprintResponse(ply, fp)
     fingerprintCache[ply:SteamID()] = fp
 end
 
+local function PrecalcWeights(bans)
+    // edge case: if we have no fingerprints, we can't precalc weights
+    if not bans or table.Count(bans) == 0 then return end
+
+    local weights = {}
+
+    // Precalculate the weights of each fingerprint parameter
+    for k, v in pairs(bans) do
+        if not v.fingerprint or type(v.fingerprint) == "string" then continue end
+
+        // count the number of each fingerprint parameter
+        for param, value in pairs(v.fingerprint) do
+            if not allParams[param] then continue end
+            if not weights[param] then
+                weights[param] = {
+                    ["total"] = 0,
+                    ["values"] = {}
+                }
+            end
+
+            weights[param].total = weights[param].total + 1
+
+            if not weights[param]["values"][value] then
+                weights[param]["values"][value] = 1
+            else
+                weights[param]["values"][value] = weights[param]["values"][value] + 1
+            end
+        end
+    end
+
+    // calculate the frequency distribution of each fingerprint parameter and store it in the cache
+    for param, value in pairs(weights) do
+        if not parameterCache[param] then
+            parameterCache[param] = {}
+            parameterCacheCounts[param] = value.total
+        end
+
+        for k2, v2 in pairs(value.values) do
+            local importance = allParams[param]["importance"] or 1
+            local idf = math.log(value.total / (v2 + 1))
+            parameterCache[param][k2] = idf * importance
+        end
+    end
+end
+
 Nova.getFingerprint = function(ply_or_steamid)
     local steamID = Nova.convertSteamID(ply_or_steamid)
     return fingerprintCache[steamID]
@@ -255,6 +321,12 @@ hook.Add("nova_banbypass_check", "banbypass_fingerprint", function(ply)
         ["steamid"] = nil,
         ["similarity"] = 0
     }
+
+    // check if we already have precalculated weights
+    if not parameterCache or table.Count(parameterCache) == 0 then
+        Nova.log("d", string.format("Precalculating weights for fingerprint check"))
+        Nova.profile(PrecalcWeights, bans)
+    end
 
     local function IterateFingerprints()
         for k, v in pairs(bans or {}) do
@@ -344,7 +416,7 @@ hook.Add("nova_init_loaded", "banbypass_fingerprint", function()
 
         // check if fingerprint contains only allowed parameters
         for k, v in pairs(fingerprint) do
-            if not allowedParams[k] then
+            if not allParams[k] then
                 Nova.log("w", string.format("Fingerprint response from %s contains invalid parameter %q: Indicates manipulation", Nova.playerName(ply), k))
                 return
             end
@@ -363,4 +435,5 @@ end)
 concommand.Add("nova_finger", function(ply, cmd, args)
     if ply != NULL and not Nova.isProtected(ply) then return end
     PrintTable(fingerprintCache)
+    PrintTable(parameterCache)
 end)

@@ -4,6 +4,13 @@
 local ipCache = {}
 local playersUsingVPN = {}
 
+local vpnASNs = {
+    "AS212238",
+}
+
+// curl https://otx.alienvault.com/api/v1/indicators/IPv4/169.150.197.104/general -H "X-OTX-API-KEY: b58ef12397a9272b882892115fb8e2b15752b30c3ce3b6d06d5b9a179ec7e1e3"
+
+
 Nova.queryIPScore = function(ip, ply, callback)
     local apiKey = Nova.getSetting("networking_vpn_apikey", "")
     if apiKey == "" or string.len(apiKey) < 32 then

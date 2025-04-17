@@ -25,6 +25,12 @@ local phrases = {
     ["networking_dos_action"] = "当玩家试图导致服务器延迟时应该发生什么？",
     ["networking_dos_reason"] = "玩家因试图导致服务器延迟而被踢出或封禁的原因。",
     ["networking_dos_sensivity"] = "检测的灵敏度应该是多少？",
+    ["networking_dos_crash_enabled"] = "检测解压缩攻击：\n客户可以向服务器发送高度压缩的数据。解压缩后，数据量可轻松达到 400 MB，并会导致服务器滞后或崩溃。客户端最多只能向服务器发送 65 KB 的数据。Gmod 中使用的压缩方式（LZMA2）的压缩率通常约为 20:1（取决于数据）。因此，我们预计会有大约 1 MB 的解压缩数据。1000:1甚至7000:1的压缩比并没有合理的用途。该选项会覆盖 util.Decompress，不需要重启。",
+    ["networking_dos_crash_action"] = "如果玩家试图让服务器崩溃会发生什么？",
+    ["networking_dos_crash_ignoreprotected"] = "忽略受保护的玩家。",
+    ["networking_dos_crash_maxsize"] = "最大解压缩大小（单位：MB）：\n达到时，解压缩将被中止。",
+    ["networking_dos_crash_ratio"] = "最大压缩比：\n正常数据的压缩比约为 20:1。1000:1甚至7000:1的压缩率都没有合法的用途。请勿设置过低，否则会导致误报。",
+    ["networking_dos_crash_whitelist"] = "将被忽略的白名单网络信息",
     ["networking_netcollector_actionAt"] = "在3秒内从单个客户端接收到多少条消息时我们应该采取行动？永远不要设置得太低！",
     ["networking_netcollector_dropAt"] = "在3秒内我们应该忽略多少条消息。这样做是为了防止拒绝服务。应该低于上面的设置。",
     ["networking_restricted_message_action"] = "当玩家向服务器发送他不被允许的消息时应该发生什么？如果没有操纵游戏或bug，玩家不可能发送此消息。",
@@ -148,6 +154,7 @@ local phrases = {
     ["config_detection_networking_backdoor"] = "使用假后门",
     ["config_detection_networking_spam"] = "垃圾信息网络消息",
     ["config_detection_networking_dos"] = "导致服务器延迟",
+    ["config_detection_networking_dos_crash"] = "尝试用大信息使服务器崩溃",
     ["config_detection_networking_authentication"] = "客户端无法与服务器进行认证",
     ["config_detection_networking_restricted_message"] = "客户端向服务器发送仅管理员可用的消息",
     ["config_detection_networking_exploit"] = "使用假漏洞",
@@ -235,6 +242,9 @@ local phrases = {
 
     ["notify_networking_dos"] = "%s 导致了服务器延迟。持续时间：%s 在 %d 秒内",
     ["notify_networking_dos_action"] = "导致服务器延迟。持续时间：%s 在 %d 秒内",
+
+    ["notify_networking_dos_crash"] = "%s 试图通过大信息使服务器崩溃。信息： %q，大小：%s，压缩率：%s"，
+    ["notify_networking_dos_crash_action"] = "试图用大信息使服务器崩溃。信息： %q ,Size: %s, Compression ratio: %s",
 
     ["notify_networking_restricted"] = "%s 尝试发送仅限 %q 的网络消息 %q。没有操纵是做不到的。",
     ["notify_networking_restricted_action"] = "发送了仅 %q 允许的网络消息 %q。没有操纵是做不到的。",

@@ -54,14 +54,20 @@ Nova.setSetting("networking_netcollector_spam_action", "ask", true, true, {"kick
 Nova.setSetting("networking_netcollector_spam_reason", "DoS", true, true, nil, true)
 Nova.setSetting("networking_netcollector_actionAt", 500, true, true)
 Nova.setSetting("networking_netcollector_dropAt", 200, true, true)
+Nova.setSetting("networking_netcollector_dump", false, true, true, nil, true)
+Nova.setSetting("networking_netcollector_checkinterval", 3, false, true)
 
 Nova.setSetting("networking_dos_action", "ask", true, true, {"kick", "ban", "notify", "ask", "nothing"})
 Nova.setSetting("networking_dos_reason", "DoS", true, true, nil, true)
 Nova.setSetting("networking_dos_sensivity", "medium", true, true, {"high", "medium", "low"}, true)
-
-Nova.setSetting("networking_netcollector_dump", false, true, true, nil, true)
-Nova.setSetting("networking_netcollector_checkinterval", 3, false, true)
 Nova.setSetting("networking_dos_checkinterval", 5, false, true)
+
+Nova.setSetting("networking_dos_crash_enabled", true, true, true)
+Nova.setSetting("networking_dos_crash_action", "ask", true, true, {"kick", "ban", "notify", "ask", "nothing"})
+Nova.setSetting("networking_dos_crash_ignoreprotected", true, true, true, nil, true)
+Nova.setSetting("networking_dos_crash_maxsize", 200, true, true, nil, true)
+Nova.setSetting("networking_dos_crash_ratio", 500, true, true, nil, true)
+Nova.setSetting("networking_dos_crash_whitelist", {}, true, true, nil, true)
 
 /*===============================
 	Exploits/Backdoors

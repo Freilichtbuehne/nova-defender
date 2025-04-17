@@ -29,6 +29,12 @@ local phrases = {
     ["networking_dos_action"] = "Was sollte passieren, wenn ein Spieler versucht, Server-Lags zu verursachen?",
     ["networking_dos_reason"] = "Grund für den Kick oder Bann eines Spielers, wenn er Server-Lags verursacht.",
     ["networking_dos_sensivity"] = "Sensitivität Server-Lag Erkennung",
+    ["networking_dos_crash_enabled"] = "Erkenne Dekomprimierungs-Angriffe:\nClients können stark komprimierte Daten an den Server senden. Wenn sie entpackt werden, können sie leicht bis zu 400 MB an Daten erreichen und den Server zum laggen oder Absturz bringen. Ein Client kann maximal 65 KB an den Server senden. Daten haben  normalerweise eine Kompressionsrate von ungefähr 20:1 (abhängig von den Daten). Wir würden also etwa 1 MB dekomprimierte Daten erwarten. Ein Kompressionsverhältnis von 1000:1 oder sogar 7000:1 hat keinen legitimen Anwendungsfall. Diese Option überschreibt util.Decompress und erfordert keinen Neustart.",
+    ["networking_dos_crash_action"] = "Was soll passieren, wenn ein Spieler versucht, den Server zum Absturz zu bringen?",
+    ["networking_dos_crash_ignoreprotected"] = "Geschützte Spieler ignorieren. ",
+    ["networking_dos_crash_maxsize"] = "Maximale dekomprimierte Größe in MB:\nWenn sie erreicht ist, wird die Dekomprimierung abgebrochen.",
+    ["networking_dos_crash_ratio"] = "Maximales Kompressionsverhältnis:\nNormale Daten haben ein Kompressionsverhältnis von etwa 20:1. Ein Kompressionsverhältnis von 1000:1 oder sogar 7000:1 hat keinen legitimen Anwendungsfall. Setzen Sie diesen Wert nicht zu niedrig an, da dies zu Fehlalarmen führt.",
+    ["networking_dos_crash_whitelist"] = "Gewhitelistete Netmessages die ignoriert werden.",
     ["networking_netcollector_actionAt"] = "Ab wie vielen Nachrichten von einem einzelnen Spieler innerhalb von 3 Sekunden sollt gehandelt werden? SETZE DIESEN WERT NIE ZU TIEF!",
     ["networking_netcollector_dropAt"] = "Ab wie vielen Nachrichten innerhalb von 3 Sekunden sollten diese ignoriert werden. Dies geschieht, um einen Denial of Service zu verhindern. Sollte niedriger sein als die obige Einstellung.",
     ["networking_restricted_message_action"] = "Was soll passieren, wenn ein Spieler eine Netmessage an den Server sendet, die er nicht senden darf? Ohne Manipulation des Spiels oder einen Bug ist es für Spieler nicht möglich, diese Netmessage zu senden.",
@@ -162,6 +168,7 @@ local phrases = {
     ["config_detection_networking_backdoor"] = "Nutzung einer Fake-Backdoor",
     ["config_detection_networking_spam"] = "Spammt Netmessages",
     ["config_detection_networking_dos"] = "Verursacht Serverlags",
+    ["config_detection_networking_dos_crash"] = "ersuchter Serverabsturz mit großem Paket",
     ["config_detection_networking_authentication"] = "Kann sich nicht mit Server authentifizieren",
     ["config_detection_networking_restricted_message"] = "Sendet Netmessage nur für Admins an Server",
     ["config_detection_networking_exploit"] = "Benutzt Fake-Exploit",
@@ -251,6 +258,9 @@ local phrases = {
 
     ["notify_networking_dos"] = "%s hat einen Serverlag verursacht. Dauer: %s innerhalb von %d Sekunden",
     ["notify_networking_dos_action"] = "Verursacht Serverlags. Dauer: %s innerhalb von %d Sekunden",
+
+    ["notify_networking_dos_crash"] = "%s hat versucht Server mit großem Paket zum Absturz zu bringen. Nachricht: %q, Größe: %s, Komprimierungsrate: %s",
+    ["notify_networking_dos_crash_action"] = "Versuchter Servercrash mit großen Paket. Nachricht: %q ,Größe: %s, Komprimierungsrate: %s",
 
     ["notify_networking_restricted"] = "%s versucht Netmessage %q beschränkt auf %q zu senden. Dies kann ohne Manipulation nicht geschehen.",
     ["notify_networking_restricted_action"] = "Hat Netmessage %q beschränkt auf %q gesendet. Dies kann ohne Manipulation nicht geschehen.",
