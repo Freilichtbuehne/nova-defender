@@ -243,7 +243,7 @@ local phrases = {
     ["notify_networking_dos"] = "%s 导致了服务器延迟。持续时间：%s 在 %d 秒内",
     ["notify_networking_dos_action"] = "导致服务器延迟。持续时间：%s 在 %d 秒内",
 
-    ["notify_networking_dos_crash"] = "%s 试图通过大信息使服务器崩溃。信息： %q，大小：%s，压缩率：%s"，
+    ["notify_networking_dos_crash"] = "%s 试图通过大信息使服务器崩溃。信息： %q，大小：%s，压缩率：%s",
     ["notify_networking_dos_crash_action"] = "试图用大信息使服务器崩溃。信息： %q ,Size: %s, Compression ratio: %s",
 
     ["notify_networking_restricted"] = "%s 尝试发送仅限 %q 的网络消息 %q。没有操纵是做不到的。",
