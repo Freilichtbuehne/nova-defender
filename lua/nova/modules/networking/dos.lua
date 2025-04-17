@@ -321,7 +321,9 @@ local function OverwriteDecompress(active)
             // 5. The function is used by a whitelisted netmessage (settings)
                 netWhitelist[lastMessage] or
             // 6. The function is used by a protected player (settings)
-                (ignoreAdmins and Nova.isProtected(lastClient))
+                (ignoreAdmins and Nova.isProtected(lastClient)) or 
+            // 7. The compressed size is not zero
+                compressedSize == 0
             then
                 return Nova.overrides["util.Decompress"](compressed, limit, ...)
             end
@@ -382,7 +384,7 @@ local function OverwriteDecompress(active)
                 )
             end
 
-            return decomposed
+            return decompressed
         end
     elseif Nova.overrides["util.Decompress"] then
         util.Decompress = Nova.overrides["util.Decompress"]
