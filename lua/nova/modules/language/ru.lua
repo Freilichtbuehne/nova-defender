@@ -269,11 +269,11 @@ local phrases = {
     ["notify_networking_screenshot_failed_multiple"] = "Скриншот для %s не удался: Вы можете сделать только один скриншот за один раз",
     ["notify_networking_screenshot_failed_progress"] = "Скриншот для %s не удался: Выполняется другой скриншот для этого игрока.",
     ["notify_networking_screenshot_failed_timeout"] = "Скриншот для %s не удался: Не получено ни одного скриншота от клиента.",
-    ["notify_networking_screenshot_failed_empty"] = "Скриншот для %s не удался: Ответ пуст. Это может произойти, если он был заблокирован читом или игрок находится в меню выхода из игры.", 
+    ["notify_networking_screenshot_failed_empty"] = "Скриншот для %s не удался: Ответ пуст. Это может произойти, если он был заблокирован читом или игрок находится в меню выхода из игры.",
 
     ["notify_networking_auth_failed"] = "%s не удалось пройти авторизацию на сервере. Это также может быть вызвано медленным соединением.",
     ["notify_networking_auth_failed_action"] = "Не удалось пройти авторизацию на сервере. Это также может быть вызвано медленным соединением.",
-    
+
     ["notify_networking_sendlua_failed"] = "%s блокирует выполнение кода Nova Defender. Это также может быть вызвано медленным соединением.",
     ["notify_networking_sendlua_failed_action"] = "Блокирует выполнение кода Nova Defender. Это также может быть вызвано медленным соединением.",
 
@@ -291,7 +291,7 @@ local phrases = {
     ["notify_functions_action_notify"] = "Администратор %s предпринял следующее действие против обнаружения (%q) игрока %s: %q.",
     ["notify_functions_allow_success"] = "Обнаружение успешно исключено.",
     ["notify_functions_allow_failed"] = "Невозможно исключить это обнаружение.",
-    
+
     ["notify_custom_extension_ddos_protection_attack_started"] = "Обнаружена DDoS-атака. Открыть меню с помощью !nova для просмотра статуса в реальном времени",
     ["notify_custom_extension_ddos_protection_attack_stopped"] = "DDoS-атака остановлена. Откройте меню с помощью !nova для получения подробной информации",
     /*

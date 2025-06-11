@@ -266,12 +266,12 @@ local cacheLookup = {}
 local stringReplaceDummy = GenerateKey("STEAM_0:0:0")
 
 // the lua code is sent to the client and executed
-Nova.sendLua = function(ply_or_steamid, lua, options)
+Nova.sendLua = function(ply_or_steamid, lua, _options)
     local steamID = Nova.convertSteamID(ply_or_steamid)
     local ply = Nova.fPlayerBySteamID(steamID)
     if not IsValid(ply) or not ply:IsPlayer() then return end
 
-    local options = options or {
+    local options = _options or {
         // enabled obfuscation (encoding & encryption & virtualisation) for the code
         // this option is computational expensive and should be used in combination with "cache"
         ["protected"] = false,

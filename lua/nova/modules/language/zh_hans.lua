@@ -35,7 +35,7 @@ local phrases = {
     ["networking_netcollector_dropAt"] = "在3秒内我们应该忽略多少条消息。这样做是为了防止拒绝服务。应该低于上面的设置。",
     ["networking_restricted_message_action"] = "当玩家向服务器发送他不被允许的消息时应该发生什么？如果没有操纵游戏或bug，玩家不可能发送此消息。",
     ["networking_restricted_message_reason"] = "玩家因向服务器发送他不被允许的消息而被踢出或封禁的原因。",
-    ["networking_sendlua_gm_express"]="激活 gm_express:\n性能大幅提升，尤其是对于大型服务器。不再通过内置的 Netmessages（速度慢）发送大量数据，而是通过外部提供商（gmod.express）通过 HTTPS 将这些数据传输到客户端。这将加快客户端的加载时间并减轻服务器的负担。不过，该选项依赖于 gmod.express。如果该页面意外无法访问，客户端的身份验证将失败。无法连接到 gmod.express 的新客户端将退回到传统方法。此选项需要安装 gm_express。更多详情请参阅'健康'选项卡",
+    ["networking_sendlua_gm_express"] = "激活 gm_express:\n性能大幅提升，尤其是对于大型服务器。不再通过内置的 Netmessages（速度慢）发送大量数据，而是通过外部提供商（gmod.express）通过 HTTPS 将这些数据传输到客户端。这将加快客户端的加载时间并减轻服务器的负担。不过，该选项依赖于 gmod.express。如果该页面意外无法访问，客户端的身份验证将失败。无法连接到 gmod.express 的新客户端将退回到传统方法。此选项需要安装 gm_express。更多详情请参阅'健康'选项卡",
     ["networking_sendlua_authfailed_action"] = "当玩家没有响应Nova Defender认证时应该发生什么？如果忽略，不能保证反作弊或其他客户端机制的工作。",
     ["networking_sendlua_authfailed_reason"] = "玩家因没有响应Nova Defender认证而被踢出或封禁的原因。",
     ["networking_sendlua_validationfailed_action"] = "当玩家阻止Nova Defender代码时应该发生什么？",
@@ -73,7 +73,7 @@ local phrases = {
     ["networking_post_overwrite"] = "检查http.post（发送数据）：\n覆盖http.post函数。发送HTTP请求可以被攻击者用来窃取服务器上的文件。然而，这种方法也可以被绕过或禁用DRM系统。",
     ["networking_post_whitelist"] = "启用白名单：\n只允许已添加到列表中的域名和IP地址。",
     ["networking_post_blockunsafe"] = "阻止不安全的请求：\n来自不安全来源（如控制台或RunString）的请求被阻止。",
-    
+
     ["networking_ddos_collect_days"] = "IP 地址收集天数：\n DDoS 防护会收集过去 n 天内所有已连接玩家的 IP 地址。当检测到 DDoS 攻击时，除了过去 n 天内连接的玩家外，所有与服务器的通信都会被阻止。服务器会忽略过去 n 天内未连接服务器的所有玩家。他们将看不到服务器。",
     ["networking_ddos_notify"] = "检测到或阻止 DDoS 攻击时显示通知。",
     -- Banbypass
@@ -252,7 +252,7 @@ local phrases = {
     ["notify_networking_screenshot_failed_multiple"] = "%s 的截图失败：一次只能进行一次截图",
     ["notify_networking_screenshot_failed_progress"] = "%s 的截图失败：此玩家的其他截图正在进行中。",
     ["notify_networking_screenshot_failed_timeout"] = "%s 的截图失败：未从客户端收到截图。",
-    ["notify_networking_screenshot_failed_empty"] = "%s 的截图失败：答案为空。如果被作弊器阻止或玩家处于逃生菜单中，就会出现这种情况。", 
+    ["notify_networking_screenshot_failed_empty"] = "%s 的截图失败：答案为空。如果被作弊器阻止或玩家处于逃生菜单中，就会出现这种情况。",
 
     ["notify_networking_auth_failed"] = "%s 无法与服务器进行认证。这也可能是由于连接慢导致的。",
     ["notify_networking_auth_failed_action"] = "无法与服务器进行认证。这也可能是由于连接慢导致的。",
@@ -273,8 +273,7 @@ local phrases = {
     ["notify_functions_action_notify"] = "管理员 %s 针对 %s 的检测 %q 采取了以下行动：%q。",
     ["notify_functions_allow_success"] = "成功排除检测。",
     ["notify_functions_allow_failed"] = "无法排除此检测。",
-    
-    
+
     ["notify_custom_extension_ddos_protection_attack_started"] = "检测到 DDoS 攻击。使用 !nova 打开菜单，查看实时状态",
     ["notify_custom_extension_ddos_protection_attack_stopped"] = "DDoS 攻击停止。用 !nova 打开菜单，了解详情",
     -- Health
@@ -402,7 +401,7 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["health_check_nova_ddos_protection_version_desc_long"] =
     [[请从GitHub下载最新版本：
  https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
-    
+
     -- Server
     ["server_general_suffix"] = "每次踢出、封禁或拒绝消息时附加的文本。例如您的Teamspeak、Discord或其他支持站点。",
 

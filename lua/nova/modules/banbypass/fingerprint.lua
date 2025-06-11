@@ -78,7 +78,7 @@ local fingerprintPayload = [[
         ["gm_games"] = util.SHA1(util.TableToJSON(table.MemberValuesFromKey(engine.GetGames(), "installed")) or ""),
         ["gm_window"] = tostring(system.IsWindowed()),
 
-        ["fl_auto"] = util.SHA1(file.Read("cfg/autoexec.cfg", "GAME") or ""),
+        --["fl_auto"] = util.SHA1(file.Read("cfg/autoexec.cfg", "GAME") or ""),
         ["fl_time_gminfo"] = file.Time("gameinfo.txt", "GAME") > 0 and tostring(file.Time("gameinfo.txt", "GAME")) or nil,
         --["fl_time_lights"] = file.Time("lights.rad", "GAME") > 0 and tostring(file.Time("lights.rad", "GAME")) or nil,
         ["fl_time_veh"] = file.Time("lua/autorun/base_vehicles.lua", "GAME") > 0 and tostring(file.Time("lua/autorun/base_vehicles.lua", "GAME")) or nil,

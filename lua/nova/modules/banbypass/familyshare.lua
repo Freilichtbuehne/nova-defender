@@ -22,7 +22,7 @@ end
 Nova.getFamilyOwner = function(ply)
     if type(ply) != "Player" or not IsValid(ply) then return false end
 
-    local steamID = ply:SteamID()
+    //local steamID = ply:SteamID()
     local owner = ply:OwnerSteamID64()
 
     if not owner or owner == "0" then return false end

@@ -642,7 +642,7 @@ hook.Add("nova_init_loaded", "anticheat_createnetmessage", function()
             if not hasExpired then continue end
 
             if not Nova.getSetting("anticheat_check_manipulation", false) then continue end
-            
+
             Nova.startDetection(
                 "anticheat_detection",
                 steamID,

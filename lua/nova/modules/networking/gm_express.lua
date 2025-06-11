@@ -5,15 +5,15 @@ local playersEnabled = {}
 Nova.isPlayerExpressEnabled = function(ply_or_steamid, net_name)
     if not ply_or_steamid then return end
     if not Nova.expressEnabled then return false end
-    
+
     local steamID = Nova.convertSteamID(ply_or_steamid)
     // check if any message exist
     if not playersEnabled[steamID] then return false end
-    
+
     if net_name then
         return playersEnabled[steamID][net_name]
     end
-    
+
     return true
 end
 
@@ -35,7 +35,7 @@ end )
 
 local expressInitialized = false
 
-local function LoadConfig()    
+local function LoadConfig()
     local enabled = Nova.getSetting("networking_sendlua_gm_express", false)
 
     Nova.expressEnabled = expressInitialized and enabled
@@ -51,7 +51,7 @@ hook.Add( "ExpressLoaded", "nova_networking_express", function()
         return
     end
     expressInitialized = true
-    LoadConfig() 
+    LoadConfig()
 end )
 
 hook.Add("nova_config_setting_changed", "networking_gm_express", function(key, value, oldValue)

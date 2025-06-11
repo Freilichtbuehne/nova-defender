@@ -82,7 +82,7 @@ end
 
 function Nova.fileLogger:rotate()
     local date = os.date("%Y%m%d")
-    
+
     // rename the current file to oldname_date.txt
     local newName = string.Replace(self.filename, ".txt", "_%s.txt")
     newName = string.format(newName, date)
@@ -105,14 +105,14 @@ end
 
 function Nova.fileLogger:log(message)
     if not message then return end
-    
+
     // check if we need to rotate the log
     if self.currentLines >= self.lineLimit then
         self:rotate()
     end
-    
+
     local logLine = string.format("[%s] %s\n", os.date(Nova.config["language_time"]), message)
-    
+
     local f = file.Open(self.filename, "a", "DATA")
     f:Write(logLine)
     f:Close()

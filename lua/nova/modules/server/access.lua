@@ -10,7 +10,7 @@ local function WrongAttempt(steamID)
         failedAttempts[steamID].attempts = failedAttempts[steamID].attempts + 1
         if failedAttempts[steamID].attempts >= Nova.getSetting("server_access_password_max_attempts", 10) then
             failedAttempts[steamID].locked = true
-            Nova.log("i", string.format("User %s has been locked for too many join attempts with wrong password", name, steamID))
+            Nova.log("i", string.format("User %s has been locked for too many join attempts with wrong password", steamID))
         end
     end
 end

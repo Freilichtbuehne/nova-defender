@@ -44,7 +44,7 @@ local function SetUserGroup(ply_or_steamid, group)
         return
     end
     local plySteamID = ply:SteamID()
-    local plySteamID64 = ply:SteamID64()
+    //local plySteamID64 = ply:SteamID64()
 
     local oldGroup = ply:GetUserGroup()
 
@@ -80,7 +80,7 @@ local function RemoveUserGroup(ply_or_steamid)
     end
 
     local plySteamID = ply:SteamID()
-    local plySteamID64 = ply:SteamID64()
+    //local plySteamID64 = ply:SteamID64()
 
     local oldGroup = ply:GetUserGroup()
 

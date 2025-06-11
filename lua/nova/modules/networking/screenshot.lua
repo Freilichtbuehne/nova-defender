@@ -158,7 +158,7 @@ hook.Add("nova_init_loaded", "networking_screenshot", function()
         if not screenshotProgress[plySteamID] then return end
 
         local totalPackages = net.ReadUInt(6)               if not totalPackages then return end
-        
+
         // check if screenshot failed
         if totalPackages == 0 then
             local requestedByServer = screenshotProgress[plySteamID]["server"]
@@ -175,11 +175,11 @@ hook.Add("nova_init_loaded", "networking_screenshot", function()
                     }, client)
                 end
             end
-            
+
             screenshotProgress[plySteamID] = nil
             return
         end
-        
+
         local index = net.ReadUInt(6)                       if not index then return end
         local partitionSize = net.ReadUInt(16)              if not partitionSize then return end
         local partitionData = net.ReadData(partitionSize)   if not partitionData then return end

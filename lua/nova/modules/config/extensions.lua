@@ -9,7 +9,7 @@ Nova.registerExtension = function(id, version)
     if Nova.isVersionHigherOrEqual(version, Nova.extensions[id]["latest_version"]) then
         Nova.extensions[id]["up_to_date"] = true
     end
-    
+
     // Step 3: Set the version
     Nova.extensions[id]["version"] = version
 

@@ -321,7 +321,7 @@ local function OverwriteDecompress(active)
             // 5. The function is used by a whitelisted netmessage (settings)
                 netWhitelist[lastMessage] or
             // 6. The function is used by a protected player (settings)
-                (ignoreAdmins and Nova.isProtected(lastClient)) or 
+                (ignoreAdmins and Nova.isProtected(lastClient)) or
             // 7. The compressed size is not zero
                 compressedSize == 0
             then
@@ -358,7 +358,7 @@ local function OverwriteDecompress(active)
                     "networking_dos_crash_action"
                 )
             end
-            
+
             local decompressedSize = decompressed and #decompressed or 0
             local ratio = math.Round(decompressedSize / compressedSize, 2)
             Nova.log("d",
@@ -369,7 +369,7 @@ local function OverwriteDecompress(active)
                 ratio,
                 ConvertTime(deltaTime))
             )
-            
+
             // Check for compression ratio
             if decompressedSize > minDecompressedSize and ratio > maxCompressionRatio then
                 Nova.startDetection(
