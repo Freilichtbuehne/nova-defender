@@ -37,9 +37,9 @@ local function AddBanToDatabase(ban)
         local isUnBanOnSight = databaseCache[ban.steamid].unban_on_sight == 1
         local alreadyOnlineBanned = databaseCache[ban.steamid].secret_key != ""
 
-        // player is already banned (let him connect an ban him again)
+        // player is already banned (let them connect an ban them again)
         if isBanned and not isBanOnSight then
-            Nova.log("d", string.format("Player %s is already banned: Set him to ban on sight again", Nova.playerName(ban.steamid)))
+            Nova.log("d", string.format("Player %s is already banned: Set them to ban on sight again", Nova.playerName(ban.steamid)))
             // if player is unban on sight, set it back to ban on sight
             Nova.query("UPDATE nova_bans SET is_banned = 0, unban_on_sight = 0, ban_on_sight = 1 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
             databaseCache[ban.steamid].is_banned = 0
@@ -48,7 +48,7 @@ local function AddBanToDatabase(ban)
             return
         // player is not banned and ban on sight (player came online)
         elseif not isBanned and isBanOnSight then
-            Nova.log("d", string.format("Player %s is ban on sight: Set him to banned", Nova.playerName(ban.steamid)))
+            Nova.log("d", string.format("Player %s is ban on sight: Set them to banned", Nova.playerName(ban.steamid)))
             // if player is unban on sight, set it back to ban on sight
             Nova.query("UPDATE nova_bans SET is_banned = 1, unban_on_sight = 0, ban_on_sight = 0 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
             Nova.query("UPDATE nova_bans SET fingerprint = " .. Nova.sqlEscape(ban.fingerprint) .. ", ip = '" .. ban.ip .. "', secret_key = '" .. ban.secret_key .. "' WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
@@ -62,7 +62,7 @@ local function AddBanToDatabase(ban)
             return
         // player is unban on sight an was already online banned (revert unban and set to banned)
         elseif not isBanned and isUnBanOnSight and alreadyOnlineBanned then
-            Nova.log("d", string.format("Player %s is unban on sight: Set him to banned again", Nova.playerName(ban.steamid)))
+            Nova.log("d", string.format("Player %s is unban on sight: Set them to banned again", Nova.playerName(ban.steamid)))
             // if player is unban on sight, set it back to ban on sight
             Nova.query("UPDATE nova_bans SET is_banned = 1, unban_on_sight = 0, ban_on_sight = 0 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
 
@@ -72,7 +72,7 @@ local function AddBanToDatabase(ban)
             return
         // player is unban on sight an was not online banned (revert unban and set to ban on sight)
         elseif not isBanned and isUnBanOnSight and not alreadyOnlineBanned then
-            Nova.log("d", string.format("Player %s is unban on sight: Set him to ban on sight again as we still wait for a online ban", Nova.playerName(ban.steamid)))
+            Nova.log("d", string.format("Player %s is unban on sight: Set them to ban on sight again as we still wait for a online ban", Nova.playerName(ban.steamid)))
             // if player is unban on sight, set it back to ban on sight
             Nova.query("UPDATE nova_bans SET is_banned = 0, unban_on_sight = 0, ban_on_sight = 1 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
 
@@ -218,7 +218,7 @@ Nova.banPlayer = function(ply_or_steamid, reason, comment, internalReason, force
             time = os.time(),
             ban_on_sight = 1,
             unban_on_sight = 0,
-            // we generate secrets if he joins the server the next time
+            // we generate secrets if they join the server the next time
             secret_key = "",
             _temp_secret_convar = "",
             is_banned = 0,
@@ -477,10 +477,10 @@ Nova.registerAction("banbypass_ipcheck", "banbypass_bypass_ipcheck_action", {
 })
 
 local function CheckServerSideBan(ply)
-    // check if player is protected and unban him if he is (however) banned
+    // check if player is protected and unban them if they are (however) banned
     if Nova.isProtected(ply) and Nova.isPlayerBanned(ply) then
         Nova.log("i", string.format("Unbanning %s: protected group", Nova.playerName(ply)))
-        // we sent him lua code to remove client side ban
+        // we sent them lua code to remove client side ban
         Nova.unbanPlayer(ply)
         return
     end
@@ -490,7 +490,7 @@ local function CheckServerSideBan(ply)
         // if player is unban on sight
         if ban.unban_on_sight == 1 then
             Nova.log("i", string.format("Unbanning %s: unban on sight", Nova.playerName(ply)))
-            // we sent him lua code to remove client side ban
+            // we sent them lua code to remove client side ban
             Nova.unbanPlayer(ply)
             return
         end
@@ -502,7 +502,7 @@ local function CheckServerSideBan(ply)
             return
         end
 
-        // if player is marked as banned we ban him securely again (however he got here...)
+        // if player is marked as banned we ban them securely again (however they got here...)
         if ban.is_banned == 1 then
             Nova.log("i", string.format("Banning %s: marked as banned", Nova.playerName(ply)))
             Nova.banPlayer(ply, ban.reason, ban.comment, ban.internal_reason, true)
@@ -543,19 +543,19 @@ hook.Add("nova_base_checkpassword", "banbypass_checkban", function(steamID, ipAd
     // if player is protected, we don't need to check anything
     if Nova.isProtected(steamID) then return end
 
-    // if player is ban on sight we let him first connect and later take action
+    // if player is ban on sight we let them first connect and later take action
     if databaseCache[steamID].ban_on_sight == 1 then
         Nova.log("i", string.format("Letting %s connect to the server: ban on sight", Nova.playerName(steamID)))
         return
     end
 
-    // if player is unban on sight we let him first connect and later take action
+    // if player is unban on sight we let them first connect and later take action
     if databaseCache[steamID].unban_on_sight == 1 then
         Nova.log("i", string.format("Letting %s connect to the server: unban on sight", Nova.playerName(steamID)))
         return
     end
 
-    // if player is banned we don't let him connect
+    // if player is banned we don't let them connect
     if databaseCache[steamID].is_banned == 1 then
         local banReason = databaseCache[steamID].reason or Nova.getSetting("banbypass_ban_default_reason", "Server Security")
         local reasonSuffix = Nova.getSetting("server_general_suffix", "")
@@ -586,7 +586,7 @@ hook.Add("nova_init_loaded", "banbypass_checkban", function()
     Nova.log("d", "Creating ban bypass database cache and netmessages")
     Nova.netmessage("banbypass_checkclientsideban")
 
-    // client sents us his stored secret and we check if he is banned
+    // client sents us his stored secret and we check if they are banned
     Nova.netReceive(Nova.netmessage("banbypass_checkclientsideban"), {auth = true}, function(len, ply)
         local secretKey = net.ReadString() or ""
         local conVar = net.ReadString() or "30"
@@ -629,7 +629,7 @@ hook.Add("nova_init_loaded", "banbypass_checkban", function()
         banRelatedTo = (banRelatedTo == "") and "UNKNOWN" or banRelatedTo
         evidence = string.sub(evidence, 1, -3)
 
-        // if he was client side banned we also safely ban this account as well
+        // if they were client side banned we also safely ban this account as well
         // with this we also override the existing clientside banprotection with a new one
         Nova.startDetection("banbypass_clientcheck", ply, banRelatedTo, evidence, "banbypass_bypass_clientcheck_action")
     end)
@@ -642,10 +642,10 @@ hook.Add("nova_banbypass_onplayerban", "banbypass_rescan", function(ply_or_steam
     Nova.log("i", string.format("Initiating a rescan of all players because %s got banned", Nova.playerName(baninfo.steamid)))
     local bannedSteamID = Nova.convertSteamID(ply_or_steamid)
     for k,v in ipairs(player.GetHumans() or {}) do
-        // if he is still connected we don't need to rescan him
+        // if they are still connected we don't need to rescan them
         if v:SteamID() == bannedSteamID then continue end
 
-        // if ply is ban/unban on sight we don't need to rescan him
+        // if ply is ban/unban on sight we don't need to rescan them
         local ban = databaseCache[v:SteamID()]
         if ban and (ban.unban_on_sight == 1 or ban.ban_on_sight == 1) then continue end
 

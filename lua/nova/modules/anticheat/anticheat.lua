@@ -432,7 +432,7 @@ Nova.verifyAnticheat = function(ply_or_steamid, callback)
             return
         end
 
-        // check if he has time left
+        // check if they have time left
         if verificationLookup[identifier].duration < verificationTimeout then
             verificationLookup[identifier].duration = verificationLookup[identifier].duration + 5
             timer.Simple(5, Check)
@@ -540,7 +540,7 @@ hook.Add("nova_init_loaded", "anticheat_createnetmessage", function()
             return
         end
 
-        // let's get rid of him
+        // let's get rid of them
         if not autoclickDetections[identifier] then
             Nova.startDetection("anticheat_detection", steamID, identifier, reason, "anticheat_action")
         // special case for autoclick detection

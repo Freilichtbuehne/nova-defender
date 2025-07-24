@@ -68,7 +68,7 @@ Nova.config["menu_chatcommand"] = "!nova"
 ===============================*/
 
 // is a player a trustworthy player? (e.g. donator, high level)
-// if player is staff or protected, he will allways be trusted
+// if player is staff or protected, they will allways be trusted
 Nova.config["banbypass_is_user_trusted"] = function(ply)
 
 	//======= Example: Donators are trusted ==========

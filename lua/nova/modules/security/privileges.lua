@@ -283,7 +283,7 @@ hook.Add("nova_config_setting_changed", "privileges_group_protection", function(
             timer.Simple(1, function()
                 Nova.kickPlayer(ply, Nova.getSetting("security_privileges_group_protection_kick_reason", "Protected Usergroup Removed"), "admin_manual")
             end)
-            Nova.log("i", string.format("%s was removed from the protected players list. Setting his usergroup to default and kick him.", Nova.playerName(ply)))
+            Nova.log("i", string.format("%s was removed from the protected players list. Setting his usergroup to default and kick them.", Nova.playerName(ply)))
         end
     end
 

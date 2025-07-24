@@ -1,7 +1,7 @@
 
 /*
 	We block netmessages if a player is spamming
-    If player reaches max netmessages, he get's a punishment
+    If player reaches max netmessages, they get a punishment
 
     If a server has a net.Receive function that does big calculations (e.g. file.Find or ents.GetAll),
     a client could cause a denial of service by flooding the server with this netmessage.
@@ -142,7 +142,7 @@ hook.Add("nova_networking_incoming", "networking_counter", function(client, stea
     if activeNetCounter[steamID].___total_messages > dropAt then
         // just warn once
         if activeNetCounter[steamID].___total_messages - 1 == dropAt then
-            Nova.log("w", string.format("Ignoring netmessages from %s as he exceeded the limit of %d netmessages per %d seconds.", Nova.playerName(client), dropAt, Nova.getSetting("networking_netcollector_checkinterval", 3)))
+            Nova.log("w", string.format("Ignoring netmessages from %s as they exceeded the limit of %d netmessages per %d seconds.", Nova.playerName(client), dropAt, Nova.getSetting("networking_netcollector_checkinterval", 3)))
             Nova.notify({
                 ["severity"] = "w",
                 ["module"] = "network",

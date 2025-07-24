@@ -21,7 +21,7 @@ hook.Add("nova_banbypass_onplayerban", "networking_quarantine", function(ply_or_
     local ply = Nova.fPlayerBySteamID(steamID)
     if not IsValid(ply) or not ply:IsPlayer() then return end
 
-    Nova.log("d", string.format("Quarantining %s because he is getting banned", Nova.playerName(steamID)))
+    Nova.log("d", string.format("Quarantining %s because they are getting banned", Nova.playerName(steamID)))
 
     // quarantine the player
     Nova.setQuarantine(ply, true)
@@ -49,7 +49,7 @@ end)
 hook.Add("nova_base_startcommand", "networking_quarantine", function(ply, cmd, steamID)
     if quarantinedPlayers[steamID or ""] then
         // block all commands from quarantined players
-        // just allow him to walk, so that he doesn't disconnect immediately
+        // just allow them to walk, so that they dont disconnect immediately
         cmd:ClearButtons()
         //cmd:ClearMovement()
     end

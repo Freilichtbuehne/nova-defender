@@ -204,7 +204,7 @@ local function SendAuthPayload(ply)
     if not IsValid(ply) or not ply:IsPlayer() then return end
 
     // we test if everything works by requesting the client to us a response
-    // if the client responds, he is authenticated
+    // if the client responds, they are authenticated
     local authenticationPayload = string.format([[
         timer.Simple(0, function()
             net.Start(%q)
@@ -451,7 +451,7 @@ hook.Add("nova_init_loaded", "networking_sendlua", function()
         end
     end)
 
-    // a client is obligated to send a confirmation for each protected lua payload he executes 
+    // a client is obligated to send a confirmation for each protected lua payload they execute 
     Nova.netReceive(Nova.netmessage("functions_authenticate_global"), function(len, ply)
         local steamID = ply:SteamID()
         local clientKey = net.ReadString() or ""

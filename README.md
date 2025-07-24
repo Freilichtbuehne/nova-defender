@@ -154,7 +154,7 @@ This addon was continuously tested on a large DarkRP and TTT server for over two
 With an average of 50 players, cheaters were reliably banned, ban evasions were detected, and the servers were protected.
 
 ###  Can I use this addon alongside other anticheat addons?
-Yes, but you shouldn't. The addon that detects the cheater first will ban him first. If you don't care that anticheat bans are spread over several addons, you can use more than one. Be careful, though, because anticheat systems often conflict with each other. This can cause performance issues and false positives.
+Yes, but you shouldn't. The addon that detects the cheater first will ban them first. If you don't care that anticheat bans are spread over several addons, you can use more than one. Be careful, though, because anticheat systems often conflict with each other. This can cause performance issues and false positives.
 
 ### Can I use this addon alongside other admin tools?
 Normal player bans can still be made via any existing admin tools. Cheaters, exploiters etc. will be banned automatically via Nova Defender. Ban evasions can only be detected if the ban originates from Nova Defender. You can use this addon perfectly alongside ULX.

@@ -5,7 +5,7 @@
 	- Staff		(gets notified on suspicious activity)
 	- Protected	(gets excluded from detection and their group protected)
 
-	If a player is in a higher group then he is also in all lower groups.
+	If a player is in a higher group then they are also in all lower groups.
 	Example: A protected player is also in the staff, trusted and player group.
 */
 

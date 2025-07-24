@@ -167,7 +167,7 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
 
     /*
         This is called whenever a admin opens the menu for the first time and all avaliable settings are returned
-        or if he requests a specific setting.
+        or if they request a specific setting.
     */
     Nova.netReceive(Nova.netmessage("admin_get_setting", "protected"), function(len, ply)
         // only protected players can get settings

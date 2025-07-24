@@ -52,7 +52,7 @@ end
 
     We pass the 'restricted' parameter to the Nova.netmessage function.
     This is done for messages only a protected player should send. 
-    A client can only send these messages if he injected his own code into his game. 
+    A client can only send these messages if  injected his own code into his game. 
 */
 
 // create our little netmessage pool with a mapping
@@ -244,8 +244,8 @@ hook.Add("nova_networking_incoming", "networking_permission", function(client, s
     if netMessages[messageName].restricted == "staff" and Nova.isStaff(client) then return end
     if netMessages[messageName].restricted == "protected" and Nova.isProtected(client) then return end
 
-    // in the process of removing a protected player, he can by accident still send a restricted message
-    // therefore we drop the message if he is in quarantine and not protected
+    // in the process of removing a protected player, they can by accident still send a restricted message
+    // therefore we drop the message if they are in quarantine and not protected
     if Nova.isQuarantined(client) then
         return false
     end

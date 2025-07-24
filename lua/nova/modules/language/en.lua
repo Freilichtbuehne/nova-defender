@@ -22,8 +22,8 @@ local phrases = {
         Networking
     */
     ["networking_concommand_logging"] = "Log Commands:\nLog every console command executed by clients and server",
-    ["networking_concommand_dump"] = "Dump Commands:\nPrint all commands a player has executed to console when he disconnects. This can grow your logs in size very fast.",
-    ["networking_netcollector_dump"] = "Dump Netmessages:\nPrint all netmessages a player has sent to server to console when he disconnects.",
+    ["networking_concommand_dump"] = "Dump Commands:\nPrint all commands a player has executed to console when they disconnect. This can grow your logs in size very fast.",
+    ["networking_netcollector_dump"] = "Dump Netmessages:\nPrint all netmessages a player has sent to server to console when they disconnect.",
     ["networking_netcollector_spam_action"] = "What should happen when player spamms netmessages to server?",
     ["networking_netcollector_spam_reason"] = "Reason for a player get's kicked or banned by spamming netmessages to server.",
     ["networking_dos_action"] = "What should happen when player tried to cause server lags?",
@@ -37,8 +37,8 @@ local phrases = {
     ["networking_dos_crash_whitelist"] = "Whitelisted netmessages that will be ignored.",
     ["networking_netcollector_actionAt"] = "At how many messages from a single client within 3 seconds should we take action? NEVER SET THIS TOO LOW!",
     ["networking_netcollector_dropAt"] = "At how many messages within 3 seconds should we ignore a netmessage. This is done to prevent a denial of service. Should be lower then above setting.",
-    ["networking_restricted_message_action"] = "What should happen when a player sents a message to the server which he is not allowed to? Without manipulating the game or a bug it is not possible for players to send this message.",
-    ["networking_restricted_message_reason"] = "Reason for a player get's kicked or banned by sending a message to the server which he is not allowed to.",
+    ["networking_restricted_message_action"] = "What should happen when a player sents a message to the server which they are not allowed to? Without manipulating the game or a bug it is not possible for players to send this message.",
+    ["networking_restricted_message_reason"] = "Reason for a player get's kicked or banned by sending a message to the server which they are not allowed to.",
     ["networking_sendlua_gm_express"] = "Activate gm_express:\nMassive performance improvement, especially for larger servers. Instead of sending large amounts of data via the built-in netmessages (slow), they are transferred to the clients via HTTPS via an external provider (gmod.express). This speeds up the loading time of clients and reduces the load on the server. However, this option is dependent on gmod.express. If this page cannot be reached, authentication for clients will fail. New clients that cannot connect to gmod.express fall back to the conventional netmessages. This option requires the installation of gm_express. More details in the 'Health' tab.",
     ["networking_sendlua_authfailed_action"] = "What should happen when a player doesn't respond to Nova Defender authentication? If ignored there is no guarantee that the anticheat or other client-side mechanisms are working.",
     ["networking_sendlua_authfailed_reason"] = "Reason for a player get's kicked or banned by not responding to Nova Defender authentication.",
@@ -86,13 +86,13 @@ local phrases = {
     ["banbypass_ban_banstaff"] = "Staff can get banned",
     ["banbypass_ban_default_reason"] = "Reason for a player get's banned if no reason is specified",
 
-    ["banbypass_bypass_default_reason"] = "Reason for a player get's banned if he bypassed a ban",
+    ["banbypass_bypass_default_reason"] = "Reason for a player get's banned if they bypassed a ban",
 
     ["banbypass_bypass_familyshare_action"] = "What should happen when a player is using a family shared account of a banned player?",
     ["banbypass_bypass_clientcheck_action"] = "What should happen when we find evidence for a ban bypass in the local files of a player?",
     ["banbypass_bypass_ipcheck_action"] = "What should happen when a player has the identical IP address as a banned player?",
 
-    ["banbypass_bypass_fingerprint_enable"] = "Enable Fingerprint Check:\nThis option checks if a player is using the same device as a banned user. It can prevent a player to create a new account on the same device as long as he is banned.",
+    ["banbypass_bypass_fingerprint_enable"] = "Enable Fingerprint Check:\nThis option checks if a player is using the same device as a banned user. It can prevent a player to create a new account on the same device as long as they are banned.",
     ["banbypass_bypass_fingerprint_action"] = "What should happen when a player is using the same device as a banned user?",
     ["banbypass_bypass_fingerprint_sensivity"] = "How sensitive should the fingerprint matching be?",
 
@@ -100,11 +100,11 @@ local phrases = {
     /*
         Anticheat
     */
-    ["anticheat_reason"] = "Reason for a player get's banned if he uses any sorts of cheats.",
+    ["anticheat_reason"] = "Reason for a player get's banned if they use any sorts of cheats.",
     ["anticheat_enabled"] = "Enable Anticheat:\nIf this is enabled anticheat code will be sent to all clients and detections will be handled. If this gets disabled, the anticheat code remains active on all currently connected clients but detections are ignored. This option includes autoclick and aimbot detection.",
     ["anticheat_action"] = "What should happen when a player has cheats?",
     ["anticheat_verify_action"] = "What should happen when the anticheat doesn't load for a player?",
-    ["anticheat_verify_execution"] = "Check if anticheat is running:\nAfter a player receives the anticheat, confirmation is requested whether he has executed it. However, this process can fail for several reasons and therefore should not be set to 'Ban'.",
+    ["anticheat_verify_execution"] = "Check if anticheat is running:\nAfter a player receives the anticheat, confirmation is requested whether they executed it. However, this process can fail for several reasons and therefore should not be set to 'Ban'.",
     ["anticheat_verify_reason"] = "Reason for a player get's banned if the anticheat doesn't load.",
     ["anticheat_check_function"] = "Check Functions:\nCompares function names on the client with known function names of cheats. This may detect legitimate functions inside code you provide as well.",
     ["anticheat_check_files"] = "Check Files:\nSimilar to 'Check Functions'. Compares the filename of a running script with known file names of cheats.",
@@ -124,14 +124,14 @@ local phrases = {
     ["anticheat_spam_filestealers"] = "Clutter filestealer:\nSome cheats store all the executed Lua code they receive from the server in text files. To clutter up these files and make it (a little) more difficult for the attacker, we clutter up these files with useless code. This slowly fills up the player's disk. This has no negative impact on player load time.",
     ["anticheat_autoclick_enabled"] = "Enable autoclick detection:\nFor obvious reasons, we don't want any players to use programs for fast clicking or keystrokes. This includes left and right click, use and space bar.",
     ["anticheat_autoclick_action"] = "What should happen when a player uses autoklick?",
-    ["anticheat_autoclick_reason"] = "Reason for a player get's banned if he used autoclick.",
+    ["anticheat_autoclick_reason"] = "Reason for a player gets banned if they used autoclick.",
     ["anticheat_autoclick_sensivity"] = "Autoclick sensivity:\nHigh sensitivity can falsely detect players due to rare coincidences. Good autoclickers may not be detected with a low sensitivity. Decide depending on how autoclickers can give cheaters an advantage.",
     ["anticheat_autoclick_check_fast"] = "Check fast click speed:\nAbove a certain number of CPS (Clicks Per Second), we can assume that a human being is not capable of doing this without aids. This also applies to keys.",
     ["anticheat_autoclick_check_fastlong"] = "Check fast click over long time:\nIt is unlikely that a player will click enormously fast for several minutes without short pauses.",
     ["anticheat_autoclick_check_robotic"] = "Check inhuman click consistency:\nA human can never click at exactly the same speed. It will always be a little faster or slower. A program, however, can time this very precisely. If the time interval between clicks is too consistent, we can tell.",
     ["anticheat_aimbot_enabled"] = "Enable aimbot detection:\nMonitors in real time all player movements.",
     ["anticheat_aimbot_action"] = "What should happen when a player uses an aimbot?",
-    ["anticheat_aimbot_reason"] = "Reason for ban of a player when he uses an aimbot.",
+    ["anticheat_aimbot_reason"] = "Reason for ban of a player when they use an aimbot.",
     ["anticheat_aimbot_check_snap"] = "Detect snapping:\nDetect if players viewdirection changes instantly. WARNING: This will prevent clients to set their viewangles (if not done serverside) and therefore break some addons!",
     ["anticheat_aimbot_check_move"] = "Detect suspicious movement:\nDetect if a player changes his view constantly without moving his mouse.",
     ["anticheat_aimbot_check_contr"] = "Detect contradictory movements:\nDetects if a player moves his mouse in a different direction than his view changes.",
@@ -151,11 +151,11 @@ local phrases = {
     ["security_permissions_groups_protected"] = "Protected usergroups:\nAll usergroups that are considered protected. Only whitelisted players can have this group. Protected players have full access to this menu.",
     ["security_permissions_groups_staff"] = "Staff and admin usergroups:\nAll usergroups that have staff permissions.",
     ["security_privileges_group_protection_enabled"] = "Automated rank protection:\nIf a player that was not whitelisted has for example a protected usergroup, we take action.",
-    ["security_privileges_group_protection_escalation_action"] = "What should happen when a player has a protected usergroup he is not supposed to?",
-    ["security_privileges_group_protection_escalation_reason"] = "Reason for a player gets kicked or banned if he has a protected usergroup that he is not supposed to.",
+    ["security_privileges_group_protection_escalation_action"] = "What should happen when a player has a protected usergroup they are not supposed to?",
+    ["security_privileges_group_protection_escalation_reason"] = "Reason for a player gets kicked or banned if they have a protected usergroup that they are not supposed to.",
     ["security_privileges_group_protection_removal_action"] = "What should happen when a protected player loses his usergroup?",
-    ["security_privileges_group_protection_protected_players"] = "Protected Players:\nAll players that are allowed to have a protected usergroup. If you remove a player that is online will get him kicked.",
-    ["security_privileges_group_protection_kick_reason"] = "Reason for kicking a protected player if his protection gets removed while he is connected.",
+    ["security_privileges_group_protection_protected_players"] = "Protected Players:\nAll players that are allowed to have a protected usergroup. If you remove a player that is online will get them kicked.",
+    ["security_privileges_group_protection_kick_reason"] = "Reason for kicking a protected player if his protection gets removed while they are connected.",
     /*
         Detections
     */
@@ -208,13 +208,13 @@ local phrases = {
     ["menu_notify_hello_menu"] = "Open menu with !nova.",
 
     ["notify_admin_unban"] = "Successfully unbanned %s. Ban will get removed when player connects to server next time.",
-    ["notify_admin_ban"] = "Successfully banned %s. Player will get banned if he joins the server the next time.",
+    ["notify_admin_ban"] = "Successfully banned %s. Player will get banned if they join the server the next time.",
     ["notify_admin_ban_online"] = "Admin %s banned %s. Player will get banned in a few seconds.",
-    ["notify_admin_ban_offline"] = "Admin %s banned %s. Player will get banned if he joins the server the next time.",
+    ["notify_admin_ban_offline"] = "Admin %s banned %s. Player will get banned if they join the server the next time.",
     ["notify_admin_ban_fail"] = "Ban for %s failed: %q",
     ["notify_admin_kick"] = "Admin %s kicked %s from server",
     ["notify_admin_reconnect"] = "Admin %s reconnected %s",
-    ["notify_admin_quarantine"] = "Admin %s set %s into network quarantine. He won't be able to interact with anything on the server now.",
+    ["notify_admin_quarantine"] = "Admin %s set %s into network quarantine. They won't be able to interact with anything on the server now.",
     ["notify_admin_unquarantine"] = "Admin %s removed %s from network quarantine",
     ["notify_admin_no_permission"] = "You do not have sufficient right to do that",
     ["notify_admin_client_not_connected"] = "Player is offline",
@@ -254,7 +254,7 @@ local phrases = {
     ["notify_networking_spam"] = "%s is spamming netmessages (%d/%ds) (%d allowed).",
     ["notify_networking_spam_action"] = "Spamming netmessages (%d/%ds) (%d allowed).",
     ["notify_networking_limit"] = "%s exceeded the limit of %d netmessages per %d seconds.",
-    ["notify_networking_limit_drop"] = "Ignoring netmessages from %s as he exceeded the limit of %d netmessages per %d seconds.",
+    ["notify_networking_limit_drop"] = "Ignoring netmessages from %s as they exceeded the limit of %d netmessages per %d seconds.",
 
     ["notify_networking_dos"] = "%s has caused a serverlag. Duration: %s within %d seconds",
     ["notify_networking_dos_action"] = "Causing serverlags. Duration: %s within %d seconds",
@@ -351,7 +351,7 @@ Also there can be vulnerable netmessages which are not listed here.
    1. Malicious workshop addons
    2. A person asks you to upload a Lua file to the server
       that was made "especially for you"
-   3. A developer with access to your server has built a backdoor for himself
+   3. A developer with access to your server has built a backdoor for themself
    4. The server itself has been compromised (vulnerability in the operating system,
       vulnerability in software)
 
@@ -430,11 +430,11 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["server_access_maintenance_password"] = "Password for maintenance mode, if you selected 'password' in the setting above.",
     ["server_access_maintenance_reason"] = "Reason to display a client, trying to connect during maintenance.",
     ["server_access_password_lock"] = "Lock wrong attempts:\nIf a client enters a wrong password too often, all following attempts will get blocked.",
-    ["server_access_password_lock_reason"] = "Reason to display a client, if he entered a wrong password too often.",
+    ["server_access_password_lock_reason"] = "Reason to display a client, if they entered a wrong password too often.",
     ["server_access_password_max_attempts"] = "Max attempts before lock",
 
     ["server_lockdown_enabled"] = "Lockdown Mode:\nONLY staff, protected and trusted can join the server. Use this when many new accounts are created to join the server for trolling, griefing or crashing the server. Players who are already on the server are not affected. Make sure to first define who is trusted in the config file of Nova Defender. This should be used only for a short time.",
-    ["server_lockdown_reason"] = "Reason for kicking a player during lockdown mode if he is not protected, staff or trusted.",
+    ["server_lockdown_reason"] = "Reason for kicking a player during lockdown mode if they are not protected, staff or trusted.",
     /*
         Admin Menu
     */
@@ -593,10 +593,10 @@ Security:
     ["menu_elem_ddos_cpu_util"] = "CPU Utilization",
     ["menu_elem_ddos_net_util"] = "Network Utilization",
 
-    ["indicator_pending"] = "Player has not sent his indicators to the server yet. Either he blocks them or needs some more time.",
+    ["indicator_pending"] = "Player has not sent his indicators to the server yet. Either they block them or needs some more time.",
     ["indicator_install_fresh"] = "Player recently installed this game",
     ["indicator_install_reinstall"] = "Player recently reinstalled this game",
-    ["indicator_advanced"] = "Player uses debug/developer commands (he might know what he is doing...)",
+    ["indicator_advanced"] = "Player uses debug/developer commands (they might know what they are doing...)",
     ["indicator_first_connect"] = "First time connected to this server (if game hasn't been reinstalled)",
     ["indicator_cheat_hotkey"] = "Player has pressed a key (INSERT, HOME, PAGEUP, PAGEDOWN) that is often used to open cheat menus",
     ["indicator_cheat_menu"] = "Player has opened a menu using one of the keys INSERT, HOME, PAGEUP or PAGEDOWN",
@@ -619,7 +619,7 @@ Security:
     ["indicator_profile_not_configured"] = "Player has not even set up his Steam account yet",
     ["indicator_scenario_bypass_account"] = "Indicators suggest that this player has specially created a new Steam account. See the 'Players Online' menu tab.",
     ["indicator_scenario_cheatsuspect"] = "Indicators suggest that this player cheated. See 'Players Online' menu tab",
-    ["indicator_scenario_sum"] = "Player is suspicious because he meets a high number of typical indicators. See menu tab 'Player Online'",
+    ["indicator_scenario_sum"] = "Player is suspicious because they meet a high number of typical indicators. See menu tab 'Player Online'",
 
     ["internal_reason"] = "Internal Reason",
     ["banned"] = "Banned",

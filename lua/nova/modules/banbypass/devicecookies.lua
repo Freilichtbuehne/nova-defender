@@ -1,7 +1,7 @@
 /*
     This idea originated from OWASP (https://owasp.org/www-community/Slow_Down_Online_Guessing_Attacks_with_Device_Cookies)
     The basic idea behind this is to place the trust on already trusted clients. A trusted client get's a unique device cookie.
-    Whith this cookie he authenticates himself to the server.
+    With this cookie they authenticate theirself to the server.
     In case of massive account creation (ban bypass), this can only allow trusted users (with a cookie) to join on the server. 
     Thus, each of the regular players is spared.
     Because we are not dealing with online bruteforce attacks and we can rely on the steamid to identify the players.
@@ -65,7 +65,7 @@ Nova.playerHasCookie = function(ply)
 end
 
 local function ShouldPlayerGetACookie(ply)
-    // if player is staff or protected, he will allways be trusted
+    // if player is staff or protected, they will allways be trusted
     if Nova.isStaff(ply) then return true end
 
     // check custom function from settins
