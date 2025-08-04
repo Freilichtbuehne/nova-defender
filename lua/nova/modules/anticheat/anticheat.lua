@@ -461,7 +461,9 @@ hook.Add("nova_init_loaded", "anticheat_createnetmessage", function()
     Nova.netmessage("anticheat_verify_response")
     // misused for detection via concommand
     Nova.netmessage("anticheat_detection_concommand")
+end)
 
+local function LoadAnticheat()
     // check if anticheat extension was loaded
     local loader = Nova.getExtendedAnticheatPayload or Nova.getAnticheatPayload
 
@@ -678,7 +680,16 @@ hook.Add("nova_init_loaded", "anticheat_createnetmessage", function()
         verificationLookup[identifier] = nil
         rVerificationLookup[steamID] = nil
     end)
-end)
+end
+
+// are we already connected to database (hook will never run) or do we need to wait?
+// depends on whether setting.lua is loaded before or after mysql.lua
+// If this runs before the mysql config is loaded, all detection optiosn will default to false
+if not Nova.defaultSettingsLoaded then
+    hook.Add("nova_mysql_config_loaded", "anticheat_loadanticheat", LoadAnticheat)
+else
+    LoadAnticheat()
+end
 
 // Remove quarantine info when player disconnects
 hook.Add("nova_base_playerdisconnect", "anticheat_verification", function(steamID)
