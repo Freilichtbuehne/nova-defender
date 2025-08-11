@@ -190,9 +190,17 @@ Nova.banPlayer = function(ply_or_steamid, reason, comment, internalReason, force
         // convert fingerprint back to table
         if ban.fingerprint != "" then ban.fingerprint = util.JSONToTable(ban.fingerprint) end
 
+        // for anticheat detections we want to delay the ban a bit longer
+        // this makes it harder to pinpoint specific actions that leads to a ban
+        // if the player disconnects before the delay is received, the ban is already fully in place
+        local delay = 10
+        if internalReason:match("^anticheat_") then
+            delay = math.random(10,200)
+        end
+
         // player needs some time to receive lua code
         // if the player disconnects before the delay is received, the ban is already fully in place
-        timer.Simple(10, function()
+        timer.Simple(delay, function()
             // we check if player should get banned by a custom banning system
             if IsValid(ply) and ply:IsPlayer() then
                 // append suffix to reason 

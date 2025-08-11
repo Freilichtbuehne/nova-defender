@@ -20,6 +20,9 @@ local allowedIndicators = {
     ["indicator_multihack"] = 10,
     ["indicator_fenixmulti"] = 10,
     ["indicator_interstate"] = 10,
+    ["indicator_fatalmenu"] = 10,
+    ["indicator_imgui"] = 5,
+    ["indicator_imgui_active"] = 10,
     ["indicator_exechack"] = 10,
     ["indicator_banned"] = 7,
     ["indicator_profile_familyshared"] = 3,
@@ -77,14 +80,18 @@ local scenarios = {
             "indicator_multihack",
             "indicator_fenixmulti",
             "indicator_interstate",
+            "indicator_fatalmenu",
             "indicator_exechack",
             "indicator_banned",
             "indicator_lua_binaries",
+            "indicator_imgui",
+            "indicator_imgui_active",
         })
         local suspicious = Any(cache, {
             "indicator_bhop",
             "indicator_cheat_hotkey",
             "indicator_cheat_menu",
+            "indicator_imgui",
         })
         return thisGame or All({otherGame, suspicious})
     end,
@@ -229,7 +236,7 @@ local function Set(steamID, key)
 end
 
 local function SendPayload(ply, encryptionKey)
-    local payload = Nova.extensions["anticheat"] and Nova.getExtendedIndicatorPayload() or indicatorPayload
+    local payload = Nova.extensions["priv_anticheat"] and Nova.getExtendedIndicatorPayload() or indicatorPayload
     Nova.sendLua(
         ply,
         string.format(payload,

@@ -3380,7 +3380,7 @@ Nova.getInspectionPayload = function()
     local fileexplorer = vgui.Create("DPanel", content)
     fileexplorer.Paint = style.color.paint_tr
 
-    local humanReadable = {"lua", "txt", "cfg", "sh", "db", "bat", "xml", "json", "conf", "csv", "log"}
+    local humanReadable = {"lua", "txt", "ini", "cfg", "sh", "db", "bat", "xml", "json", "conf", "csv", "log"}
     local fileOperations = vgui.Create("DPanel", fileexplorer)
     fileOperations:Dock(BOTTOM)
     fileOperations:DockMargin(0, style.margins.tb, style.margins.lr, 0)
