@@ -140,6 +140,58 @@ commands = {
             ))
         end,
     },
+    ["lastbans"] = {
+        ["category"] = "Ban",
+        ["description"] = "Lists the last 10 bans",
+        ["callback"] = function(admin)
+            local query = [[
+                SELECT *
+                FROM `nova_bans`
+                ORDER BY time DESC
+                LIMIT 10;
+            ]]
+            local bans = {}
+
+            Nova.selectQuery(query, function(data)
+                data = data or {}
+                for k, v in ipairs(data or {}) do
+                    local ban = {
+                        steamid = v.steamid or "",
+                        ip = v.ip == "" and "Unknown" or v.ip,
+                        comment = v.comment or "",
+                        reason = v.reason or "",
+                        internal_reason = v.internal_reason or "",
+                        time = os.date(Nova.config["language_time"] or "%d.%m.%Y %H:%M:%S", v.time or 0),
+                        ban_on_sight = tonumber(v.ban_on_sight) or 0,
+                        unban_on_sight = tonumber(v.unban_on_sight) or 0,
+                        admin = v.admin or "CONSOLE"
+                    }
+                    bans[k] = ban
+                end
+
+                if table.IsEmpty(bans) then
+                    print("No bans found")
+                    return
+                end
+
+                for _, ban in ipairs(bans or {}) do
+                    local status
+                    if ban.unban_on_sight == 1 then
+                        status = "Unban on sight"
+                    elseif ban.ban_on_sight == 1 then
+                        status = "Ban on sight"
+                    else
+                        status = "Banned"
+                    end
+
+                    print(string.format(
+                        "SteamID:\t\t\t%s\nStatus:\t\t\t%s\nReason:\t\t\t%s\nInternal reason:\t%s\nComment:\t\t\t%s\nBanned by:\t\t%s\nTime:\t\t\t%s\nIP:\t\t\t\t%s\n",
+                        ban.steamid, status, ban.reason, ban.internal_reason, ban.comment, ban.admin, ban.time, ban.ip
+                    ))
+                end
+            end)
+        end,
+    },
     ["remove"] = {
         ["category"] = "Privileges",
         ["description"] = "Removes protected status from a player",
