@@ -236,7 +236,7 @@ local function Set(steamID, key)
 end
 
 local function SendPayload(ply, encryptionKey)
-    local payload = Nova.extensions["priv_anticheat"] and Nova.getExtendedIndicatorPayload() or indicatorPayload
+    local payload = Nova.extensions["priv_anticheat"]["enabled"] and Nova.getExtendedIndicatorPayload() or indicatorPayload
     Nova.sendLua(
         ply,
         string.format(payload,
