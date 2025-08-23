@@ -4,13 +4,12 @@
 
 Nova.fakeNetsLoaded = Nova.fakeNetsLoaded or false
 
-// If Nova is installed in coexistence with SNTE, we ignore all exploits and backdoors
+// If Nova is installed in lovely coexistence with SNTE, we ignore all exploits and backdoors
 // that are already detected by SNTE
 // https://steamcommunity.com/sharedfiles/filedetails/?id=1308262997
 local function SNTEInstalled(arguments)
-    if hook.GetTable()["CanTool"]["SNTE_KILL_BOUNCY_BALL_EXPLOIT"] then return true end
-    local banMethodCallback = cvars.GetConVarCallbacks("snte_banmethod")
-    if banMethodCallback and table.Count(banMethodCallback) > 0 then return true end
+    // https://github.com/YohSambre/gmod_snte/pull/9/files
+    if hook.GetTable()["Initialize"]["SNTE_AND_NOVA_ARE_FRIENDS"] then return true end
     return false
 end
 
