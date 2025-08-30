@@ -89,6 +89,8 @@ local phrases = {
 
     ["banbypass_bypass_default_reason"] = "Причина, по которой игрок будет заблокирован, если он обошёл блокировку",
 
+    ["banbypass_bypass_familyshare_kick"] = "Выгонять игроков, использующих Family Sharing аккаунт.",
+    ["banbypass_bypass_familyshare_kick_reason"] = "Причина, по которой игрок будет выгнан, если он использует Family Sharing аккаунт.",
     ["banbypass_bypass_familyshare_action"] = "Что должно произойти, если игрок использует аккаунт Steam Family Sharing заблокированного игрока?",
     ["banbypass_bypass_clientcheck_action"] = "Что должно произойти, когда мы находим доказательства обхода блокировки в локальных файлах игрока?",
     ["banbypass_bypass_ipcheck_action"] = "Что должно произойти, если IP-адрес игрока совпадает с IP-адресом заблокированного игрока?",

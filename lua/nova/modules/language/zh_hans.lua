@@ -82,6 +82,8 @@ local phrases = {
 
     ["banbypass_bypass_default_reason"] = "玩家因绕过封禁而被封禁的原因",
 
+    ["banbypass_bypass_familyshare_kick"] = "踢出使用家庭共享账号的玩家。",
+    ["banbypass_bypass_familyshare_kick_reason"] = "使用家庭共享账号的玩家被踢出的原因。",
     ["banbypass_bypass_familyshare_action"] = "当玩家使用被封禁玩家的家庭共享账户时应该发生什么？",
     ["banbypass_bypass_clientcheck_action"] = "当我们在玩家的本地文件中发现绕过封禁的证据时应该发生什么？",
     ["banbypass_bypass_ipcheck_action"] = "当玩家与被封禁玩家的IP地址相同时应该发生什么？",

@@ -88,6 +88,8 @@ local phrases = {
 
     ["banbypass_bypass_default_reason"] = "Reason for a player get's banned if he bypassed a ban",
 
+    ["banbypass_bypass_familyshare_kick"] = "Kick players using a family shared account.",
+    ["banbypass_bypass_familyshare_kick_reason"] = "Reason for a player get's kicked if he is using a family shared account.",
     ["banbypass_bypass_familyshare_action"] = "What should happen when a player is using a family shared account of a banned player?",
     ["banbypass_bypass_clientcheck_action"] = "What should happen when we find evidence for a ban bypass in the local files of a player?",
     ["banbypass_bypass_ipcheck_action"] = "What should happen when a player has the identical IP address as a banned player?",
