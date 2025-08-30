@@ -52,6 +52,13 @@ local patches = {
             Nova.log("i", "Disabling 'ban' action for fingerprint bypass")
             Nova.setSetting("banbypass_bypass_fingerprint_action", "ask")
         end
+    end,
+    ["1.10.5"] = function()
+        local cur = Nova.getSetting("networking_dos_crash_maxsize", 0)
+        // adjust default to 100 MB as there exists no good usecase for 200 MB
+        if cur == 200 then
+            Nova.setSetting("networking_dos_crash_maxsize", 100)
+        end
     end
 }
 

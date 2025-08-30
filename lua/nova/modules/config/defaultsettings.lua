@@ -65,7 +65,7 @@ Nova.setSetting("networking_dos_checkinterval", 5, false, true)
 Nova.setSetting("networking_dos_crash_enabled", true, true, true)
 Nova.setSetting("networking_dos_crash_action", "ask", true, true, {"kick", "ban", "notify", "ask", "nothing"})
 Nova.setSetting("networking_dos_crash_ignoreprotected", true, true, true, nil, true)
-Nova.setSetting("networking_dos_crash_maxsize", 200, true, true, nil, true)
+Nova.setSetting("networking_dos_crash_maxsize", 100, true, true, nil, true)
 Nova.setSetting("networking_dos_crash_ratio", 500, true, true, nil, true)
 Nova.setSetting("networking_dos_crash_whitelist", {}, true, true, nil, true)
 
