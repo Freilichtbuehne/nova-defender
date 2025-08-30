@@ -8,8 +8,8 @@ Nova.fakeNetsLoaded = Nova.fakeNetsLoaded or false
 // that are already detected by SNTE
 // https://steamcommunity.com/sharedfiles/filedetails/?id=1308262997
 local function SNTEInstalled(arguments)
-    // https://github.com/YohSambre/gmod_snte/pull/9/files
-    if hook.GetTable()["Initialize"]["SNTE_AND_NOVA_ARE_FRIENDS"] then return true end
+    // https://github.com/YohSambre/gmod_snte/pull/9
+    if SNTE_ISHERE then return true end
     return false
 end
 
