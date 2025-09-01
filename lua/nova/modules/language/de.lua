@@ -684,10 +684,7 @@ Sicherheit:
     ["sev_high"] = "Hoch",
     ["sev_critical"] = "Kritisch",
 
-    ["embed_steam_account"] = "Steam-Konto",
     ["embed_detection_details"] = "Erkennungsdetails",
-    ["embed_no_steam_account"] = "Nicht gefunden",
-    ["embed_no_details"] = "Nicht angegeben",
 }
 
 // DO NOT CHANGE ANYTHING BELOW THIS

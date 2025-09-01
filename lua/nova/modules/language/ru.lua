@@ -681,10 +681,7 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["sev_high"] = "Высок.",
     ["sev_critical"] = "Критич.",
 
-    ["embed_steam_account"] = "Аккаунт Steam",
     ["embed_detection_details"] = "Детали обнаружения",
-    ["embed_no_steam_account"] = "Не найдено",
-    ["embed_no_details"] = "Не предоставлено",
 }
 
 // DO NOT CHANGE ANYTHING BELOW THIS

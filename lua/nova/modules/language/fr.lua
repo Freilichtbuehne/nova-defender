@@ -642,10 +642,7 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["sev_high"] = "Élevé",
     ["sev_critical"] = "Critique",
 
-    ["embed_steam_account"] = "Compte Steam",
     ["embed_detection_details"] = "Détails de la détection",
-    ["embed_no_steam_account"] = "Non trouvé",
-    ["embed_no_details"] = "Non fourni",
 }
 
 // DO NOT CHANGE ANYTHING BELOW THIS

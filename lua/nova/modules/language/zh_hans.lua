@@ -656,10 +656,7 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["sev_high"] = "高",
     ["sev_critical"] = "关键",
 
-    ["embed_steam_account"] = "Steam账号",
     ["embed_detection_details"] = "检测详情",
-    ["embed_no_steam_account"] = "未找到",
-    ["embed_no_details"] = "未提供",
 }
 
 -- DO NOT CHANGE ANYTHING BELOW THIS

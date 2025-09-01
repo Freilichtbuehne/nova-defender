@@ -693,10 +693,7 @@ Security:
     ["sev_high"] = "High",
     ["sev_critical"] = "Critical",
 
-    ["embed_steam_account"] = "Steam Account",
     ["embed_detection_details"] = "Detection Details",
-    ["embed_no_steam_account"] = "Not found",
-    ["embed_no_details"] = "Not provided",
 }
 
 // DO NOT CHANGE ANYTHING BELOW THIS
