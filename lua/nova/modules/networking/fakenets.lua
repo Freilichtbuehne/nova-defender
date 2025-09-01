@@ -4,12 +4,13 @@
 
 Nova.fakeNetsLoaded = Nova.fakeNetsLoaded or false
 
-// If Nova is installed in lovely coexistence with SNTE, we ignore all exploits and backdoors
+// If Nova is installed in coexistence with SNTE, we ignore all exploits and backdoors
 // that are already detected by SNTE
 // https://steamcommunity.com/sharedfiles/filedetails/?id=1308262997
 local function SNTEInstalled(arguments)
-    // https://github.com/YohSambre/gmod_snte/pull/9
-    if SNTE_ISHERE then return true end
+    if hook.GetTable()["CanTool"]["SNTE_KILL_BOUNCY_BALL_EXPLOIT"] then return true end
+    local banMethodCallback = cvars.GetConVarCallbacks("snte_banmethod")
+    if banMethodCallback and table.Count(banMethodCallback) > 0 then return true end
     return false
 end
 
@@ -206,20 +207,8 @@ hook.Add("nova_networking_incoming", "networking_fakenets", function(client, ste
 
     if isFakeNet then
         if isBackdoor then
-                local embedData = {
-                    SteamID = steamID,
-                    Reason = Nova.lang("notify_networking_backdoor", Nova.playerName(steamID), strName),
-                    Info = strName,
-                }
-                Nova.Webhook("networking_backdoor", embedData)
             Nova.startDetection("networking_backdoor", steamID, strName, "networking_fakenets_backdoors_action")
         elseif isExploit then
-                local embedData = {
-                    SteamID = steamID,
-                    Reason = Nova.lang("notify_networking_exploit", Nova.playerName(steamID), strName),
-                    Info = strName,
-                }
-                Nova.Webhook("networking_exploit", embedData)
             Nova.startDetection("networking_exploit", steamID, strName, "networking_fakenets_exploits_action")
         end
     end

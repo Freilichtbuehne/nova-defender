@@ -488,12 +488,6 @@ timer.Create("nova_sendlua_authenticate", 5, 0, function()
             playerStatus[steamID]["auth_triesLeft"] = playerStatus[steamID]["auth_triesLeft"] - 1
             // take action if tries left are less than 0
             if playerStatus[steamID]["auth_triesLeft"] == 0 then
-                    local embedData = {
-                        SteamID = Nova.convertSteamID(v),
-                        Reason = Nova.lang("notify_networking_auth_failed", Nova.playerName(v)),
-                        Info = "SendLua authentication failed",
-                    }
-                    Nova.Webhook("networking_authentication", embedData)
                 Nova.startDetection("networking_authentication", v, "networking_sendlua_authfailed_action")
             end
             // send authentication message again
@@ -507,12 +501,6 @@ timer.Create("nova_sendlua_authenticate", 5, 0, function()
                 playerStatus[steamID]["runstring_authed"][k]["tries"] = playerStatus[steamID]["runstring_authed"][k]["tries"] - 1
                 // take action if tries left are less than 0
                 if playerStatus[steamID]["runstring_authed"][k]["tries"] <= 0 then
-                        local embedData = {
-                            SteamID = Nova.convertSteamID(v),
-                            Reason = Nova.lang("notify_networking_sendlua_failed", Nova.playerName(v)),
-                            Info = "SendLua validation failed",
-                        }
-                        Nova.Webhook("networking_validation", embedData)
                     Nova.startDetection("networking_validation", v, "networking_sendlua_validationfailed_action")
                     playerStatus[steamID]["runstring_authed"][k] = nil // to only act once
                     break

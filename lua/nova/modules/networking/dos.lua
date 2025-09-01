@@ -205,16 +205,10 @@ local function CheckCollector()
             end
         // Client is trying to cause a denial of service attack
         else
-                local interval = Nova.getSetting("networking_dos_checkinterval", 5)
-                Nova.log("w", string.format("Player %s has caused a serverlag. Printing debug infos:", Nova.playerName(k)))
-                PrintTable(v)
-                local embedData = {
-                    SteamID = k,
-                    Reason = string.format("DOS detected: %s, total: %s, interval: %s", k, ConvertTime(v.total), interval),
-                    Info = string.format("total: %s, interval: %s", ConvertTime(v.total), interval),
-                }
-                Nova.Webhook("networking_dos", embedData)
-                Nova.startDetection("networking_dos", k, ConvertTime(v.total), interval, "networking_dos_action")
+            local interval = Nova.getSetting("networking_dos_checkinterval", 5)
+            Nova.log("w", string.format("Player %s has caused a serverlag. Printing debug infos:", Nova.playerName(k)))
+            PrintTable(v)
+            Nova.startDetection("networking_dos", k, ConvertTime(v.total), interval, "networking_dos_action")
         end
 
         // Reset time

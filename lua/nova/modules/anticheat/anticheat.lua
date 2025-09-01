@@ -367,12 +367,6 @@ timer.Create("nova_anticheat_verification", 60, 0, function()
         Nova.verifyAnticheat(steamID, function(result)
             verificationQueue[steamID] = nil
             if result == "timeout" then
-                local embedData = {
-                    SteamID = steamID,
-                    Reason = "Anticheat verify execution detected",
-                    Info = "verify_execution",
-                }
-                Nova.Webhook("anticheat_verify_execution", embedData)
                 Nova.startDetection("anticheat_verify_execution", steamID, "anticheat_verify_action")
             elseif result == "success" then
                 playersVerified[steamID] = true
@@ -550,12 +544,6 @@ local function LoadAnticheat()
 
         // let's get rid of him
         if not autoclickDetections[identifier] then
-            local embedData = {
-                SteamID = steamID,
-                Reason = tostring(reason),
-                Info = identifier,
-            }
-            Nova.Webhook("anticheat_detection", embedData)
             Nova.startDetection("anticheat_detection", steamID, identifier, reason, "anticheat_action")
         // special case for autoclick detection
         else
@@ -563,12 +551,6 @@ local function LoadAnticheat()
                 Nova.log("d", string.format("Anticheat detection %q on %s ignored: autoclick disabled", identifier, Nova.playerName(ply)))
                 return
             end
-            local embedData = {
-                SteamID = steamID,
-                Reason = tostring(reason),
-                Info = identifier,
-            }
-            Nova.Webhook("anticheat_autoclick", embedData)
             Nova.startDetection("anticheat_autoclick", steamID, identifier, reason, "anticheat_autoclick_action")
         end
     end
