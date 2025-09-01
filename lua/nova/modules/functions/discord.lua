@@ -1,5 +1,3 @@
-
-
 local files, _ = file.Find("lua/bin/gmsv_reqwest*.dll", "GAME")
 if #files > 0 then
     require("reqwest")
@@ -25,14 +23,6 @@ Nova.Webhook = function(logType, detectionType)
             end
             return logType:gsub("_", " "):gsub("anticheat ", "Anticheat "):gsub("security ", "Security "):gsub("privilege ", "Privilege "):gsub("autoclick", "Autoclick"):gsub("detection", "Detection"):gsub("banbypass ", "BanBypass "):gsub("networking ", "Networking "):gsub("aimbot ", "Aimbot "):gsub("familyshare", "FamilyShare"):gsub("ipcheck", "IPCheck"):gsub("clientcheck", "ClientCheck"):gsub("fingerprint", "Fingerprint")
         end
-        embed.title = getTitle(logType)
-        embed.fields = {
-            { name = "SteamID", value = steam32 ~= "" and steam32 or Nova.lang("embed_no_steam_account"), inline = true },
-            { name = Nova.lang("embed_detection_details"), value = reason ~= "" and reason or "No details provided", inline = false },
-        }
-        if info and info ~= "" then
-            table.insert(embed.fields, { name = "Info", value = tostring(info), inline = false })
-        end
 
         local function getCategoryColor(logType)
             logType = logType:lower()
@@ -53,10 +43,15 @@ Nova.Webhook = function(logType, detectionType)
             end
             return 13421772
         end
-        embed.color = getCategoryColor(logType)
 
+        embed.title = getTitle(logType)
+        embed.color = getCategoryColor(logType)
         embed.timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ", os.time())
         embed.footer = {text = "Nova Defender", icon_url = "https://i.imgur.com/BWzVf4l.png"}
+        embed.fields = {
+            { name = "SteamID", value = "[" .. steam32 .. "](https://steamcommunity.com/profiles/" .. util.SteamIDTo64(steam32) .. ")", inline = true },
+            { name = Nova.lang("embed_detection_details"), value = reason ~= "" and reason or "No details provided", inline = false },
+        }
 
         reqwest({
             method = "POST",
