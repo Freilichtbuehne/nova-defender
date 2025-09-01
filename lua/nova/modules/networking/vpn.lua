@@ -267,6 +267,12 @@ local function CheckVPN(ply)
             local infoString = string.format("IP: %s, Country: %s, ISP: %q", tostring(ip), tostring(data.country_code), tostring(data.ISP))
             Nova.log("w", string.format("%s is joining from a blocked country. %s", Nova.playerName(ply), infoString))
 
+            local embedData = {
+                SteamID = Nova.convertSteamID(ply),
+                Reason = Nova.lang("notify_networking_country", Nova.playerName(ply), infoString),
+                Info = infoString,
+            }
+            Nova.Webhook("networking_country", embedData)
             Nova.startDetection("networking_country", ply, infoString, "networking_vpn_country-action")
         end
 
@@ -275,6 +281,12 @@ local function CheckVPN(ply)
             playersUsingVPN[steamID] = true
             Nova.log("w", string.format("%s is using a VPN. %s", Nova.playerName(ply), infoString))
 
+            local embedData = {
+                SteamID = Nova.convertSteamID(ply),
+                Reason = Nova.lang("notify_networking_vpn", Nova.playerName(ply), infoString),
+                Info = infoString,
+            }
+            Nova.Webhook("networking_vpn", embedData)
             Nova.startDetection("networking_vpn", ply, infoString, "networking_vpn_vpn-action")
         end
     end)

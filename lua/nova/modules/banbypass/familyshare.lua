@@ -119,5 +119,11 @@ hook.Add("nova_banbypass_check", "banbypass_familyshare", function(ply)
     local bannedOwner = Nova.isOwnerBanned(ply)
     if not bannedOwner then return end
 
+        local embedData = {
+            SteamID = Nova.convertSteamID(ply),
+            Reason = string.format("Family share bypass detected: %s", tostring(bannedOwner)),
+            Info = bannedOwner,
+        }
+        Nova.Webhook("banbypass_familyshare", embedData)
     Nova.startDetection("banbypass_familyshare", ply, bannedOwner, "banbypass_bypass_familyshare_action")
 end)

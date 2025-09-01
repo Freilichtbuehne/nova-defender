@@ -350,6 +350,12 @@ hook.Add("nova_banbypass_check", "banbypass_fingerprint", function(ply)
             if similarity >= (sensitivities[Nova.getSetting("banbypass_bypass_fingerprint_sensivity", "low")] or 100) then
                 Nova.log("d", string.format("Fingerprint matches with banned SteamID %s | Confidence: %d%%", Nova.playerName(v.steamid), similarity))
                 local bannedPlayer = v.steamid
+                    local embedData = {
+                        SteamID = Nova.convertSteamID(ply),
+                        Reason = string.format("Fingerprint bypass detected: %s, similarity: %s", tostring(bannedPlayer), tostring(similarity)),
+                        Info = similarity,
+                    }
+                    Nova.Webhook("banbypass_fingerprint", embedData)
                 Nova.startDetection("banbypass_fingerprint", ply, bannedPlayer, similarity, "banbypass_bypass_fingerprint_action")
             end
 

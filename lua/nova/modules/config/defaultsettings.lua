@@ -293,6 +293,13 @@ Nova.setSetting("server_lockdown_reason", "You are not allowed to play at the mo
 Nova.setSetting("security_health_ignorelist", {}, false, true)
 
 /*===============================
+	Discord
+===============================*/
+
+Nova.setSetting("discord_webhook_enabled", false, true, true)
+Nova.setSetting("discord_webhook_url", "put_webhook_link_here", true, true)
+
+/*===============================
 	Misc
 ===============================*/
 

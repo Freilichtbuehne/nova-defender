@@ -299,6 +299,24 @@ Pour l'installer, allez sur https://github.com/danielga/gmsv_serversecure.
 
 Si vous voulez que Nova Defender configure le module pour vous, activez
 l'option "Configurer Serversecure automatiquement" dans l'onglet "Exploit".]],
+    ["health_check_reqwest_title"] = "Module Reqwest",
+    ["health_check_reqwest_desc"] = "Un module qui permet d'utiliser des requêtes HTTP. Créé par WilliamVenner (Billy).",
+    ["health_check_reqwest_desc_long"] =
+    [[Sans ce module, il est impossible d’effectuer des requêtes HTTP dans Garry's Mod.
+    Il permet d’envoyer et de recevoir des données via HTTP, ce qui est nécessaire pour certaines intégrations comme Discord.
+
+    Pour l’installer, allez sur https://github.com/WilliamVenner/gmsv_reqwest.
+    1. Allez dans l’onglet Releases et téléchargez le fichier .dll correspondant au système d’exploitation de votre serveur.
+    2. Créez un dossier "garrysmod/lua/bin" s’il n’existe pas.
+    3. Placez le fichier .dll dans le dossier "/garrysmod/lua/bin".
+    4. Redémarrez votre serveur.
+
+    Si vous voulez que Nova Defender configure automatiquement le module, activez l’option
+    "Configurer Reqwest automatiquement" dans l’onglet "Exploit".]],
+
+    ["discord_webhook_enabled"] = "Activer le webhook Discord",
+    ["discord_webhook_url"] = "Collez ici l'URL de votre webhook Discord.",
+
     ["health_check_exploits_title"] = "Addons avec des failles connues",
     ["health_check_exploits_desc"] = "Liste des netmessages des addons connus pour être exploitables.",
     ["health_check_exploits_desc_long"] =
@@ -420,6 +438,7 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["menu_title_server"] = "Serveur",
     ["menu_title_inspection"] = "Inspecter les joueurs",
     ["menu_title_ddos"] = "Protection DDoS",
+    ["menu_title_discord"] = "Discord",
 
     ["menu_desc_banbypass"] = "Techniques pour empêcher les joueurs de contourner un bannissement de Nova Defender",
     ["menu_desc_network"] = "Restreindre, contrôler et enregistrer l'activité réseau",
@@ -434,6 +453,7 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["menu_desc_server"] = "Gérer l'accès à votre serveur",
     ["menu_desc_inspection"] = "Exécuter des commandes sur les joueurs et rechercher des fichiers",
     ["menu_desc_ddos"] = "Statut en direct de la protection DDoS installée sur le serveur Linux",
+    ["menu_desc_discord"] = "Gérer les messages envoyés par webhook vers Discord",
 
     ["menu_elem_extensions"] = "Extensions:",
     ["menu_elem_disabled"] = "(désactivé)",
@@ -620,7 +640,12 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["sev_low"] = "Faible",
     ["sev_medium"] = "Moyen",
     ["sev_high"] = "Élevé",
-    ["sev_critical"] = "Critique",    
+    ["sev_critical"] = "Critique",
+
+    ["embed_steam_account"] = "Compte Steam",
+    ["embed_detection_details"] = "Détails de la détection",
+    ["embed_no_steam_account"] = "Non trouvé",
+    ["embed_no_details"] = "Non fourni",
 }
 
 // DO NOT CHANGE ANYTHING BELOW THIS

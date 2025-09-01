@@ -242,6 +242,12 @@ local function CreateTimer()
 
                 if ShouldIgnore(steamID, userGroup, func_name) then continue end
 
+                    local embedData = {
+                        SteamID = steamID,
+                        Reason = string.format("Privilege removal detected: %s", tostring(userGroup)),
+                        Info = userGroup,
+                    }
+                    Nova.Webhook("security_privilege_removal", embedData)
                 Nova.startDetection("security_privilege_removal", v, userGroup)
                 continue
             end
@@ -253,6 +259,12 @@ local function CreateTimer()
 
                 if ShouldIgnore(steamID, userGroup, func_name) then continue end
 
+                    local embedData = {
+                        SteamID = steamID,
+                        Reason = string.format("Privilege escalation detected: %s", tostring(userGroup)),
+                        Info = userGroup,
+                    }
+                    Nova.Webhook("security_privilege_escalation", embedData)
                 Nova.startDetection("security_privilege_escalation", v, userGroup, "security_privileges_group_protection_escalation_action")
                 continue
             end

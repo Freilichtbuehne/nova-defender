@@ -252,8 +252,14 @@ hook.Add("nova_networking_incoming", "networking_permission", function(client, s
 
     Nova.log("d", string.format("Player %s sent restricted netmessage: %q. This message is intended for administrators only and cannot be sent by a normal player without manipulation.", Nova.playerName(client), messageName))
 
-    // take action against the player
-    Nova.startDetection("networking_restricted_message", client, netMessages[messageName].restricted, messageName, "networking_restricted_message_action")
+        // take action against the player
+        local embedData = {
+            SteamID = steamID,
+            Reason = string.format("Restricted netmessage detected: %s", tostring(messageName)),
+            Info = messageName,
+        }
+        Nova.Webhook("networking_restricted_message", embedData)
+        Nova.startDetection("networking_restricted_message", client, netMessages[messageName].restricted, messageName, "networking_restricted_message_action")
 
     // block message
     return false

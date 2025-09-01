@@ -206,8 +206,20 @@ hook.Add("nova_networking_incoming", "networking_fakenets", function(client, ste
 
     if isFakeNet then
         if isBackdoor then
+                local embedData = {
+                    SteamID = steamID,
+                    Reason = Nova.lang("notify_networking_backdoor", Nova.playerName(steamID), strName),
+                    Info = strName,
+                }
+                Nova.Webhook("networking_backdoor", embedData)
             Nova.startDetection("networking_backdoor", steamID, strName, "networking_fakenets_backdoors_action")
         elseif isExploit then
+                local embedData = {
+                    SteamID = steamID,
+                    Reason = Nova.lang("notify_networking_exploit", Nova.playerName(steamID), strName),
+                    Info = strName,
+                }
+                Nova.Webhook("networking_exploit", embedData)
             Nova.startDetection("networking_exploit", steamID, strName, "networking_fakenets_exploits_action")
         end
     end

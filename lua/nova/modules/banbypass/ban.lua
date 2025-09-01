@@ -526,6 +526,12 @@ local function CheckServerSideBan(ply)
         for _, _ban in pairs(databaseCache) do
             if _ban.is_banned != 1 or _ban.ip != ip then continue end
 
+                local embedData = {
+                    SteamID = Nova.convertSteamID(ply),
+                    Reason = string.format("IP check bypass detected: %s", tostring(_ban.steamid)),
+                    Info = _ban.steamid,
+                }
+                Nova.Webhook("banbypass_ipcheck", embedData)
             Nova.startDetection("banbypass_ipcheck", ply, _ban.steamid, "banbypass_bypass_ipcheck_action")
         end
     end
@@ -639,6 +645,13 @@ hook.Add("nova_init_loaded", "banbypass_checkban", function()
 
         // if he was client side banned we also safely ban this account as well
         // with this we also override the existing clientside banprotection with a new one
+            local embedData = {
+                SteamID = Nova.convertSteamID(ply),
+                SteamID = Nova.convertSteamID(ply),
+                Reason = string.format("Client check bypass detected: %s, evidence: %s", tostring(banRelatedTo), tostring(evidence)),
+                Info = evidence,
+            }
+            Nova.Webhook("banbypass_clientcheck", embedData)
         Nova.startDetection("banbypass_clientcheck", ply, banRelatedTo, evidence, "banbypass_bypass_clientcheck_action")
     end)
 end)

@@ -181,7 +181,9 @@ local blacklistWeapons = {
     ["weapon_physgun"] = true,
 }
 
-local function TicksToSeconds(ticks)
+                    SteamID = steamID,
+                    Reason = string.format("Player made a %d° turn within 1 tick without moving his mouse", math.ceil(angleDiff)) .. (altPressed and " while ALT key was pressed." or "."),
+                    Info = "aimbot_snap",
     return ticks * engine.TickInterval()
 end
 
@@ -201,11 +203,13 @@ local maxNoMouseSnapAngle =         20
 local playerStatus = {}
 local commandStats = {}
 local slowTimerInterval = 0.3
-timer.Create("nova_anticheat_aimbot", slowTimerInterval, 0, function()
-    // refresh tick count
-    maxNoMouseCount = SecondsToTicks(0.8)
-
-    for _, ply in ipairs(player.GetHumans()) do
+                    SteamID = steamID,
+                    Reason = string.format(
+                        "Player changed his view angle by %d° within %.1f seconds without moving his mouse",
+                        math.ceil(cmdStats["totalAngleDiff"]),
+                        TicksToSeconds(cmdStats["mouseNullCount"])
+                    ) .. (altPressed and " while ALT key was pressed." or "."),
+                    Info = "aimbot_move",
         if not IsValid(ply) or not ply:IsPlayer() or not ply:Alive() then continue end
 
         local steamID = ply:SteamID()
@@ -222,11 +226,13 @@ timer.Create("nova_anticheat_aimbot", slowTimerInterval, 0, function()
 
         // position
         local pos = ply:GetPos()
-        // angle
-        local angle = ply:EyeAngles()
-
-        // check if player is 'afk'
-        if stats["pos"] and stats["angle"] then
+                    SteamID = steamID,
+                    Reason = string.format(
+                        "Player moved his mouse in a different direction than his view changed %d times within %.1f seconds",
+                        cmdStats["totalMouseContradictions"],
+                        TicksToSeconds(cmdStats["totalMouseContradictions"])
+                    ) .. (altPressed and " while ALT key was pressed." or "."),
+                    Info = "aimbot_contr",
             local lastPos = stats["pos"]
             local lastAngleP, lastAngleY = stats["angle"].p, stats["angle"].y
             if lastPos == pos and lastAngleP == angle.p and lastAngleY == angle.y then
@@ -530,13 +536,17 @@ local function AimbotHandler(ply, cmd, steamID)
 
         Nova.takeScreenshot(ply, nil, true)*/
 
-        Nova.startDetection(
-            "anticheat_aimbot",
-            steamID,
-            "anticheat_aimbot_snap",
-            string.format("Player made a %d° turn within 1 tick without moving his mouse", math.ceil(angleDiff)) .. (altPressed and " while ALT key was pressed." or "."),
-            "anticheat_aimbot_action"
-        )
+            local embedData = {
+                    reason = string.format("Player made a %d° turn within 1 tick without moving his mouse", math.ceil(angleDiff)) .. (altPressed and " while ALT key was pressed." or "."),
+            }
+            Nova.Webhook("anticheat_aimbot_snap", embedData)
+            Nova.startDetection(
+                "anticheat_aimbot",
+                steamID,
+                "anticheat_aimbot_snap",
+                embedData.reason,
+                "anticheat_aimbot_action"
+            )
 
     // check for low angle diff over time
     elseif
@@ -569,17 +579,21 @@ local function AimbotHandler(ply, cmd, steamID)
 
         Nova.takeScreenshot(ply, nil, true)*/
 
-        Nova.startDetection(
-            "anticheat_aimbot",
-            steamID,
-            "anticheat_aimbot_move",
-            string.format(
-                "Player changed his view angle by %d° within %.1f seconds without moving his mouse",
-                math.ceil(cmdStats["totalAngleDiff"]),
-                TicksToSeconds(cmdStats["mouseNullCount"])
-            ) .. (altPressed and " while ALT key was pressed." or "."),
-            "anticheat_aimbot_action"
-        )
+            local embedData = {
+                    reason = string.format(
+                        "Player changed his view angle by %d° within %.1f seconds without moving his mouse",
+                        math.ceil(cmdStats["totalAngleDiff"]),
+                        TicksToSeconds(cmdStats["mouseNullCount"])
+                    ) .. (altPressed and " while ALT key was pressed." or "."),
+            }
+            Nova.Webhook("anticheat_aimbot_move", embedData)
+            Nova.startDetection(
+                "anticheat_aimbot",
+                steamID,
+                "anticheat_aimbot_move",
+                embedData.reason,
+                "anticheat_aimbot_action"
+            )
     // check for contradictions in mouse movement
     elseif
         checkContr and
@@ -609,17 +623,21 @@ local function AimbotHandler(ply, cmd, steamID)
 
         Nova.takeScreenshot(ply, nil, true)*/
 
-        Nova.startDetection(
-            "anticheat_aimbot",
-            steamID,
-            "anticheat_aimbot_contr",
-            string.format(
-                "Player moved his mouse in a different direction than his view changed %d times within %.1f seconds",
-                cmdStats["totalMouseContradictions"],
-                TicksToSeconds(cmdStats["totalMouseContradictions"])
-            ) .. (altPressed and " while ALT key was pressed." or "."),
-            "anticheat_aimbot_action"
-        )
+            local embedData = {
+                    reason = string.format(
+                        "Player moved his mouse in a different direction than his view changed %d times within %.1f seconds",
+                        cmdStats["totalMouseContradictions"],
+                        TicksToSeconds(cmdStats["totalMouseContradictions"])
+                    ) .. (altPressed and " while ALT key was pressed." or "."),
+            }
+            Nova.Webhook("anticheat_aimbot_contr", embedData)
+            Nova.startDetection(
+                "anticheat_aimbot",
+                steamID,
+                "anticheat_aimbot_contr",
+                embedData.reason,
+                "anticheat_aimbot_action"
+            )
     end
 end
 hook.Add("nova_base_startcommand", "anticheat_aimbot", AimbotHandler)

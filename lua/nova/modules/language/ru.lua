@@ -331,6 +331,24 @@ local phrases = {
 
 Если вы хотите, чтобы Nova Defender настроил модуль за вас, включите
 параметр «Автонастройка защиты сервера» на вкладке «Уязвимости».]],
+    ["health_check_reqwest_title"] = "Модуль Reqwest",
+    ["health_check_reqwest_desc"] = "Модуль, позволяющий использовать HTTP-запросы. Создан WilliamVenner (Billy).",
+    ["health_check_reqwest_desc_long"] =
+    [[Без этого модуля невозможно выполнять HTTP-запросы в Garry's Mod.
+    Он позволяет отправлять и получать данные через HTTP, что необходимо для некоторых интеграций, например Discord.
+
+    Для установки перейдите на https://github.com/WilliamVenner/gmsv_reqwest.
+    1. Перейдите во вкладку Releases и скачайте файл .dll для операционной системы вашего сервера.
+    2. Создайте папку "garrysmod/lua/bin", если она не существует.
+    3. Поместите файл .dll в папку "/garrysmod/lua/bin".
+    4. Перезапустите сервер.
+
+    Если вы хотите, чтобы Nova Defender автоматически настроил модуль, активируйте опцию
+    "Автоматически настроить Reqwest" во вкладке "Exploit".]],
+
+    ["discord_webhook_enabled"] = "Включить Discord Webhook",
+    ["discord_webhook_url"] = "Вставьте здесь URL вашего вебхука Discord.",
+
     ["health_check_exploits_title"] = "Дополнения с известными уязвимостями",
     ["health_check_exploits_desc"] = "Список сетевых сообщений дополнений с известными уязвимостями.",
     ["health_check_exploits_desc_long"] =
@@ -455,6 +473,7 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["menu_title_server"] = "Сервер",
     ["menu_title_inspection"] = "Проверка игроков",
     ["menu_title_ddos"] = "Защита от DDoS-атак",
+    ["menu_title_discord"] = "Discord",
 
     ["menu_desc_banbypass"] = "Способы, позволяющие игрокам обойти блокировку Nova Defender",
     ["menu_desc_network"] = "Ограничение, контроль и журнал сетевой активности",
@@ -469,6 +488,7 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["menu_desc_server"] = "Управление доступом к вашему серверу",
     ["menu_desc_inspection"] = "Выполнение команд на игроках и поиск файлов",
     ["menu_desc_ddos"] = "Живой статус DDoS Protection, установленной на сервере Linux",
+    ["menu_desc_discord"] = "Управление сообщениями вебхуков в Discord",
 
     ["menu_elem_extensions"] = "Расширения:",
     ["menu_elem_disabled"] = "(деактивировано)",
@@ -660,6 +680,11 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["sev_medium"] = "Средн.",
     ["sev_high"] = "Высок.",
     ["sev_critical"] = "Критич.",
+
+    ["embed_steam_account"] = "Аккаунт Steam",
+    ["embed_detection_details"] = "Детали обнаружения",
+    ["embed_no_steam_account"] = "Не найдено",
+    ["embed_no_details"] = "Не предоставлено",
 }
 
 // DO NOT CHANGE ANYTHING BELOW THIS

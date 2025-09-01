@@ -308,22 +308,39 @@ local phrases = {
 
 如果您希望Nova Defender为您自动配置该模块，请在"Exploit"标签中激活
 "自动设置Serversecure"选项。]],
-    ["health_check_exploits_title"] = "已知存在漏洞的插件",
-    ["health_check_exploits_desc"] = "已知可被利用的插件netmessages列表。",
-    ["health_check_exploits_desc_long"] =
-[[Netmessage使客户端与服务器之间的通信成为可能。
-然而，这些消息很容易被客户端操纵。
-因此，如果服务器没有检查客户端是否有权发送此消息，
-就可能出现可被利用的安全漏洞（金钱漏洞、服务器崩溃、管理员权限）。
+    ["health_check_reqwest_title"] = "Reqwest 模块",
+    ["health_check_reqwest_desc"] = "一个允许使用 HTTP 请求的模块。由 WilliamVenner (Billy) 创建。",
+    ["health_check_reqwest_desc_long"] =
+    [[没有此模块，无法在 Garry's Mod 中执行 HTTP 请求。
+    它允许通过 HTTP 发送和接收数据，这对于某些集成（如 Discord）是必需的。
 
-所有列出的netmessages名称都可以或可能被利用。
-不能保证这个漏洞仍然存在。
-此外，还有可能存在未列出的可被利用的netmessages。
+    安装方法请访问 https://github.com/WilliamVenner/gmsv_reqwest。
+    1. 转到 Releases 页面并下载适用于您服务器操作系统的 .dll 文件。
+    2. 如果不存在，请创建文件夹 "garrysmod/lua/bin"。
+    3. 将 .dll 文件放入 "/garrysmod/lua/bin" 文件夹。
+    4. 重启服务器。
 
-   1. 定期更新您的插件
-   2. 用新的替换过时/不受支持的插件
-   3. 如果您熟悉Lua，手动检查受影响的netmessages
-    ]],
+    如果您希望 Nova Defender 自动配置该模块，请在 "Exploit" 选项卡中启用
+    “自动配置 Reqwest” 选项。]],
+        ["health_check_exploits_title"] = "已知存在漏洞的插件",
+        ["health_check_exploits_desc"] = "已知可被利用的插件netmessages列表。",
+        ["health_check_exploits_desc_long"] =
+    [[Netmessage使客户端与服务器之间的通信成为可能。
+    然而，这些消息很容易被客户端操纵。
+    因此，如果服务器没有检查客户端是否有权发送此消息，
+    就可能出现可被利用的安全漏洞（金钱漏洞、服务器崩溃、管理员权限）。
+
+    所有列出的netmessages名称都可以或可能被利用。
+    不能保证这个漏洞仍然存在。
+    此外，还有可能存在未列出的可被利用的netmessages。
+
+    1. 定期更新您的插件
+    2. 用新的替换过时/不受支持的插件
+    3. 如果您熟悉Lua，手动检查受影响的netmessages]],
+
+    ["discord_webhook_enabled"] = "启用 Discord Webhook",
+    ["discord_webhook_url"] = "在此处粘贴您的 Discord webhook URL。",
+
     ["health_check_backdoors_title"] = "后门",
     ["health_check_backdoors_desc"] = "服务器上的后门可能会给攻击者提供不受欢迎的访问权限。",
     ["health_check_backdoors_desc_long"] =
@@ -429,6 +446,7 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["menu_title_server"] = "服务器",
     ["menu_title_inspection"] = "检查玩家",
     ["menu_title_ddos"] = "DDoS 保护",
+    ["menu_title_discord"] = "Discord",
 
     ["menu_desc_banbypass"] = "防止玩家绕过Nova Defender封禁的技术",
     ["menu_desc_network"] = "限制、控制和记录网络活动",
@@ -443,6 +461,7 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["menu_desc_server"] = "管理对您服务器的访问",
     ["menu_desc_inspection"] = "对玩家执行命令和搜索文件",
     ["menu_desc_ddos"] = "Linux 服务器上安装的 DDoS 防护的实时状态",
+    ["menu_desc_discord"] = "管理发送到 Discord 的 Webhook 消息",
 
     ["menu_elem_extensions"] = "扩展：",
     ["menu_elem_disabled"] = "(已停用)",
@@ -636,6 +655,11 @@ https://github.com/Freilichtbuehne/nova-defender-anticheat/releases/latest]],
     ["sev_medium"] = "中",
     ["sev_high"] = "高",
     ["sev_critical"] = "关键",
+
+    ["embed_steam_account"] = "Steam账号",
+    ["embed_detection_details"] = "检测详情",
+    ["embed_no_steam_account"] = "未找到",
+    ["embed_no_details"] = "未提供",
 }
 
 -- DO NOT CHANGE ANYTHING BELOW THIS

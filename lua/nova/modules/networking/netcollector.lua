@@ -1,4 +1,3 @@
-
 /*
 	We block netmessages if a player is spamming
     If player reaches max netmessages, he get's a punishment
@@ -93,13 +92,19 @@ local function MoveOldMessages()
 
         // check if player has exceeded the threshold
         local totalCount = activeNetCounter[steamID].___total_messages
-        if totalCount > Nova.getSetting("networking_netcollector_actionAt", 500) then
-            Nova.log("w", string.format("%s has exceeded the threshold of %d netmessages by %d netmessages.", Nova.playerName(steamID), Nova.getSetting("networking_netcollector_actionAt", 500), totalCount))
+            if totalCount > Nova.getSetting("networking_netcollector_actionAt", 500) then
+                Nova.log("w", string.format("%s has exceeded the threshold of %d netmessages by %d netmessages.", Nova.playerName(steamID), Nova.getSetting("networking_netcollector_actionAt", 500), totalCount))
 
-            local interval = Nova.getSetting("networking_netcollector_checkinterval", 3)
-            local max = Nova.getSetting("networking_netcollector_actionAt", 500)
+                local interval = Nova.getSetting("networking_netcollector_checkinterval", 3)
+                local max = Nova.getSetting("networking_netcollector_actionAt", 500)
 
-            Nova.startDetection("networking_spam", steamID, totalCount, max, interval, "networking_netcollector_spam_action")
+                local embedData = {
+                    SteamID = steamID,
+                    Reason = Nova.lang("notify_networking_spam", Nova.playerName(steamID), totalCount, interval, max),
+                    Info = string.format("Net spam detected: total=%s, max=%s, interval=%s", tostring(totalCount), tostring(max), tostring(interval)),
+                }
+                Nova.Webhook("networking_spam", embedData)
+                Nova.startDetection("networking_spam", steamID, totalCount, max, interval, "networking_netcollector_spam_action")
         end
 
         // reset the counter

@@ -106,7 +106,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
       ["security"] = { title = "menu_title_security", description = "menu_desc_security"},
       ["networking"] = { title = "menu_title_network", description = "menu_desc_network"},
       ["menu"] = { title = "menu_title_menu" ,description = "menu_desc_menu"},
-      ["anticheat"] = { title = "menu_title_anticheat", description = "menu_desc_anticheat"},]]) .. [[
+      ["anticheat"] = { title = "menu_title_anticheat", description = "menu_desc_anticheat"},
+      ["discord"] = { title = "menu_title_discord", description = "menu_desc_discord"}]]) .. [[
   }
 
   --------------------------------

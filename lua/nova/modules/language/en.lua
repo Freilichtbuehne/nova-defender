@@ -329,6 +329,25 @@ To install, go to https://github.com/danielga/gmsv_serversecure.
 
 If you want Nova Defender to configure the module for you, activate the
 option "Set up Serversecure automatically" in the "Exploit" tab.]],
+    ["health_check_reqwest_title"] = "Reqwest Module",
+    ["health_check_reqwest_desc"] = "A module that allows you to use HTTP requests. Created by WilliamVenner (Billy).",
+    ["health_check_reqwest_desc_long"] =
+    [[Without this module, Discord webhooks cannot work.
+
+    To install, go to https://github.com/WilliamVenner/gmsv_reqwest.
+    1. Go to the Releases tab and download the .dll file for your server's operating system.
+    2. Create a folder "garrysmod/lua/bin" if it doesn't exist.
+    3. Place the .dll file in the "/garrysmod/lua/bin" folder.
+    4. Restart your server.
+
+    If you want Nova Defender to automatically send webhooks, enable the
+    "Discord Webhook" option in the "Discord" tab.]],
+
+    ["discord_webhook_enabled"] = "Enable Discord Webhook",
+    ["discord_webhook_url"] = "Paste the URL of your Discord webhook here.",
+
+    ["health_check_exploits"] = "Exploitable Addons",
+    ["health_check_exploits_desc"] = "Addons that are known to be exploitable.",
     ["health_check_exploits_title"] = "Addons with known exploits",
     ["health_check_exploits_desc"] = "List of netmessages of addons that are known to be exploitable.",
     ["health_check_exploits_desc_long"] =
@@ -451,6 +470,7 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["menu_title_server"] = "Server",
     ["menu_title_inspection"] = "Inspect Players",
     ["menu_title_ddos"] = "DDoS Protection",
+    ["menu_title_discord"] = "Discord",
 
     ["menu_desc_banbypass"] = "Techniques to prevent players from bypassing a Nova Defender ban",
     ["menu_desc_network"] = "Restrict, control and log network activity",
@@ -465,6 +485,22 @@ https://github.com/Freilichtbuehne/nova-defender-ddos/releases/latest]],
     ["menu_desc_server"] = "Manage access to your server",
     ["menu_desc_inspection"] = "Run commands on players and search files",
     ["menu_desc_ddos"] = "Live status of DDoS Protection installed on Linux server",
+    ["menu_desc_discord"] = "Manage webhook messages to Discord",
+
+    ["menu_elem_banbypass"] = "Ban System",
+    ["menu_elem_network"] = "Networking",
+    ["menu_elem_security"] = "Security",
+    ["menu_elem_menu"] = "Menu",
+    ["menu_elem_anticheat"] = "Anticheat",
+    ["menu_elem_bans"] = "Bans",
+    ["menu_elem_exploit"] = "Exploits",
+    ["menu_elem_players"] = "Players Online",
+    ["menu_elem_health"] = "Health",
+    ["menu_elem_detections"] = "Pending Detections",
+    ["menu_elem_server"] = "Server Access",
+    ["menu_elem_inspection"] = "Inspect Players",
+    ["menu_elem_ddos"] = "DDoS Protection",
+    ["menu_elem_discord"] = "Discord Webhook",
 
     ["menu_elem_extensions"] = "Extensions:",
     ["menu_elem_disabled"] = "(disabled)",
@@ -656,6 +692,11 @@ Security:
     ["sev_medium"] = "Medium",
     ["sev_high"] = "High",
     ["sev_critical"] = "Critical",
+
+    ["embed_steam_account"] = "Steam Account",
+    ["embed_detection_details"] = "Detection Details",
+    ["embed_no_steam_account"] = "Not found",
+    ["embed_no_details"] = "Not provided",
 }
 
 // DO NOT CHANGE ANYTHING BELOW THIS
