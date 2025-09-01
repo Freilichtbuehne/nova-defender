@@ -5,12 +5,15 @@ end
 
 Nova.Webhook = function(logType, detectionType)
     if Nova.getSetting("discord_webhook_enabled") then
+        if Nova.getSetting("discord_webhook_url") == "" then
+            Nova.log("e", "Discord Webhook URL is not set! Please set it in the settings.")
+            return
+        end
+
         local embedData = detectionType
         local embed = {}
         local steam32 = embedData.SteamID or ""
         local reason = embedData.Reason or ""
-        local info = embedData.Info or ""
-
         local steamProfileUrl = ""
         if steam32 ~= "" and util and util.SteamIDTo64 then
             steamProfileUrl = "https://steamcommunity.com/profiles/" .. tostring(util.SteamIDTo64(steam32))
@@ -63,6 +66,7 @@ Nova.Webhook = function(logType, detectionType)
             success = function(status, body, headers)
             end,
             failed = function(err, errExt)
+                print("[Nova Discord Webhook] Error:", err, errExt)
             end
         })
     end
