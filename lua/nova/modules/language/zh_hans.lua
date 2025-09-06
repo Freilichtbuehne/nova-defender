@@ -311,7 +311,7 @@ local phrases = {
 
 如果您希望Nova Defender为您自动配置该模块，请在"Exploit"标签中激活
 "自动设置Serversecure"选项。]],
-    ["health_check_reqwest_title"] = "Reqwest 模块",
+    ["health_check_reqwest_title"] = "Discord集成请求模块",
     ["health_check_reqwest_desc"] = "一个允许使用 HTTP 请求的模块。由 WilliamVenner (Billy) 创建。",
     ["health_check_reqwest_desc_long"] =
     [[没有此模块，无法在 Garry's Mod 中执行 HTTP 请求。

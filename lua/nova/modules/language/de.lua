@@ -332,7 +332,7 @@ Zum Installieren gehe auf: https://github.com/danielga/gmsv_serversecure.
 
 Wenn Nova Defender das Modul für dich automatisch konfigurieren soll,
 aktiviere im "Exploits"-Tab die Option "Serversecure automatisch einrichten"]],
-    ["health_check_reqwest_title"] = "Reqwest Module",
+    ["health_check_reqwest_title"] = "Reqwest Module für Discord Integration",
     ["health_check_reqwest_desc"] = "Ein Modul, das die Verwendung von HTTP-Anfragen ermöglicht. Erstellt von WilliamVenner (Billy).",
     ["health_check_reqwest_desc_long"] =
     [[Ohne dieses Modul ist es nicht möglich, HTTP-Anfragen in Garry's Mod zu verwenden.

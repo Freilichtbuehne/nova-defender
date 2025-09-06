@@ -334,7 +334,7 @@ local phrases = {
 
 Если вы хотите, чтобы Nova Defender настроил модуль за вас, включите
 параметр «Автонастройка защиты сервера» на вкладке «Уязвимости».]],
-    ["health_check_reqwest_title"] = "Модуль Reqwest",
+    ["health_check_reqwest_title"] = "Модуль Reqwest для интеграции с Discord",
     ["health_check_reqwest_desc"] = "Модуль, позволяющий использовать HTTP-запросы. Создан WilliamVenner (Billy).",
     ["health_check_reqwest_desc_long"] =
     [[Без этого модуля невозможно выполнять HTTP-запросы в Garry's Mod.

@@ -332,7 +332,7 @@ To install, go to https://github.com/danielga/gmsv_serversecure.
 
 If you want Nova Defender to configure the module for you, activate the
 option "Set up Serversecure automatically" in the "Exploit" tab.]],
-    ["health_check_reqwest_title"] = "Reqwest Module",
+    ["health_check_reqwest_title"] = "Reqwest Module for Discord integration",
     ["health_check_reqwest_desc"] = "A module that allows you to use HTTP requests. Created by WilliamVenner (Billy).",
     ["health_check_reqwest_desc_long"] =
     [[Without this module, Discord webhooks cannot work.
