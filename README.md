@@ -69,6 +69,9 @@ Want to support my work?
 - Server lockdown mode
 - Prevent password guessing
 
+### 🛰️ Discord Webhook
+- Notify every Detection on your Discord server with the power of Webhooks
+
 ### 💻 Compact Menu
 - All settings in game
 - Decide what to do in each individual detection case (Ask staff, ban, kick, nothing)

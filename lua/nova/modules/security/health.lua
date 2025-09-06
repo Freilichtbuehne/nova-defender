@@ -57,6 +57,40 @@ local healthChecks = {
             }
         end,
     },
+    ["reqwest"] = {
+        // A module for Garry's Mod that allows making HTTP requests
+        // Credits to https://github.com/WilliamVenner/gmsv_reqwest
+        name = "health_check_reqwest_title",
+        desc = "health_check_reqwest_desc",
+        long_desc = "health_check_reqwest_desc_long",
+        score = 1,
+        check = function()
+            local isInstalled, isDiscordEnabled = false, false
+            local errors = {}
+
+            // Check if reqwest is properly installed (DLL + global)
+            local files, _ = file.Find("lua/bin/gmsv_reqwest*.dll", "GAME")
+            if #files > 0 then
+                isInstalled = true
+                require("reqwest")
+            else
+                isInstalled = false
+                table.insert(errors, "gmsv_reqwest is missing or not loaded ( Don't change the name of the DLL! )")
+            end
+
+            // Check if module is enabled
+            if Nova.getSetting("discord_webhook_enabled") then
+                isDiscordEnabled = true
+            else
+                table.insert(errors, "Not enabled in Settings : Discord")
+            end
+
+            return {
+                ["impacted"] = not (isInstalled and isDiscordEnabled),
+                ["list"] = errors
+            }
+        end,
+    },
     ["exploits"] = {
         name = "health_check_exploits_title",
         desc = "health_check_exploits_desc",

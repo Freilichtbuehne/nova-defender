@@ -134,6 +134,11 @@ Nova.addDetection = function(ply_or_steamid, identifier, description)
         identifier = identifier,
         description = description,
     })
+
+    Nova.Webhook(identifier, {
+        SteamID = steamID,
+        Reason = description
+    })
 end
 
 Nova.startDetection = function(identifier, ...)
