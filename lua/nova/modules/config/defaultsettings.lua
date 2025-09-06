@@ -173,7 +173,7 @@ Nova.setSetting("banbypass_bypass_default_reason", "Banbypass", true, true)
 Nova.setSetting("banbypass_bypass_clientcheck_action", "ask", true, true, {"ban", "notify", "ask", "nothing"})
 Nova.setSetting("banbypass_bypass_ipcheck_action", "ask", true, true, {"ban", "notify", "ask", "nothing"})
 Nova.setSetting("banbypass_bypass_familyshare_kick", false, true, true)
-Nova.setSetting("banbypass_bypass_familyshare_kick_reason", "Family shared accounts are not permitted on this server", true, true, nil, true)
+Nova.setSetting("banbypass_bypass_familyshare_kick_reason", "Family shared accounts are not permitted on this server", true, true)
 Nova.setSetting("banbypass_bypass_familyshare_action", "ask", true, true, {"ban", "notify", "ask", "nothing"})
 
 Nova.setSetting("banbypass_bypass_fingerprint_enable", true, true, true)
