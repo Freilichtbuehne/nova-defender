@@ -117,7 +117,15 @@ hook.Add("nova_banbypass_check", "banbypass_familyshare", function(ply)
     Nova.log("d", string.format("Checking if %s is family shared", Nova.playerName(ply)))
 
     local bannedOwner = Nova.isOwnerBanned(ply)
-    if not bannedOwner then return end
+    if bannedOwner then
+        Nova.startDetection("banbypass_familyshare", ply, bannedOwner, "banbypass_bypass_familyshare_action")
+        return
+    end
 
-    Nova.startDetection("banbypass_familyshare", ply, bannedOwner, "banbypass_bypass_familyshare_action")
+    if Nova.getSetting("banbypass_bypass_familyshare_kick", false) and
+        Nova.isFamilyShared(ply)
+    then
+        Nova.kickPlayer(ply, Nova.getSetting("banbypass_bypass_familyshare_kick_reason"), "banbypass_familyshare_account")
+        return
+    end
 end)

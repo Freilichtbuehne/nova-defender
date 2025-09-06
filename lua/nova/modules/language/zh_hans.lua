@@ -82,6 +82,8 @@ local phrases = {
 
     ["banbypass_bypass_default_reason"] = "玩家因绕过封禁而被封禁的原因",
 
+    ["banbypass_bypass_familyshare_kick"] = "踢出使用家庭共享账号的玩家。",
+    ["banbypass_bypass_familyshare_kick_reason"] = "使用家庭共享账号的玩家被踢出的原因。",
     ["banbypass_bypass_familyshare_action"] = "当玩家使用被封禁玩家的家庭共享账户时应该发生什么？",
     ["banbypass_bypass_clientcheck_action"] = "当我们在玩家的本地文件中发现绕过封禁的证据时应该发生什么？",
     ["banbypass_bypass_ipcheck_action"] = "当玩家与被封禁玩家的IP地址相同时应该发生什么？",
@@ -145,6 +147,7 @@ local phrases = {
     ["security_privileges_group_protection_protected_players"] = "Protected Players:\n所有被允许拥有受保护用户组的玩家。如果你移除一个在线的玩家，他将被踢出。",
     ["security_privileges_group_protection_kick_reason"] = "如果一个受保护的玩家在连接时失去了他的保护而被踢出的原因。",
     -- Detections
+    ["config_detection_banbypass_familyshare_account"] = "家庭共享账户",
     ["config_detection_banbypass_familyshare"] = "家庭共享账户绕过封禁",
     ["config_detection_banbypass_clientcheck"] = "封禁绕过客户端检查",
     ["config_detection_banbypass_ipcheck"] = "封禁绕过IP检查",

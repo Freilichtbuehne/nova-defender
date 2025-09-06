@@ -84,6 +84,8 @@ local phrases = {
     ["banbypass_ban_banstaff"] = "Le personnel peut être banni",
     ["banbypass_ban_default_reason"] = "Raison pour laquelle un joueur est banni si aucune raison n'est spécifiée",
     ["banbypass_bypass_default_reason"] = "Raison pour laquelle un joueur est banni s'il a contourné un bannissement",
+    ["banbypass_bypass_familyshare_kick"] = "Expulser les joueurs utilisant un compte partagé en famille.",
+    ["banbypass_bypass_familyshare_kick_reason"] = "Raison pour lequell un joueur est expulsé s'il utilise un compte partagé en famille.",
     ["banbypass_bypass_familyshare_action"] = "Que doit-il se passer lorsqu'un joueur utilise un compte partagé en famille d'un joueur banni?",
     ["banbypass_bypass_clientcheck_action"] = "Que doit-il se passer lorsque nous trouvons des preuves de contournement de bannissement dans les fichiers locaux d'un joueur?",
     ["banbypass_bypass_ipcheck_action"] = "Que doit-il se passer lorsqu'un joueur a la même adresse IP qu'un joueur banni?",
@@ -150,6 +152,7 @@ local phrases = {
     /*
         Détections
     */
+    ["config_detection_banbypass_familyshare_account"] = "Compte partagé en famille",
     ["config_detection_banbypass_familyshare"] = "Contournement de bannissement par compte partagé en famille",
     ["config_detection_banbypass_clientcheck"] = "Vérification du client de contournement de bannissement",
     ["config_detection_banbypass_ipcheck"] = "Vérification de l'IP de contournement de bannissement",
