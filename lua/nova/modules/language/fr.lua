@@ -152,6 +152,7 @@ local phrases = {
     /*
         Détections
     */
+    ["config_detection_banbypass_familyshare_account"] = "Compte partagé en famille",
     ["config_detection_banbypass_familyshare"] = "Contournement de bannissement par compte partagé en famille",
     ["config_detection_banbypass_clientcheck"] = "Vérification du client de contournement de bannissement",
     ["config_detection_banbypass_ipcheck"] = "Vérification de l'IP de contournement de bannissement",

@@ -161,6 +161,7 @@ local phrases = {
     /*
         Detections
     */
+    ["config_detection_banbypass_familyshare_account"] = "Familysharing Account",
     ["config_detection_banbypass_familyshare"] = "Familysharing Account zur Banumgehung",
     ["config_detection_banbypass_clientcheck"] = "Banumgehung Clientprüfung",
     ["config_detection_banbypass_ipcheck"] = "Banumgehung IP-Prüfung",

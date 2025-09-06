@@ -147,6 +147,7 @@ local phrases = {
     ["security_privileges_group_protection_protected_players"] = "Protected Players:\n所有被允许拥有受保护用户组的玩家。如果你移除一个在线的玩家，他将被踢出。",
     ["security_privileges_group_protection_kick_reason"] = "如果一个受保护的玩家在连接时失去了他的保护而被踢出的原因。",
     -- Detections
+    ["config_detection_banbypass_familyshare_account"] = "家庭共享账户",
     ["config_detection_banbypass_familyshare"] = "家庭共享账户绕过封禁",
     ["config_detection_banbypass_clientcheck"] = "封禁绕过客户端检查",
     ["config_detection_banbypass_ipcheck"] = "封禁绕过IP检查",

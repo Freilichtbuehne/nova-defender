@@ -162,6 +162,7 @@ local phrases = {
     /*
         Detections
     */
+    ["config_detection_banbypass_familyshare_account"] = "Family Sharing",
     ["config_detection_banbypass_familyshare"] = "Family Sharing аккаунт в обход блокировки",
     ["config_detection_banbypass_clientcheck"] = "Обход блокировки - проверка клиента",
     ["config_detection_banbypass_ipcheck"] = "Обход блокировки - проверка IP-адреса",

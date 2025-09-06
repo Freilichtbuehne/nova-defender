@@ -125,7 +125,7 @@ hook.Add("nova_banbypass_check", "banbypass_familyshare", function(ply)
     if Nova.getSetting("banbypass_bypass_familyshare_kick", false) and
         Nova.isFamilyShared(ply)
     then
-        Nova.kickPlayer(ply, Nova.getSetting("banbypass_bypass_familyshare_kick_reason"), identifier)
+        Nova.kickPlayer(ply, Nova.getSetting("banbypass_bypass_familyshare_kick_reason"), "banbypass_familyshare_account")
         return
     end
 end)
