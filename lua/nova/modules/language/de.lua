@@ -613,8 +613,8 @@ Sicherheit:
 - Ausgeführter Code könnte vom Client blockiert oder manipuliert werden]],
     ["menu_elem_help"] = "Hilfe",
     
-    ["menu_elem_ddos_active"] = "DDoS-Schutz aktiv!",
-    ["menu_elem_ddos_inactive"] = "DDoS-Schutz inaktiv",
+    ["menu_elem_ddos_active"] = "Server unter DDoS-Angriff!",
+    ["menu_elem_ddos_inactive"] = "DDoS-Schutz aktiv | Kein aktiver Angriff",
     ["menu_elem_ddos_duration"] = "Dauer: %s",
     ["menu_elem_ddos_avg"] = "Durchschnitt RX: %s",
     ["menu_elem_ddos_max"] = "Max RX: %s",

@@ -622,8 +622,8 @@ Security:
     ["menu_elem_download_confirmbutton"] = "Download",
     ["menu_elem_canceldel"] = "Cancel and delete",
 
-    ["menu_elem_ddos_active"] = "DDoS Protection enabled!",
-    ["menu_elem_ddos_inactive"] = "DDoS Protection disabled",
+    ["menu_elem_ddos_active"] = "Server under DDoS attack!",
+    ["menu_elem_ddos_inactive"] = "DDoS protection active | No active attack",
     ["menu_elem_ddos_duration"] = "Duration: %s",
     ["menu_elem_ddos_avg"] = "Avg RX: %s",
     ["menu_elem_ddos_max"] = "Max RX: %s",

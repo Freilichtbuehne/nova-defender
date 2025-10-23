@@ -43,7 +43,7 @@ Nova.setSetting("menu_action_showstaff", false, true, true)
 	DDoS Protection
 ===============================*/
 
-Nova.setSetting("networking_ddos_collect_days", 2, false, true)
+Nova.setSetting("networking_ddos_collect_days", 7, false, true)
 Nova.setSetting("networking_ddos_notify", true, false, true)
 
 /*===============================
