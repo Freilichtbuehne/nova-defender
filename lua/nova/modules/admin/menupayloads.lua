@@ -2919,31 +2919,34 @@ end
 Nova.getInspectionPayload = function()
   local payload = [[
   NOVA_INSPECTION_HISTORY = NOVA_INSPECTION_HISTORY or {}
+  NOVA_INSPECTION_NET_REGISTERED = NOVA_INSPECTION_NET_REGISTERED or false
+  NOVA_INSPECTION_INITIALIZING = false
+  
   local sw, sh = ScrW(), ScrH()
   local style = {
     banner = Material("materials/nova/banner.png", "noclamp smooth"),
     frame = {
-      w = 0.65 * sw, -- absolute width of the frame
-      h = 0.7 * sh, -- absolute height of the frame
+      w = 0.65 * sw,
+      h = 0.7 * sh,
     },
     tab = {
-      w = 0.55 * sw, -- absolute width of the tab
+      w = 0.55 * sw,
     },
     margins = {
-      tb = 0.01 * sh, -- margin top and bottom
-      lr = 0.01 * sw, -- margin left and right
+      tb = 0.01 * sh,
+      lr = 0.01 * sw,
     },
     color = {
-      pri = Color(126, 38, 241), -- primary color
-      pri2 = Color(86, 238, 244), -- primary color
-      sec = Color(35, 39, 60), -- secondary color
-      dis = Color(81, 88, 94), -- disabled color
-      bg = Color(11, 12, 27), -- background color
-      ft = Color(255, 255, 255), -- font color
-      dng = Color(220, 53, 69), -- danger color
-      scc = Color(40, 167, 69), -- success color
-      wrn = Color(198, 148, 0), -- warning color
-      tr = Color(0, 0, 0, 0), -- transparent color
+      pri = Color(126, 38, 241),
+      pri2 = Color(86, 238, 244),
+      sec = Color(35, 39, 60),
+      dis = Color(81, 88, 94),
+      bg = Color(11, 12, 27),
+      ft = Color(255, 255, 255),
+      dng = Color(220, 53, 69),
+      scc = Color(40, 167, 69),
+      wrn = Color(198, 148, 0),
+      tr = Color(0, 0, 0, 0),
       paint_tr = function(_, _w, _h)
         draw.RoundedBox(0, 0, 0, _w, _h, Color(0, 0, 0, 0))
       end
@@ -3117,7 +3120,6 @@ Nova.getInspectionPayload = function()
     confirmation:DockMargin( style.frame.w / 4, style.margins.tb, style.frame.w / 4 , 0 )
     confirmation:SetText(Lang("menu_elem_download_confirmbutton"))
     confirmation:SizeToContents()
-    --confirmation:SetMinimumSize(style.margins.tb * 7,style.margins.tb * 2)
     confirmation:Dock(TOP)
     confirmation.DoClick = function()
       surface.PlaySound("buttons/button15.wav")
@@ -3129,7 +3131,6 @@ Nova.getInspectionPayload = function()
     cancel:SetText(Lang("menu_elem_cancel"))
     cancel:DockMargin( style.frame.w / 4, style.margins.tb, style.frame.w / 4, 0 )
     cancel:SizeToContents()
-    --cancel:SetMinimumSize(style.margins.tb * 7,style.margins.tb * 2)
     cancel:Dock(TOP)
     cancel.DoClick = function()
       surface.PlaySound("buttons/button15.wav")
@@ -3153,7 +3154,6 @@ Nova.getInspectionPayload = function()
     close.defaultColor = style.color.scc
     close:SetText(Lang("menu_elem_close"))
     close:SizeToContents()
-    --close:SetMinimumSize(style.margins.tb * 7,style.margins.tb * 2)
     close:Dock(TOP)
     close:DockMargin( style.frame.w / 4, style.margins.tb, style.frame.w / 4, 0 )
     close.DoClick = function()
@@ -3199,7 +3199,6 @@ Nova.getInspectionPayload = function()
     cancel.defaultColor = style.color.dng
     cancel:SetText(Lang("menu_elem_cancel"))
     cancel:SizeToContents()
-    --cancel:SetMinimumSize(style.margins.tb * 7,style.margins.tb * 2)
     cancel:Dock(TOP)
     cancel:DockMargin( style.frame.w / 4, style.margins.tb, style.frame.w / 4, 0 )
     cancel.DoClick = function()
@@ -3210,7 +3209,6 @@ Nova.getInspectionPayload = function()
     local canceldel = vgui.Create("nova_admin_default_button", self)
     canceldel.defaultColor = style.color.dng
     canceldel:SetText(Lang("menu_elem_canceldel"))
-    --canceldel:SetMinimumSize(style.margins.tb * 7,style.margins.tb * 2)
     canceldel:SizeToContents()
     canceldel:Dock(TOP)
     canceldel:DockMargin( style.frame.w / 4, style.margins.tb, style.frame.w / 4, 0 )
@@ -3253,24 +3251,40 @@ Nova.getInspectionPayload = function()
   vgui.Register("nova_admin_download", DOWNLOAD_BOX, "DFrame")
 
   local PAGE_INSPECTION = {}
+  NOVA_INSPECTION_PANEL = nil
 
   function PAGE_INSPECTION:Init()
+    if self.initialized then return end
+    if NOVA_INSPECTION_INITIALIZING then return end
+    
+    NOVA_INSPECTION_INITIALIZING = true
+    self.initialized = true
+    NOVA_INSPECTION_PANEL = self
+    
     local function Reload()
-      if not IsValid(self) then return end
-      for k, v in pairs(self:GetChildren()) do if IsValid(v) then v:Remove() end end
-      self:Init()
+      if not IsValid(NOVA_INSPECTION_PANEL) then return end
+      if NOVA_INSPECTION_INITIALIZING then
+        timer.Simple(0.5, function()
+          if IsValid(NOVA_INSPECTION_PANEL) then Reload() end
+        end)
+        return
+      end
+      NOVA_INSPECTION_PANEL.initialized = false
+      for k, v in pairs(NOVA_INSPECTION_PANEL:GetChildren()) do if IsValid(v) then v:Remove() end end
+      NOVA_INSPECTION_PANEL:Init()
     end
   
-    self:Dock(FILL)
-    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb * 2)
-
-    local container = vgui.Create("DPanel", self)
-    container:SetSize(style.tab.w - style.margins.lr * 3, NOVA_STYLE_TAB_INNERHEIGHT - style.margins.tb * 2)
-    container.Paint = style.color.paint_tr
+    local targetHeight = NOVA_STYLE_TAB_INNERHEIGHT - style.margins.tb * 2
+    local targetWidth = style.tab.w - style.margins.lr * 3
     
-    local statusBar = vgui.Create("DPanel", container)
+    self:SetSize(targetWidth, targetHeight)
+    self:DockMargin(style.margins.lr, 0, style.margins.lr, style.margins.tb * 2)
+    
+    local statusBarHeight = style.margins.tb * 4
+    local statusBar = vgui.Create("DPanel", self)
     statusBar:Dock(TOP)
-    statusBar:SetSize(0, style.margins.tb * 4)
+    statusBar:SetTall(statusBarHeight)
+    statusBar:DockMargin(0, 0, 0, style.margins.tb)
     statusBar.Paint = function(_, _w, _h)
       draw.RoundedBox(0, 0, 0, _w, _h, style.color.sec)
     end
@@ -3301,11 +3315,16 @@ Nova.getInspectionPayload = function()
         if not IsValid(ply) then return end
         NOVA_INSPECTION = ply
         SendData("open", steamid)
+        timer.Simple(0.1, function()
+          if IsValid(NOVA_INSPECTION_PANEL) then Reload() end
+        end)
       else
         NOVA_INSPECTION = nil
         SendData("close")
+        timer.Simple(0.1, function()
+          if IsValid(NOVA_INSPECTION_PANEL) then Reload() end
+        end)
       end
-      Reload()
     end
 
     if IsValid(NOVA_INSPECTION) then
@@ -3373,10 +3392,13 @@ Nova.getInspectionPayload = function()
       self.active = active
     end
     
-    local content = vgui.Create("DPanel", container)
-    content:Dock(FILL)
-    content:DockMargin(0, style.margins.tb, 0, 0)
+    local contentHeight = targetHeight - statusBarHeight - style.margins.tb
+    
+    local content = vgui.Create("DPanel", self)
+    content:SetSize(targetWidth, contentHeight)
+    content:SetPos(0, statusBarHeight + style.margins.tb)
     content.Paint = style.color.paint_tr
+    self.content = content
   
     local fileexplorer = vgui.Create("DPanel", content)
     fileexplorer.Paint = style.color.paint_tr
@@ -3411,7 +3433,7 @@ Nova.getInspectionPayload = function()
       local path = s.path
       if not path then return end
       local dlFrame = vgui.Create("nova_admin_download", NOVA_MENU)
-      self.dlFrame = dlFrame
+      NOVA_INSPECTION_PANEL.dlFrame = dlFrame
       dlFrame:Download(path)
     end
   
@@ -3423,8 +3445,8 @@ Nova.getInspectionPayload = function()
     browser.queue = {}
     browser.discovered = false
     browser.fullpath = ""
+    self.browser = browser
 
-    -- paint scrollbar
     local sb = browser:GetVBar()
     sb.Paint = style.color.paint_tr
     sb.btnUp.Paint = sb.Paint
@@ -3438,14 +3460,15 @@ Nova.getInspectionPayload = function()
     }
   
     local function OpenFolder(folderNode)
-      if not IsValid(self) then return end
+      if not IsValid(NOVA_INSPECTION_PANEL) then return end
       if not IsValid(folderNode) then return end
       if folderNode.discovered or folderNode.awaiting then return end
       folderNode.awaiting = true
       local path = folderNode.fullpath
-      if browser.queue[path] then return end
+      if not IsValid(NOVA_INSPECTION_PANEL.browser) then return end
+      if NOVA_INSPECTION_PANEL.browser.queue[path] then return end
       local loading = folderNode:AddNode( "" )
-      browser.queue[path] = {loading = loading, folder = folderNode}
+      NOVA_INSPECTION_PANEL.browser.queue[path] = {loading = loading, folder = folderNode}
       loading.Icon:SetImage( "icon16/arrow_refresh.png" )
       loading.Icon.PaintAt = function(self, x, y, dw, dh)
         dw, dh = dw or self:GetWide(), dh or self:GetTall()
@@ -3457,11 +3480,10 @@ Nova.getInspectionPayload = function()
         surface.DrawTexturedRectRotated( x + dw / 2, y + dh / 2, dw, dh, rot )
         return true
       end
-      -- block addons folder for privacy concerns
-      -- this can easily get bypassed, but also implemented from scratch
       for k, pattern in ipairs(blacklistDirs) do
         if string.match( path, pattern) then
-          local queue = browser.queue[path]
+          if not IsValid(NOVA_INSPECTION_PANEL.browser) then return end
+          local queue = NOVA_INSPECTION_PANEL.browser.queue[path]
           if IsValid(loading) then loading:Remove() end
           folderNode.discovered = true
           folderNode.awaiting = nil
@@ -3494,13 +3516,11 @@ Nova.getInspectionPayload = function()
       ["jpg"] = "icon16/page_white_camera.png",
       ["png"] = "icon16/page_white_camera.png",
       ["jpeg"] = "icon16/page_white_camera.png",
-      ["jpg"] = "icon16/page_white_camera.png",
-      ["png"] = "icon16/page_white_camera.png",
-      ["jpeg"] = "icon16/page_white_camera.png",
     }
     local function Append(path, folders, files)
-      if not IsValid(self) or not path then return end
-      local queue = browser.queue[path]
+      if not IsValid(NOVA_INSPECTION_PANEL) or not path then return end
+      if not IsValid(NOVA_INSPECTION_PANEL.browser) then return end
+      local queue = NOVA_INSPECTION_PANEL.browser.queue[path]
       if not queue then return end
       if IsValid(queue.loading) then queue.loading:Remove() end
       queue.folder.discovered = true
@@ -3541,7 +3561,7 @@ Nova.getInspectionPayload = function()
           download.path = fullPath
         end
       end
-      browser.queue[path] = nil
+      NOVA_INSPECTION_PANEL.browser.queue[path] = nil
     end
 
     local shell = vgui.Create("DPanel", content)
@@ -3556,8 +3576,12 @@ Nova.getInspectionPayload = function()
     output.PerformLayout = function(self)
       self:SetFontInternal("nova_font")
     end
+    self.output = output
+    
     local function AddOutput(text, response, success)
-      if not IsValid(output) then return end
+      if not IsValid(NOVA_INSPECTION_PANEL) then return end
+      if not IsValid(NOVA_INSPECTION_PANEL.output) then return end
+      local output = NOVA_INSPECTION_PANEL.output
       if response then
         local color = success and style.color.pri2 or style.color.dng
         output:InsertColorChange(color.r, color.g, color.b, color.a)
@@ -3664,52 +3688,54 @@ Nova.getInspectionPayload = function()
     div:SetLeftMin( style.tab.w / 8)
     div:SetRightMin( style.tab.w / 6)
     div.Paint = style.color.paint_tr
-    -- paint the divider
     div.m_DragBar.Paint = function(self, _w, _h)
         surface.SetDrawColor(style.color.pri)
-        -- draw line from middle top to middle bottom
         surface.DrawLine(_w / 2, _h * 0.35, _w / 2, _h * 0.65)
     end
 
-	  div:SetLeft( fileexplorer )
+    div:SetLeft( fileexplorer )
     div:SetRight( shell )
 
-    self:SizeToChildren(true, true)
-
-    local actions = {
+    self.actions = {
       ["close"] = function(response)
+        if not IsValid(NOVA_INSPECTION) then return end
         NOVA_INSPECTION = nil
-        Reload()
+        timer.Simple(0.1, function()
+          if IsValid(NOVA_INSPECTION_PANEL) then Reload() end
+        end)
       end,
       ["status"] = function(response)
         if not IsValid(NOVA_INSPECTION) then return end
-        if not IsValid(self) or not self.fps then
+        if not IsValid(NOVA_INSPECTION_PANEL) then
           NOVA_INSPECTION = nil
           SendData("close")
           return
         end
+        if not IsValid(NOVA_INSPECTION_PANEL.fps) then return end
         if not response then return end
         local data = util.JSONToTable(response)
         if not data then return end
         if data.connected and data.activated then
-          self.fps:SetText("FPS: " .. (data.fps or ""))
-          self.fps:SizeToContents()
-          self.ram:SetText(string.format("RAM: %.3f MB", (data.ram or 0) / 1024))
-          self.ram:SizeToContents()
-          self.ping:SetText("Ping: " .. (data.ping or "") .. " ms")
-          self.ping:SizeToContents()
-          self.circle.color = style.color.scc
-          self.active:SetText(data.focus and Lang("menu_elem_focus") or Lang("menu_elem_nofocus"))
-          self.active:SizeToContents()
+          NOVA_INSPECTION_PANEL.fps:SetText("FPS: " .. (data.fps or ""))
+          NOVA_INSPECTION_PANEL.fps:SizeToContents()
+          NOVA_INSPECTION_PANEL.ram:SetText(string.format("RAM: %.3f MB", (data.ram or 0) / 1024))
+          NOVA_INSPECTION_PANEL.ram:SizeToContents()
+          NOVA_INSPECTION_PANEL.ping:SetText("Ping: " .. (data.ping or "") .. " ms")
+          NOVA_INSPECTION_PANEL.ping:SizeToContents()
+          NOVA_INSPECTION_PANEL.circle.color = style.color.scc
+          NOVA_INSPECTION_PANEL.active:SetText(data.focus and Lang("menu_elem_focus") or Lang("menu_elem_nofocus"))
+          NOVA_INSPECTION_PANEL.active:SizeToContents()
         elseif data.connected and not data.activated then
-          self.circle.color = style.color.dng
+          NOVA_INSPECTION_PANEL.circle.color = style.color.dng
         elseif not data.connected then
           AddOutput(Lang("menu_elem_exec_clientclose"), false, false)
-          self.circle.color = style.color.ft
-          self.active:SetText(Lang("menu_elem_disconnected"))
-          self.active:SizeToContents()
+          NOVA_INSPECTION_PANEL.circle.color = style.color.ft
+          NOVA_INSPECTION_PANEL.active:SetText(Lang("menu_elem_disconnected"))
+          NOVA_INSPECTION_PANEL.active:SizeToContents()
         end
-        if not browser.discovered then OpenFolder(browser) end
+        if IsValid(NOVA_INSPECTION_PANEL.browser) and not NOVA_INSPECTION_PANEL.browser.discovered then 
+          OpenFolder(NOVA_INSPECTION_PANEL.browser) 
+        end
       end,
       ["open_folder"] = function(response)
         local data = util.JSONToTable(response)
@@ -3727,35 +3753,51 @@ Nova.getInspectionPayload = function()
       ["download_file"] = function(response)
         local data = util.JSONToTable(response)
         if not data then return end
-        if not IsValid(self.dlFrame) then return end
-        self.dlFrame:Update(data.cur, data.total, data.content, data.err)
+        if not IsValid(NOVA_INSPECTION_PANEL) then return end
+        if not IsValid(NOVA_INSPECTION_PANEL.dlFrame) then return end
+        NOVA_INSPECTION_PANEL.dlFrame:Update(data.cur, data.total, data.content, data.err)
       end,
       ["ack"] = function(response)
-        OpenFolder(browser)
+        if not IsValid(NOVA_INSPECTION_PANEL) then return end
+        if not IsValid(NOVA_INSPECTION_PANEL.browser) then return end
+        OpenFolder(NOVA_INSPECTION_PANEL.browser)
         AddOutput(Lang("menu_elem_exec_clientopen"), false, true)
       end,
       ["exec"] = function(response)
         response = util.JSONToTable(response)
-        if not response then AddOutput(Lang("menu_elem_exec_error"), true, false) return end
+        if not response then 
+          AddOutput(Lang("menu_elem_exec_error"), true, false) 
+          return 
+        end
         local success = response[1]
         local output = response[2]
         AddOutput(output, true, success == "scc")
       end
     }
 
-    net.Receive("]] .. Nova.netmessage("admin_get_inspection") .. [[", function(len)
-      if len == 0 then return end
-      local action = net.ReadString() or ""
-      if not actions[action] then return end
-      if net.BytesLeft() > 0 then
-        local response = net.ReadData(net.BytesLeft()) or ""
-        response = util.Decompress(response)
-        actions[action](response)
-      else
-        actions[action]()
-      end
+    if not NOVA_INSPECTION_NET_REGISTERED then
+      NOVA_INSPECTION_NET_REGISTERED = true
+      net.Receive("]] .. Nova.netmessage("admin_get_inspection") .. [[", function(len)
+        if len == 0 then return end
+        local action = net.ReadString() or ""
+        if not IsValid(NOVA_INSPECTION_PANEL) then return end
+        if not NOVA_INSPECTION_PANEL.actions then return end
+        if not NOVA_INSPECTION_PANEL.actions[action] then return end
+        if net.BytesLeft() > 0 then
+          local response = net.ReadData(net.BytesLeft()) or ""
+          response = util.Decompress(response)
+          NOVA_INSPECTION_PANEL.actions[action](response)
+        else
+          NOVA_INSPECTION_PANEL.actions[action]()
+        end
+      end)
+    end
+    
+    timer.Simple(0.1, function()
+      NOVA_INSPECTION_INITIALIZING = false
     end)
   end
+
   function PAGE_INSPECTION:Paint(_w, _h) end
   vgui.Register("nova_admin_menu_inspection", PAGE_INSPECTION, "DPanel")]]
   return payload
