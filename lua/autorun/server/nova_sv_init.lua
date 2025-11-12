@@ -1,11 +1,11 @@
 Nova = Nova or {
-    ["version"] = "1.11.1"
+    ["version"] = "1.11.2"
 }
 
 Nova.extensions = Nova.extensions or {
     ["priv_anticheat"] = {
         ["name"] = "Anticheat",
-        ["latest_version"] = "1.1.8",
+        ["latest_version"] = "1.1.9",
         ["up_to_date"] = false,
         ["version"] = "",
         ["enabled"] = false,
