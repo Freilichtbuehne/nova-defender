@@ -224,7 +224,7 @@ hook.Add("nova_networking_incoming", "networking_fakenets", function(client, ste
 end)
 
 // other addons might still need time to load their netmessages
-timer.Simple(15, function()
+timer.Simple(60 * 3, function()
     LoadFakeNets()
     Nova.fakeNetsLoaded = true
 end)
