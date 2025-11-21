@@ -64,8 +64,6 @@ local function SetUserGroup(ply_or_steamid, group)
         RunConsoleCommand("sa", "setrank", plySteamID64, group)
     elseif SAM then
         RunConsoleCommand("sam", "setrankid", plySteamID, group)*/
-	elseif istable(Lyn) and Lyn.Player and Lyn.Player.Role then
-		Lyn.Player.Role.Add(ply, group)
     else
         ply:SetUserGroup(group)
     end
