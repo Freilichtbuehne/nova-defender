@@ -84,9 +84,8 @@ Want to support my work?
 ## Extensions
 
 - **All extensions are private and exclusive for server owners!**
-- For a donation I grant access to individual extensions.
-- I reserve the right to refuse the request even without providing a reason.
 - [Join our Discord](https://discord.gg/zEMuB6kN9g) to get instructions on how to request access.
+- I reserve the right to refuse the request even without providing a reason.
 - Feel free to contact me directly via Discord: `_samuel`
 
 ### ✨ Extended Anticheat
