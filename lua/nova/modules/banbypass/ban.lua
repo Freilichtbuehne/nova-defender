@@ -1,6 +1,14 @@
 local databaseCache = {}
 local databaseLookupCache = {}
 local banInProgress = {}
+local lastCacheUpdate = 0
+
+// multi-server ban synchronization interval (in seconds)
+// controls how frequently servers check for new bans from other servers (your server database).
+// lower values = faster sync but more database load.
+// recommended: 60 seconds
+
+local cacheUpdateInterval = 60 
 
 local conVarSize = 2^32
 local conVarOffset = 2^16
@@ -41,7 +49,7 @@ local function AddBanToDatabase(ban)
         if isBanned and not isBanOnSight then
             Nova.log("d", string.format("Player %s is already banned: Set him to ban on sight again", Nova.playerName(ban.steamid)))
             // if player is unban on sight, set it back to ban on sight
-            Nova.query("UPDATE nova_bans SET is_banned = 0, unban_on_sight = 0, ban_on_sight = 1 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
+            Nova.query("UPDATE nova_bans SET is_banned = 0, unban_on_sight = 0, ban_on_sight = 1, bandbcheck = 1 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
             databaseCache[ban.steamid].is_banned = 0
             databaseCache[ban.steamid].unban_on_sight = 0
             databaseCache[ban.steamid].ban_on_sight = 1
@@ -50,7 +58,7 @@ local function AddBanToDatabase(ban)
         elseif not isBanned and isBanOnSight then
             Nova.log("d", string.format("Player %s is ban on sight: Set him to banned", Nova.playerName(ban.steamid)))
             // if player is unban on sight, set it back to ban on sight
-            Nova.query("UPDATE nova_bans SET is_banned = 1, unban_on_sight = 0, ban_on_sight = 0 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
+            Nova.query("UPDATE nova_bans SET is_banned = 1, unban_on_sight = 0, ban_on_sight = 0, bandbcheck = 1 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
             Nova.query("UPDATE nova_bans SET fingerprint = " .. Nova.sqlEscape(ban.fingerprint) .. ", ip = '" .. ban.ip .. "', secret_key = '" .. ban.secret_key .. "' WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
 
             databaseCache[ban.steamid].is_banned = 1
@@ -64,7 +72,7 @@ local function AddBanToDatabase(ban)
         elseif not isBanned and isUnBanOnSight and alreadyOnlineBanned then
             Nova.log("d", string.format("Player %s is unban on sight: Set him to banned again", Nova.playerName(ban.steamid)))
             // if player is unban on sight, set it back to ban on sight
-            Nova.query("UPDATE nova_bans SET is_banned = 1, unban_on_sight = 0, ban_on_sight = 0 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
+            Nova.query("UPDATE nova_bans SET is_banned = 1, unban_on_sight = 0, ban_on_sight = 0, bandbcheck = 1 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
 
             databaseCache[ban.steamid].is_banned = 1
             databaseCache[ban.steamid].unban_on_sight = 0
@@ -74,7 +82,7 @@ local function AddBanToDatabase(ban)
         elseif not isBanned and isUnBanOnSight and not alreadyOnlineBanned then
             Nova.log("d", string.format("Player %s is unban on sight: Set him to ban on sight again as we still wait for a online ban", Nova.playerName(ban.steamid)))
             // if player is unban on sight, set it back to ban on sight
-            Nova.query("UPDATE nova_bans SET is_banned = 0, unban_on_sight = 0, ban_on_sight = 1 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
+            Nova.query("UPDATE nova_bans SET is_banned = 0, unban_on_sight = 0, ban_on_sight = 1, bandbcheck = 1 WHERE steamid = " .. Nova.sqlEscape(ban.steamid) .. ";")
 
             databaseCache[ban.steamid].is_banned = 0
             databaseCache[ban.steamid].unban_on_sight = 0
@@ -96,16 +104,17 @@ local function AddBanToDatabase(ban)
         "'" .. ban.unban_on_sight .. "', " ..
         "'" .. ban.secret_key .. "', " ..
         "'" .. ban.is_banned .. "', " ..
-        Nova.sqlEscape(ban.fingerprint) ..
+        Nova.sqlEscape(ban.fingerprint) .. ", " ..
+        "'1'" .. // bandbcheck flag
     ");")
 end
 
-// only remove a ban if the player is on the server
 local function RemoveBanFromDatabase(ply)
     Nova.log("d", string.format("Removing ban from database for %s", Nova.playerName(ply)))
     local steamid = ply:SteamID()
     databaseCache[steamid] = nil
-    Nova.query("DELETE FROM nova_bans WHERE steamid = '" .. steamid .. "';")
+    Nova.query("UPDATE nova_bans SET bandbcheck = 1 WHERE steamid = '" .. steamid .. "';")
+	Nova.query("DELETE FROM nova_bans WHERE steamid = '" .. steamid .. "';")
     // convert steamID32 to steamID64
     local steamid64 = util.SteamIDTo64(steamid)
     databaseLookupCache[tostring(steamid64)] = nil
@@ -262,7 +271,7 @@ Nova.unbanPlayer = function(ply_or_steamid)
     end
 
     local function OfflineUnban(steamID32)
-        Nova.query("UPDATE nova_bans SET is_banned = 0, unban_on_sight = 1, ban_on_sight = 0 WHERE steamid = '" .. steamID32 .. "';")
+        Nova.query("UPDATE nova_bans SET is_banned = 0, unban_on_sight = 1, ban_on_sight = 0, bandbcheck = 1 WHERE steamid = '" .. steamID32 .. "';")
         databaseCache[steamID32].is_banned = 0
         databaseCache[steamID32].unban_on_sight = 1
         databaseCache[steamID32].ban_on_sight = 0
@@ -665,8 +674,38 @@ hook.Add("nova_banbypass_onplayerban", "banbypass_rescan", function(ply_or_steam
     end
 end)
 
+local function EnsureBandbcheckColumn()
+    Nova.selectQuery("SHOW COLUMNS FROM nova_bans LIKE 'bandbcheck';", function(data)
+        if data ~= nil then
+            if #data == 0 then
+				// mysql version
+                Nova.query("ALTER TABLE nova_bans ADD COLUMN bandbcheck TINYINT(1) DEFAULT 0;")
+            end
+        else
+            Nova.selectQuery("PRAGMA table_info(nova_bans);", function(sqliteData)
+                if not sqliteData then return end
+                
+                local columnExists = false
+                for _, column in ipairs(sqliteData) do
+                    if column.name == "bandbcheck" then
+                        columnExists = true
+                        break
+                    end
+                end
+                
+                if not columnExists then
+				// sqlite version
+					Nova.query("ALTER TABLE nova_bans ADD COLUMN bandbcheck INTEGER DEFAULT 0;")
+                end
+            end)
+        end
+    end)
+end
+
 local function LoadBans()
     Nova.log("i", "Loading bans from database...")
+	// makes sure bandbcheck exists
+	EnsureBandbcheckColumn()
     local query = "SELECT * FROM `nova_bans`;"
     Nova.selectQuery(query, function(data)
         if not data then return end
@@ -706,6 +745,27 @@ local function LoadBans()
     end)
 end
 
+local function MarkDatabaseChanged()
+    Nova.query("UPDATE nova_bans SET bandbcheck = 1 WHERE 1=1;")
+end
+
+local function CheckAndRefreshCache()
+    // check if any ban has bandbcheck flag set
+    Nova.selectQuery("SELECT COUNT(*) as count FROM nova_bans WHERE bandbcheck = 1;", function(data)
+        if not data or not data[1] then 
+            return 
+        end
+        
+        local count = tonumber(data[1].count)
+        if count and count > 0 then
+            Nova.log("i", "Detected remote ban changes, refreshing cache...")
+            Nova.query("UPDATE nova_bans SET bandbcheck = 0 WHERE 1=1;")
+            // reload bans
+            LoadBans()
+        end
+    end)
+end
+
 // are we already connected to database (hook will never run) or do we need to wait?
 // depends on whether setting.lua is loaded before or after mysql.lua
 if not Nova.defaultSettingsLoaded then
@@ -713,3 +773,12 @@ if not Nova.defaultSettingsLoaded then
 else
     LoadBans()
 end
+
+// cache refresh check
+timer.Create("nova_ban_cache_refresh", cacheUpdateInterval, 0, function()
+	local currentTime = os.time()
+	if currentTime - lastCacheUpdate >= cacheUpdateInterval then
+		lastCacheUpdate = currentTime
+		CheckAndRefreshCache()
+	end
+end)

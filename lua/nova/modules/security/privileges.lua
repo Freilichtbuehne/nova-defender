@@ -51,8 +51,10 @@ local function SetUserGroup(ply_or_steamid, group)
     // default group is "user"
     if not group then group = "user" end
 
-    if ulx then
+	if ulx then
         RunConsoleCommand("ulx", "adduserid", plySteamID, group)
+    elseif istable(Lyn) and Lyn.Player and Lyn.Player.Role then
+        Lyn.Player.Role.Add(ply, group)
     /*elseif xAdmin and xAdmin.SetUserRank then
         xAdmin.SetUserRank(ply, group)
     elseif xAdmin then
@@ -86,6 +88,8 @@ local function RemoveUserGroup(ply_or_steamid)
 
     if ulx then
         RunConsoleCommand("ulx", "removeuserid", plySteamID)
+    elseif istable(Lyn) and Lyn.Player and Lyn.Player.Role then
+        Lyn.Player.Role.Add(ply, "user")
     // If you have a code snippet for all of those admin mods, please send it to me :)
     /*elseif serverguard then
         serverguard.player:SetRank(ply, group)
