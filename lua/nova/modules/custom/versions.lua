@@ -59,6 +59,35 @@ local patches = {
         if cur == 200 then
             Nova.setSetting("networking_dos_crash_maxsize", 100)
         end
+    end,
+    ["1.11.3"] = function()
+        // Drop database nova_detections and create new one
+        Nova.log("i", "Update database nova_bans structure")
+
+        if Nova.sqlite then
+            Nova.selectQuery("PRAGMA table_info(nova_bans);", function(data)
+                if not data then return end
+
+                local columnExists = false
+                for _, column in ipairs(data) do
+                    if column.name == "db_sync_changed" then
+                        columnExists = true
+                        break
+                    end
+                end
+
+                if not columnExists then
+                    // sqlite version
+                    Nova.query("ALTER TABLE nova_bans ADD COLUMN db_sync_changed INT(1) DEFAULT 0;")
+                end
+            end)
+        elseif Nova.mysql then
+            Nova.selectQuery("SHOW COLUMNS FROM nova_bans LIKE 'db_sync_changed';", function(data)
+                if data != nil and type(data) == "table" and #data == 0 then
+                    Nova.query("ALTER TABLE nova_bans ADD COLUMN db_sync_changed INT(1) DEFAULT 0;")
+                end
+            end)
+        end
     end
 }
 

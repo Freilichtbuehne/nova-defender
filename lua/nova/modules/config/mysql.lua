@@ -14,6 +14,7 @@ local function CreateTables(callback)
         "`internal_reason` TEXT, " ..
         "`time` INT(11), " ..
         "`ban_on_sight` INT(1), " ..
+        "`db_sync_changed` INT(1), " ..
         "`unban_on_sight` INT(1), " ..
         "`secret_key` VARCHAR(255), " ..
         "`is_banned` INT(1), " ..
