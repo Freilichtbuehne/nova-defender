@@ -206,6 +206,7 @@ local phrases = {
     ["notify_admin_no_permission"] = "您没有足够的权限执行该操作",
     ["notify_admin_client_not_connected"] = "玩家离线",
     ["notify_admin_already_inspecting"] = "您已经在检查另一位玩家了",
+    ["notify_admin_client_already_inspected"] = "该玩家已被另一位管理员检查中",
 
     ["notify_anticheat_detection"] = "反作弊检测 %q 在 %s。原因：%q",
     ["notify_anticheat_detection_action"] = "反作弊：%q",
