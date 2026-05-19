@@ -222,6 +222,7 @@ local phrases = {
     ["notify_admin_no_permission"] = "Vous n'avez pas les permissions suffisantes pour faire cela",
     ["notify_admin_client_not_connected"] = "Le joueur est hors ligne",
     ["notify_admin_already_inspecting"] = "Vous inspectez déjà un autre joueur",
+    ["notify_admin_client_already_inspected"] = "Ce joueur est déjà inspecté par un autre administrateur",
 
     ["notify_anticheat_detection"] = "Détection anticheat %q sur %s. Raison: %q",
     ["notify_anticheat_detection_action"] = "Anticheat: %q",

@@ -305,6 +305,11 @@ local function OpenSession(adminSteamID, clientSteamID)
         return false, "notify_admin_already_inspecting"
     end
 
+    // check if client is already being inspected by another admin
+    if clientSessionLookup[clientSteamID] then
+        return false, "notify_admin_client_already_inspected"
+    end
+
     local client = Nova.fPlayerBySteamID(clientSteamID)
     local admin = Nova.fPlayerBySteamID(adminSteamID)
 

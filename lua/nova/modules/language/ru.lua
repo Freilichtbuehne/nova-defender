@@ -223,6 +223,7 @@ local phrases = {
     ["notify_admin_no_permission"] = "У вас нет достаточного права делать это",
     ["notify_admin_client_not_connected"] = "Игрок не на сервере",
     ["notify_admin_already_inspecting"] = "Вы уже проверяете другого игрока",
+    ["notify_admin_client_already_inspected"] = "Этот игрок уже проверяется другим администратором",
 
     ["notify_anticheat_detection"] = "Обнаружение античита %q - %s. Причина: %q",
     ["notify_anticheat_detection_action"] = "Античит: %q",
