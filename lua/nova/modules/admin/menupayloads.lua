@@ -37,6 +37,8 @@ Nova.getMenuPayload = function(ply_or_steamid)
   NOVA_ACTIVE_TAB = NOVA_ACTIVE_TAB or nil
   NOVA_ACTIVE_CONTEXT = NOVA_ACTIVE_CONTEXT or nil
   NOVA_ADVANCED = NOVA_ADVANCED or nil
+  NOVA_SETTINGS_DATA = NOVA_SETTINGS_DATA or nil
+  NOVA_TAB_ELEMENT = NOVA_TAB_ELEMENT or nil
   NOVA_FRAMEPOS_X, NOVA_FRAMEPOS_Y = NOVA_FRAMEPOS_X or nil, NOVA_FRAMEPOS_Y or nil
   NOVA_PROTECTED = ]] .. (isProtected and "true" or "false") .. [[
 
@@ -114,19 +116,6 @@ Nova.getMenuPayload = function(ply_or_steamid)
   --  Networking
   --------------------------------
 
-  local function ChangeSetting(key, value)
-    local dataType = type(value)
-    local saveValue = dataTypesSave[dataType] and dataTypesSave[dataType](value) or value
-    local compressedValue = util.Compress(saveValue)
-    local compressedSize = #compressedValue
-    net.Start("]] .. Nova.netmessage("admin_change_setting") .. [[")
-      net.WriteString(key)
-      net.WriteString(dataType)
-      net.WriteUInt(compressedSize, 16)
-      net.WriteData(compressedValue, compressedSize)
-    net.SendToServer()
-  end
-
   local function LoadData(message, params, callback)
     net.Receive(message, function()
       local dataType = net.ReadString()
@@ -144,6 +133,33 @@ Nova.getMenuPayload = function(ply_or_steamid)
       -- we don't need to compress the data, because we only send small tables
       if params then net.WriteString(util.TableToJSON(params)) end
     net.SendToServer()
+  end
+
+  local function ChangeSetting(key, value)
+    if NOVA_SETTINGS_DATA then
+      for _, v in ipairs(NOVA_SETTINGS_DATA or {}) do
+        if v.key == key then v.value = value break end
+      end
+    end
+    local dataType = type(value)
+    local saveValue = dataTypesSave[dataType] and dataTypesSave[dataType](value) or value
+    local compressedValue = util.Compress(saveValue)
+    local compressedSize = #compressedValue
+    net.Start("]] .. Nova.netmessage("admin_change_setting") .. [[")
+      net.WriteString(key)
+      net.WriteString(dataType)
+      net.WriteUInt(compressedSize, 16)
+      net.WriteData(compressedValue, compressedSize)
+    net.SendToServer()
+    local needsReload = false
+    if NOVA_SETTINGS_DATA then
+      for _, sv in ipairs(NOVA_SETTINGS_DATA or {}) do
+        if sv.showIf and sv.showIf.key == key then needsReload = true break end
+      end
+    end
+    if needsReload then
+      RunConsoleCommand("nova_defender")
+    end
   end
 
   --------------------------------
@@ -287,6 +303,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
 
   local function ChangeTab(tabName, tabElement, tabData)
     NOVA_ACTIVE_TAB = tabName
+    NOVA_TAB_ELEMENT = tabElement
     if not IsValid(tabElement) then return end
     tabElement:Clear()
 
@@ -322,6 +339,16 @@ Nova.getMenuPayload = function(ply_or_steamid)
           CreateOption({_type = "category", value = lastCategory}, tabElement)
         end
         if v.advanced and not NOVA_ADVANCED then continue end
+        if v.showIf then
+          local showIfMatch = false
+          for _, sv in ipairs(NOVA_SETTINGS_DATA or {}) do
+            if sv.key == v.showIf.key and tostring(sv.value) == tostring(v.showIf.value) then
+              showIfMatch = true
+              break
+            end
+          end
+          if not showIfMatch then continue end
+        end
         CreateOption(v, tabElement)
       end
       CreateOption({_type = "spacer"}, tabElement)
@@ -345,6 +372,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
         ChangeTab(name, tabElement)
       else
         LoadData("]] .. Nova.netmessage("admin_get_setting") .. [[", nil, function(data)
+          NOVA_SETTINGS_DATA = data
           local sortedData = SortData(data or {})
           ChangeTab(name, tabElement, sortedData[name])
         end)
@@ -567,6 +595,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
     self.DoClick = function() 
       surface.PlaySound("UI/buttonclick.wav") 
       LoadData("]] .. Nova.netmessage("admin_get_setting") .. [[", nil, function(data)
+        NOVA_SETTINGS_DATA = data
         local sortedData = SortData(data or {})
         ChangeTab(name, nil, sortedData[name])
       end)
@@ -2819,6 +2848,7 @@ Nova.getMenuPayload = function(ply_or_steamid)
 
     local function OpenMenu(data)
       NOVA_MENU = vgui.Create("nova_admin_menu")
+      NOVA_SETTINGS_DATA = data
       local content = vgui.Create("DPanel", NOVA_MENU)
       content:Dock(FILL)
       content.Paint = function(_, _w, _h) end

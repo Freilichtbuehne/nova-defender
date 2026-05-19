@@ -54,6 +54,14 @@ local phrases = {
     ["networking_vpn_apikey"] = "VPN API密钥：\n用于扫描IP地址。您需要在'https://www.ipqualityscore.com/create-account'注册并在'https://www.ipqualityscore.com/user/settings'获取您的密钥。",
     ["networking_vpn_countrycodes"] = "允许加入您服务器的国家。从这里获取国家代码'https://countrycode.org/'（大写的2字母代码）。建议将您自己和邻国列入白名单。您可以随着时间逐渐添加更多国家。",
     ["networking_vpn_whitelist_asns"] = "白名单ASN号码（用于识别互联网服务提供商的数字）。可能发生的情况是，API错误地检测到VPN连接。因此，已知的ISP被列入白名单。从'https://ipinfo.io/countries'获取它们。或者，您可以在“玩家”标签页中看到每个连接客户端的ASN。",
+    ["networking_vpn_provider"] = "VPN/代理检测提供商：\n选择用于IP分析的服务。IPQualityScore需要API密钥（提供免费层级）。AbuseIPDB是免费替代方案。",
+    ["networking_vpn_abuseipdb_apikey"] = "AbuseIPDB API密钥：\n使用AbuseIPDB作为VPN/代理检测提供商时需要。在https://www.abuseipdb.com/register注册并在https://www.abuseipdb.com/account/api获取密钥。",
+    ["networking_vpn_abuseipdb_confidence_threshold"] = "AbuseIPDB 可信度阈值：\n可信度分数等于或高于此值的IP被视为威胁。默认值：75。",
+    ["networking_vpn_abuseipdb_max_age"] = "AbuseIPDB 最大天数：\n用于可信度分数的滥用报告的最大天数。默认值：90天。",
+    ["networking_vpn_abuseipdb_report_enabled"] = "向AbuseIPDB报告封禁：\n当玩家因洪水/DoS攻击被封禁时，自动将IP地址报告给AbuseIPDB。",
+    ["networking_vpn_abuseipdb_report_flood_categories"] = "AbuseIPDB 洪水/DoS报告类别：\n用于报告的类别ID。默认值：4 (DoS)。参见 https://www.abuseipdb.com/categories。",
+    ["networking_vpn_abuseipdb_autokick_enabled"] = "高可信度分数时自动踢出：\nIP可信度分数达到或超过阈值的玩家立即被踢出。这会绕过常规VPN操作。",
+    ["networking_vpn_abuseipdb_autokick_message"] = "自动踢出消息：\n因高可信度分数被自动踢出时显示给玩家的消息。",
     ["networking_screenshot_store_ban"] = "保存截图（封禁时）：\n在玩家被封禁前的最后一刻，将对他的屏幕进行截图并保存在服务器的'/data/nova/ban_screenshots'文件夹内。",
     ["networking_screenshot_store_manual"] = "保存截图（菜单）：\n如果管理员对玩家进行截图，它将保存在服务器的'/data/nova/admin_screenshots'文件夹内。",
     ["networking_screenshot_limit_ban"] = "截图限制（封禁时）：\n服务器数据文件夹内存储的截图最大数量。最旧的将被删除。",
@@ -386,6 +394,16 @@ local phrases = {
         1. 前往https://www.ipqualityscore.com/create-account
         2. 在这里复制您的API密钥https://www.ipqualityscore.com/user/settings
         3. 在“网络”标签下的“VPN API密钥”处粘贴它
+
+        如果您更喜欢免费替代方案，请在“网络”标签中选择“AbuseIPDB”作为提供商。
+    ]],
+    ["health_check_nova_abuseipdb_title"] = "Nova Defender AbuseIPDB",
+    ["health_check_nova_abuseipdb_desc"] = "AbuseIPDB是VPN/代理检测的免费替代方案。",
+    ["health_check_nova_abuseipdb_desc_long"] = [[
+        如果在“网络”标签中选择了“AbuseIPDB”作为提供商，则需要有效的API密钥。
+        1. 前往https://www.abuseipdb.com/register
+        2. 在这里复制您的API密钥https://www.abuseipdb.com/account/api
+        3. 在“网络”标签下的“AbuseIPDB API密钥”处粘贴它
     ]],
     ["health_check_nova_steamapi_title"] = "Nova Defender Steam资料保护",
     ["health_check_nova_steamapi_desc"] = "必须设置Steam资料保护以检测玩家的可疑资料。",

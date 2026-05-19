@@ -424,10 +424,34 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
                 return {}
             end
 
-            Nova.queryIPScore(ip, target, function(data)
-                if not data or not data.success then data = {} end
-                SendDataToClient(ply, data, Nova.netmessage("admin_get_players", "staff"))
-            end)
+            local provider = Nova.getSetting("networking_vpn_provider", "ipqualityscore")
+            local abuseKey = Nova.getSetting("networking_vpn_abuseipdb_apikey", "")
+
+            if provider == "abuseipdb" and abuseKey != "" and string.len(abuseKey) >= 10 then
+                Nova.queryAbuseIPDB(ip, target, function(data)
+                    if not data then data = {} end
+                    if type(data.hostnames) == "table" then
+                        data.hostnames = table.concat(data.hostnames, ", ")
+                    end
+                    if type(data.reports) == "table" then
+                        local reportLines = {}
+                        for i = 1, math.min(2, #data.reports) do
+                            local report = data.reports[i]
+                            table.insert(reportLines, string.format("%s: %s", tostring(report.reportedAt or "?"), tostring(report.comment or "?")))
+                        end
+                        data.reports = table.concat(reportLines, "\n")
+                    end
+                    Nova.queryIPASN(ip, function(asn)
+                        if asn then data.ASN = asn end
+                        SendDataToClient(ply, data, Nova.netmessage("admin_get_players", "staff"))
+                    end)
+                end)
+            else
+                Nova.queryIPScore(ip, target, function(data)
+                    if not data or not data.success then data = {} end
+                    SendDataToClient(ply, data, Nova.netmessage("admin_get_players", "staff"))
+                end)
+            end
 
             return "hold" // messy way to delay the api response
         end,

@@ -55,9 +55,17 @@ local phrases = {
     ["networking_vpn_country-action"] = "What should happen when a player comes from a not allowed country?",
     ["networking_vpn_country-action_reason"] = "Reason for coming from a country not allowed.",
     ["networking_vpn_dump"] = "Prints information about a players IP address to console",
+    ["networking_vpn_provider"] = "VPN/Proxy detection provider:\nChoose which service to use for IP address analysis. IPQualityScore requires an API key (free tier available). AbuseIPDB is a free alternative with a free API key.",
     ["networking_vpn_apikey"] = "VPN API key:\nFor scanning IP addresses. You need to register at https://www.ipqualityscore.com/create-account and retrieve your key at https://www.ipqualityscore.com/user/settings.",
     ["networking_vpn_countrycodes"] = "Allowed countries to join your server. Get country codes from here: https://countrycode.org/ (2-letter code in uppercase). It is recommended to whitelist your own and neighboring countries. You can add more countries time by time.",
     ["networking_vpn_whitelist_asns"] = "Whitelisted ASN numbers (number to identify an internet service provider). It may happen that the API incorrectly detects a VPN connection. Therefore, known ISPs are whitelisted. Get them from https://ipinfo.io/countries. Alternatively you can see the ASN of each connected client in 'Player' tab.",
+    ["networking_vpn_abuseipdb_apikey"] = "AbuseIPDB API key:\nRequired to use AbuseIPDB as your VPN/Proxy detection provider. Register at https://www.abuseipdb.com/register and retrieve your key at https://www.abuseipdb.com/account/api.",
+    ["networking_vpn_abuseipdb_confidence_threshold"] = "AbuseIPDB confidence score threshold:\nIPs with a confidence score equal or above this value are considered as threats. Default: 75.",
+    ["networking_vpn_abuseipdb_max_age"] = "AbuseIPDB max age in days:\nMaximum age of abuse reports to consider for the confidence score. Default: 90 days.",
+    ["networking_vpn_abuseipdb_report_enabled"] = "Report bans to AbuseIPDB:\nAutomatically report IP addresses to AbuseIPDB when a player is banned for flood/DoS attacks.",
+    ["networking_vpn_abuseipdb_report_flood_categories"] = "AbuseIPDB categories for flood/DoS reporting:\nThe category IDs to use when reporting. Default: 4 (DoS). See https://www.abuseipdb.com/categories.",
+    ["networking_vpn_abuseipdb_autokick_enabled"] = "Auto-kick on high confidence score:\nImmediately kick players whose IP has an abuse confidence score at or above the threshold. This bypasses the normal VPN action.",
+    ["networking_vpn_abuseipdb_autokick_message"] = "Auto-kick message:\nThe message shown to the player when auto-kicked for a high abuse confidence score.",
     ["networking_screenshot_store_ban"] = "Save screenshots (On ban):\nRight before a player gets banned, a screenshot of his screen will be made and saved inside the servers '/data/nova/ban_screenshots' folder.",
     ["networking_screenshot_store_manual"] = "Save screenshots (Menu):\nIf an admin takes a screenshot of a player, it will get saved inside the servers '/data/nova/admin_screenshots' folder.",
     ["networking_screenshot_limit_ban"] = "Screenshot limit (On ban):\nMaximum number of screenshots stored inside the servers data folder. Oldest will get deleted.",
@@ -407,9 +415,18 @@ you can safely ignore this message.]],
     [[In the "Networking" tab you have to insert your API key,
 which you get after the free registration at ipqualityscore.com.
 With this, Nova-Defender can then examine IP addresses via this page.
-   1. go to https://www.ipqualityscore.com/create-account
-   2. copy your API key here https://www.ipqualityscore.com/user/settings
-   3. paste it in the tab "Networking" under "VPN API key"]],
+    1. go to https://www.ipqualityscore.com/create-account
+    2. copy your API key here https://www.ipqualityscore.com/user/settings
+    3. paste it in the tab "Networking" under "VPN API key"
+
+If you prefer a free alternative, select "AbuseIPDB" as your provider in the Networking tab.]],
+    ["health_check_nova_abuseipdb_title"] = "Nova Defender AbuseIPDB",
+    ["health_check_nova_abuseipdb_desc"] = "AbuseIPDB is a free alternative for VPN/Proxy detection.",
+    ["health_check_nova_abuseipdb_desc_long"] =
+    [[If "AbuseIPDB" is selected as your provider in the "Networking" tab, you need a valid API key.
+    1. go to https://www.abuseipdb.com/register
+    2. copy your API key here https://www.abuseipdb.com/account/api
+    3. paste it in the tab "Networking" under "AbuseIPDB API key"]],
     ["health_check_nova_steamapi_title"] = "Nova Defender Steam Profile Protection",
     ["health_check_nova_steamapi_desc"] = "Steam profile protection must be set up to detect suspicious profiles of players.",
     ["health_check_nova_steamapi_desc_long"] =

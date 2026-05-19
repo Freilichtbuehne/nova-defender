@@ -58,6 +58,14 @@ local phrases = {
     ["networking_vpn_apikey"] = "API-ключ VPN:\nДля сканирования IP-адресов. Вам необходимо зарегистрироваться на сайте https://www.ipqualityscore.com/create-account и получить свой ключ на https://www.ipqualityscore.com/user/settings.",
     ["networking_vpn_countrycodes"] = "Разрешённые страны для присоединения к вашему серверу. Получите коды стран отсюда: https://countrycode.org/ (2-буквенный код в заглавными буквами). Рекомендуется внести в белый список свою собственную и соседние страны. Вы можете добавлять новые страны время от времени.",
     ["networking_vpn_whitelist_asns"] = "Номера ASN из белого списка (номер для идентификации интернет-провайдера). Может случиться так, что API неверно определяет VPN-соединение. Поэтому известные интернет-провайдеры заносятся в белый список. Получите их по адресу https://ipinfo.io/countries. В качестве альтернативы вы можете посмотреть ASN каждого подключённого клиента во вкладке «Игрок».",
+    ["networking_vpn_provider"] = "Поставщик обнаружения VPN/прокси:\nВыберите, какой сервис использовать для анализа IP-адресов. IPQualityScore требует API-ключ (доступен бесплатный тариф). AbuseIPDB — бесплатная альтернатива.",
+    ["networking_vpn_abuseipdb_apikey"] = "AbuseIPDB API-ключ:\nТребуется для использования AbuseIPDB в качестве поставщика обнаружения VPN/прокси. Зарегистрируйтесь на https://www.abuseipdb.com/register и получите ключ на https://www.abuseipdb.com/account/api.",
+    ["networking_vpn_abuseipdb_confidence_threshold"] = "Порог доверия AbuseIPDB:\nIP-адреса с оценкой доверия равной или выше этого значения считаются угрозой. По умолчанию: 75.",
+    ["networking_vpn_abuseipdb_max_age"] = "Максимальный возраст AbuseIPDB в днях:\nМаксимальный возраст отчетов о злоупотреблениях для оценки доверия. По умолчанию: 90 дней.",
+    ["networking_vpn_abuseipdb_report_enabled"] = "Сообщать о банах в AbuseIPDB:\nАвтоматически сообщать IP-адреса в AbuseIPDB, когда игрок забанен за Flood/DoS-атаки.",
+    ["networking_vpn_abuseipdb_report_flood_categories"] = "Категории AbuseIPDB для сообщений о Flood/DoS:\nID категорий для отправки отчетов. По умолчанию: 4 (DoS). См. https://www.abuseipdb.com/categories.",
+    ["networking_vpn_abuseipdb_autokick_enabled"] = "Авто-кик при высоком уровне доверия:\nНемедленно кикать игроков, чей IP имеет оценку доверия равную или выше порога. Это обходит обычное действие VPN.",
+    ["networking_vpn_abuseipdb_autokick_message"] = "Сообщение авто-кика:\nСообщение, показываемое игроку при авто-кике за высокую оценку доверия.",
     ["networking_screenshot_store_ban"] = "Сохранение скриншотов (при блокировке):\nПрямо перед тем, как игрок будет заблокирован, будет сделан скриншот его экрана и сохранён в папке сервера «/data/nova/ban_screenshots».",
     ["networking_screenshot_store_manual"] = "Сохранение скриншотов (меню):\nЕсли администратор делает скриншот игрока, он будет сохранён в папке сервера «/data/nova/admin_screenshots».",
     ["networking_screenshot_limit_ban"] = "Лимит скриншотов (при блокировке):\nМаксимальное количество скриншотов, хранящихся в папке данных сервера (data). Самые старые будут удалены.",
@@ -411,7 +419,16 @@ local phrases = {
 После этого Nova-Defender может исследовать IP-адреса через эту страницу.
    1. перейдите на https://www.ipqualityscore.com/create-account
    2. скопируйте сюда ваш API-ключ https://www.ipqualityscore.com/user/settings
-   3. вставьте его во вкладке «Сеть» в разделе «API-ключ VPN».]],
+    3. вставьте его во вкладке «Сеть» в разделе «API-ключ VPN».
+
+Если вы предпочитаете бесплатную альтернативу, выберите «AbuseIPDB» в качестве поставщика во вкладке «Сеть».]],
+    ["health_check_nova_abuseipdb_title"] = "Nova Defender AbuseIPDB",
+    ["health_check_nova_abuseipdb_desc"] = "AbuseIPDB — бесплатная альтернатива для обнаружения VPN/прокси.",
+    ["health_check_nova_abuseipdb_desc_long"] =
+    [[Если во вкладке «Сеть» выбран «AbuseIPDB», требуется действующий API-ключ.
+    1. перейдите на https://www.abuseipdb.com/register
+    2. скопируйте ваш API-ключ https://www.abuseipdb.com/account/api
+    3. вставьте его во вкладке «Сеть» в разделе «AbuseIPDB API-ключ»]],
     ["health_check_nova_steamapi_title"] = "Защита профиля Steam Nova Defender",
     ["health_check_nova_steamapi_desc"] = "Защита профиля Steam должна быть настроена для обнаружения подозрительных профилей игроков.",
     ["health_check_nova_steamapi_desc_long"] =

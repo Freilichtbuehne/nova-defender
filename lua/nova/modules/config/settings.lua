@@ -21,7 +21,7 @@ local dataTypesLoad = {
 
 local settingCounter = 0
 
-Nova.setSetting = function(key, value, showInUI, ifNotExists, options, advanced)
+Nova.setSetting = function(key, value, showInUI, ifNotExists, options, advanced, showIf)
     if not key then return end
     if value == nil then return end
     if not options then options = {} end
@@ -43,6 +43,7 @@ Nova.setSetting = function(key, value, showInUI, ifNotExists, options, advanced)
         configCache[key].advanced = configCache[key].advanced != nil or advanced
         configCache[key].show_in_ui = configCache[key].show_in_ui != nil or showInUI
         configCache[key].description = configCache[key].description or description
+        configCache[key].showIf = configCache[key].showIf or showIf
 
         configCache[key].default = value
 
@@ -71,6 +72,7 @@ Nova.setSetting = function(key, value, showInUI, ifNotExists, options, advanced)
         if showInUI != nil then configCache[key].show_in_ui = showInUI end
         if not table.IsEmpty(options) then configCache[key].options = options end
         if advanced != nil then configCache[key].advanced = advanced end
+        if showIf != nil then configCache[key].showIf = showIf end
     // else create new cache entry
     else
         configCache[key].value = value
@@ -78,6 +80,7 @@ Nova.setSetting = function(key, value, showInUI, ifNotExists, options, advanced)
         configCache[key].show_in_ui = (ifNotExists and showInUI or configCache[key].show_in_ui) or false
         configCache[key].options = (ifNotExists and options or configCache[key].options) or {}
         configCache[key].advanced = (ifNotExists and advanced or configCache[key].advanced) or false
+        configCache[key].showIf = showIf
 
         // give each setting a number so we can sort them in the UI
         settingCounter = settingCounter + 1
@@ -142,7 +145,8 @@ Nova.getUISetting = function(key)
                 _type = type(v.value),
                 advanced = v.advanced,
                 index = v.index,
-                default = v.default
+                default = v.default,
+                showIf = v.showIf,
             })
         end
         return keys, false
