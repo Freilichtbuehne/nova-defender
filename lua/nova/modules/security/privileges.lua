@@ -51,7 +51,7 @@ local function SetUserGroup(ply_or_steamid, group)
     // default group is "user"
     if not group then group = "user" end
 
-	if ulx then
+    if ulx then
         RunConsoleCommand("ulx", "adduserid", plySteamID, group)
     elseif istable(Lyn) and Lyn.Player and Lyn.Player.Role then
         Lyn.Player.Role.Add(ply, group)
@@ -61,9 +61,9 @@ local function SetUserGroup(ply_or_steamid, group)
         RunConsoleCommand("xadmin_setgroup", plySteamID, group) // found this in old official xAdmin documentation
         RunConsoleCommand("xadmin", "setgroup", plySteamID, group) // for xAdmin 2
     elseif sAdmin then
-        RunConsoleCommand("sa", "setrank", plySteamID64, group)
+        RunConsoleCommand("sa", "setrank", plySteamID64, group)*/
     elseif SAM then
-        RunConsoleCommand("sam", "setrankid", plySteamID, group)*/
+        RunConsoleCommand("sam", "setrankid", plySteamID, group)
     else
         ply:SetUserGroup(group)
     end
@@ -99,9 +99,9 @@ local function RemoveUserGroup(ply_or_steamid)
         RunConsoleCommand("xadmin_setgroup", plySteamID) // found this in old official xAdmin documentation
         RunConsoleCommand("xadmin", "setgroup", plySteamID) // for xAdmin 2
     elseif sAdmin then
-        RunConsoleCommand("sa", "setrank", plySteamID64)
+        RunConsoleCommand("sa", "setrank", plySteamID64)*/
     elseif SAM then
-        RunConsoleCommand("sam", "setrankid", plySteamID)*/
+        RunConsoleCommand("sam", "setrankid", plySteamID)
     else
         ply:SetUserGroup("user")
     end
