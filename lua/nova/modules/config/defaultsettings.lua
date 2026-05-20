@@ -170,8 +170,6 @@ Nova.setSetting("networking_vpn_countrycodes", {
 
 Nova.setSetting("networking_vpn_abuseipdb_confidence_threshold", 75, true, true, nil, true, {key = "networking_vpn_provider", value = "abuseipdb"})
 Nova.setSetting("networking_vpn_abuseipdb_max_age", 90, true, true, nil, true, {key = "networking_vpn_provider", value = "abuseipdb"})
-Nova.setSetting("networking_vpn_abuseipdb_report_enabled", false, true, true, nil, false, {key = "networking_vpn_provider", value = "abuseipdb"})
-Nova.setSetting("networking_vpn_abuseipdb_report_flood_categories", "4", true, true, nil, true, {key = "networking_vpn_provider", value = "abuseipdb"})
 Nova.setSetting("networking_vpn_abuseipdb_autokick_enabled", false, true, true, nil, false, {key = "networking_vpn_provider", value = "abuseipdb"})
 Nova.setSetting("networking_vpn_abuseipdb_autokick_message", "Your IP has been flagged as a security risk and is not allowed on this server", true, true, nil, true, {key = "networking_vpn_provider", value = "abuseipdb"})
 
