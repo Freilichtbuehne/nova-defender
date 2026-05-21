@@ -129,6 +129,7 @@ Nova.setSetting("networking_http_whitelistdomains", {
 	"m4dsolutions.com",
 	"api.gmod-integration.com",
 	"gmod.express",
+	"api.abuseipdb.com",
 }, true, true, nil, true)
 
 Nova.setSetting("networking_fetch_overwrite", false, true, true)
@@ -143,7 +144,9 @@ Nova.setSetting("networking_post_blockunsafe", false, true, true, nil, true)
 	VPN
 ===============================*/
 
-Nova.setSetting("networking_vpn_apikey", "", true, true)
+Nova.setSetting("networking_vpn_provider", "ipqualityscore", true, true, {"ipqualityscore", "abuseipdb"})
+Nova.setSetting("networking_vpn_apikey", "", true, true, nil, false, {key = "networking_vpn_provider", value = "ipqualityscore"})
+Nova.setSetting("networking_vpn_abuseipdb_apikey", "", true, true, nil, false, {key = "networking_vpn_provider", value = "abuseipdb"})
 Nova.setSetting("networking_vpn_dump", true, true, true, nil, true)
 
 Nova.setSetting("networking_vpn_vpn-action", "ask", true, true, {"kick", "ban", "notify", "ask", "nothing"})
@@ -160,6 +163,15 @@ Nova.setSetting("networking_vpn_countrycodes", {
 	"US",
 	"EN"
 }, true, true, nil, true)
+
+/*===============================
+	VPN > AbuseIPDB
+===============================*/
+
+Nova.setSetting("networking_vpn_abuseipdb_confidence_threshold", 75, true, true, nil, true, {key = "networking_vpn_provider", value = "abuseipdb"})
+Nova.setSetting("networking_vpn_abuseipdb_max_age", 90, true, true, nil, true, {key = "networking_vpn_provider", value = "abuseipdb"})
+Nova.setSetting("networking_vpn_abuseipdb_autokick_enabled", false, true, true, nil, false, {key = "networking_vpn_provider", value = "abuseipdb"})
+Nova.setSetting("networking_vpn_abuseipdb_autokick_message", "Your IP has been flagged as a security risk and is not allowed on this server", true, true, nil, true, {key = "networking_vpn_provider", value = "abuseipdb"})
 
 /*===============================
 	Banbypass

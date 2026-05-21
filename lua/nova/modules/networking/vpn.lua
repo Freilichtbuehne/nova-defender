@@ -2,6 +2,7 @@
 // reconnecting to cause a Denial of Service (when the limit of API-calls is reached)
 
 local ipCache = {}
+local ipCacheTime = {}
 local playersUsingVPN = {}
 
 /*local vpnASNs = {
@@ -21,13 +22,17 @@ Nova.queryIPScore = function(ip, ply, callback)
 
     Nova.log("d", string.format("Starting IP lookup for %s", ip))
 
-    if ipCache[ip] then
+    local cacheTTL = 86400 // 24h
+    if ipCache[ip] and ipCacheTime[ip] and os.time() - ipCacheTime[ip] < cacheTTL then
         callback(ipCache[ip])
         if Nova.getSetting("networking_vpn_dump", false) then
             Nova.log("d", string.format("Dumping IP address info for %s", Nova.playerName(ply)))
             PrintTable(ipCache[ip])
         end
         return
+    elseif ipCache[ip] then
+        ipCache[ip] = nil
+        ipCacheTime[ip] = nil
     end
 
     local url = string.format("https://ipqualityscore.com/api/json/ip/%s/%s?strictness=2", apiKey, ip)
@@ -35,6 +40,7 @@ Nova.queryIPScore = function(ip, ply, callback)
         function(json)
             local data = util.JSONToTable(json)
             ipCache[ip] = data
+            ipCacheTime[ip] = os.time()
             if isfunction(callback) then callback(data) end
             if Nova.getSetting("networking_vpn_dump", false) then
                 Nova.log("d", string.format("Dumping IP address info for %s", Nova.playerName(ply)))
@@ -212,9 +218,24 @@ Nova.getCachedVPNInfo = function(ply_or_steamid)
     local ip = Nova.extractIP(ply:IPAddress())
     if not ip then return end
 
-    if not ipCache[ip] or not ipCache[ip].success then return end
+    local cacheTTL = 86400 // 24h
+    if not ipCache[ip] then return end
+    if ipCacheTime[ip] and os.time() - ipCacheTime[ip] >= cacheTTL then
+        ipCache[ip] = nil
+        ipCacheTime[ip] = nil
+        return
+    end
+    if ipCache[ip].success == false then return end
 
-    return ipCache[ip]
+    local data = ipCache[ip]
+
+    if data.abuseConfidenceScore ~= nil then
+        data.country_code = data.countryCode or data.country_code
+        local cachedASN = Nova.getCachedIPASN(ip)
+        if cachedASN then data.ASN = cachedASN end
+    end
+
+    return data
 end
 
 Nova.hasVPN = function(ply_or_steamid)
@@ -248,36 +269,75 @@ local function CheckVPN(ply)
         return
     end
 
-    Nova.queryIPScore(ip, ply, function(data)
-        if not data or not data.success then return end
+    local provider = Nova.getSetting("networking_vpn_provider", "ipqualityscore")
+    local abuseKey = Nova.getSetting("networking_vpn_abuseipdb_apikey", "")
+    local abuseEnabled = provider == "abuseipdb" and abuseKey != "" and string.len(abuseKey) >= 10
 
+    local function HandleCountryCheck(countryCode, isVPN, isWhitelisted, countryInfoString, vpnInfoString)
         local allowedCountry = true
         local allowedCountries = Nova.getSetting("networking_vpn_countrycodes", {})
         if not table.IsEmpty(allowedCountries) then
             allowedCountry =
-                table.HasValue(allowedCountries, string.upper(data.country_code or ""))
-                or table.HasValue(allowedCountries, string.lower(data.country_code or ""))
+                table.HasValue(allowedCountries, string.upper(countryCode or ""))
+                or table.HasValue(allowedCountries, string.lower(countryCode or ""))
                 or false
         end
 
-        local isVPN = /*data.vpn or */data.active_vpn or false
-        local isKnownASN = table.HasValue(Nova.getSetting("networking_vpn_whitelist_asns", {}), tostring(data.ASN)) or false
-
         if not allowedCountry then
-            local infoString = string.format("IP: %s, Country: %s, ISP: %q", tostring(ip), tostring(data.country_code), tostring(data.ISP))
-            Nova.log("w", string.format("%s is joining from a blocked country. %s", Nova.playerName(ply), infoString))
-
-            Nova.startDetection("networking_country", ply, infoString, "networking_vpn_country-action")
+            Nova.log("w", string.format("%s is joining from a blocked country. %s", Nova.playerName(ply), countryInfoString))
+            Nova.startDetection("networking_country", ply, countryInfoString, "networking_vpn_country-action")
         end
 
-        if not isKnownASN and isVPN then
-            local infoString = string.format("IP: %s, Country: %s, ISP: %q, ASN: %q, Region: %s", tostring(ip), tostring(data.country_code), tostring(data.ISP), tostring(data.ASN), tostring(data.region))
+        if not isWhitelisted and isVPN then
             playersUsingVPN[steamID] = true
-            Nova.log("w", string.format("%s is using a VPN. %s", Nova.playerName(ply), infoString))
-
-            Nova.startDetection("networking_vpn", ply, infoString, "networking_vpn_vpn-action")
+            Nova.log("w", string.format("%s is using a VPN. %s", Nova.playerName(ply), vpnInfoString))
+            Nova.startDetection("networking_vpn", ply, vpnInfoString, "networking_vpn_vpn-action")
         end
-    end)
+    end
+
+    if abuseEnabled then
+        Nova.queryAbuseIPDB(ip, ply, function(data)
+            if not data then return end
+
+            local countryCode = data.countryCode or ""
+            local isTor = data.isTor or false
+            local usageType = data.usageType or ""
+            local abuseScore = data.abuseConfidenceScore or 0
+            local threshold = Nova.getSetting("networking_vpn_abuseipdb_confidence_threshold", 75)
+
+            local isProxy = isTor
+            local isHosting = string.find(usageType, "Data Center") ~= nil
+                or string.find(usageType, "Hosting") ~= nil
+                or string.find(usageType, "Transit") ~= nil
+            local isVPN = isProxy or isHosting
+
+            local autokickEnabled = Nova.getSetting("networking_vpn_abuseipdb_autokick_enabled", false)
+            if autokickEnabled and abuseScore >= threshold then
+                local message = Nova.getSetting("networking_vpn_abuseipdb_autokick_message", "Your IP has been flagged as a security risk and is not allowed on this server")
+                Nova.kickPlayer(ply, message, "networking_vpn_abuseipdb_autokick")
+                return
+            end
+
+            Nova.queryIPASN(ip, function(asn)
+                local isKnownASN = asn and table.HasValue(Nova.getSetting("networking_vpn_whitelist_asns", {}), tostring(asn)) or false
+
+                local countryInfoString = string.format("IP: %s, Country: %s, ISP: %s", tostring(ip), tostring(countryCode), tostring(data.isp or "?"))
+                local vpnInfoString = string.format("IP: %s, Country: %s, ISP: %s, ASN: %s", tostring(ip), tostring(countryCode), tostring(data.isp or "?"), tostring(asn or "?"))
+                HandleCountryCheck(countryCode, isVPN, isKnownASN, countryInfoString, vpnInfoString)
+            end)
+        end)
+    else
+        Nova.queryIPScore(ip, ply, function(data)
+            if not data or not data.success then return end
+
+            local isVPN = data.active_vpn or false
+            local isKnownASN = table.HasValue(Nova.getSetting("networking_vpn_whitelist_asns", {}), tostring(data.ASN)) or false
+
+            local countryInfoString = string.format("IP: %s, Country: %s, ISP: %q", tostring(ip), tostring(data.country_code), tostring(data.ISP))
+            local vpnInfoString = string.format("IP: %s, Country: %s, ISP: %q, ASN: %q, Region: %s", tostring(ip), tostring(data.country_code), tostring(data.ISP), tostring(data.ASN), tostring(data.region))
+            HandleCountryCheck(data.country_code, isVPN, isKnownASN, countryInfoString, vpnInfoString)
+        end)
+    end
 end
 
 hook.Add("nova_banbypass_cookieloaded", "networking_vpncheck", function(ply)

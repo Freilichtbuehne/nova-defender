@@ -58,6 +58,12 @@ local phrases = {
     ["networking_vpn_apikey"] = "Clé API VPN:\nPour analyser les adresses IP. Vous devez vous enregistrer sur https://www.ipqualityscore.com/create-account et récupérer votre clé sur https://www.ipqualityscore.com/user/settings.",
     ["networking_vpn_countrycodes"] = "Pays autorisés à rejoindre votre serveur. Obtenez les codes pays ici: https://countrycode.org/ (code à 2 lettres en majuscules). Il est recommandé de mettre sur liste blanche votre propre pays et les pays voisins. Vous pouvez ajouter d'autres pays au fil du temps.",
     ["networking_vpn_whitelist_asns"] = "Numéros ASN en liste blanche (numéro pour identifier un fournisseur de services Internet). Il se peut que l'API détecte incorrectement une connexion VPN. Par conséquent, les FAI connus sont mis sur liste blanche. Obtenez-les sur https://ipinfo.io/countries. Alternativement, vous pouvez voir l'ASN de chaque client connecté dans l'onglet 'Joueur'.",
+    ["networking_vpn_provider"] = "Fournisseur de détection VPN/Proxy:\nChoisissez le service à utiliser pour l'analyse IP. IPQualityScore nécessite une clé API (niveau gratuit disponible). AbuseIPDB est une alternative gratuite.",
+    ["networking_vpn_abuseipdb_apikey"] = "Clé API AbuseIPDB:\nNécessaire pour utiliser AbuseIPDB comme fournisseur de détection VPN/Proxy. Inscrivez-vous sur https://www.abuseipdb.com/register et récupérez votre clé sur https://www.abuseipdb.com/account/api.",
+    ["networking_vpn_abuseipdb_confidence_threshold"] = "Seuil de confiance AbuseIPDB:\nLes IP avec un score de confiance égal ou supérieur à cette valeur sont considérées comme menaçantes. Par défaut: 75.",
+    ["networking_vpn_abuseipdb_max_age"] = "Âge maximal AbuseIPDB en jours:\nÂge maximal des signalements d'abus à prendre en compte pour le score de confiance. Par défaut: 90 jours.",
+    ["networking_vpn_abuseipdb_autokick_enabled"] = "Auto-exclusion en cas de score de confiance élevé:\nExclure immédiatement les joueurs dont l'IP a un score de confiance égal ou supérieur au seuil. Cela contourne l'action VPN normale.",
+    ["networking_vpn_abuseipdb_autokick_message"] = "Message d'auto-exclusion:\nLe message affiché au joueur lors de l'auto-exclusion pour un score de confiance élevé.",
     ["networking_screenshot_store_ban"] = "Enregistrer les captures d'écran (À la mise en ban):\nJuste avant qu'un joueur soit banni, une capture d'écran de son écran sera prise et enregistrée dans le dossier '/data/nova/ban_screenshots' du serveur.",
     ["networking_screenshot_store_manual"] = "Enregistrer les captures d'écran (Menu):\nSi un admin prend une capture d'écran d'un joueur, elle sera enregistrée dans le dossier '/data/nova/admin_screenshots' du serveur.",
     ["networking_screenshot_limit_ban"] = "Limite de captures d'écran (À la mise en ban):\nNombre maximal de captures d'écran stockées dans le dossier de données du serveur. Les plus anciennes seront supprimées.",
@@ -410,7 +416,16 @@ que vous obtenez après l'enregistrement gratuit sur ipqualityscore.com.
 Avec cela, Nova Defender peut alors examiner les adresses IP via cette page.
 1. allez à https://www.ipqualityscore.com/create-account
 2. copiez votre clé API ici https://www.ipqualityscore.com/user/settings
-3. collez-la dans l'onglet "Réseau" sous "Clé API VPN"]],
+3. collez-la dans l'onglet "Réseau" sous "Clé API VPN"
+
+Si vous préférez une alternative gratuite, sélectionnez "AbuseIPDB" comme fournisseur dans l'onglet "Réseau".]],
+    ["health_check_nova_abuseipdb_title"] = "Nova Defender AbuseIPDB",
+    ["health_check_nova_abuseipdb_desc"] = "AbuseIPDB est une alternative gratuite pour la détection VPN/Proxy.",
+    ["health_check_nova_abuseipdb_desc_long"] =
+    [[Si "AbuseIPDB" est sélectionné comme fournisseur dans l'onglet "Réseau", une clé API valide est requise.
+    1. allez à https://www.abuseipdb.com/register
+    2. copiez votre clé API ici https://www.abuseipdb.com/account/api
+    3. collez-la dans l'onglet "Réseau" sous "Clé API AbuseIPDB"]],
     ["health_check_nova_steamapi_title"] = "Protection du Profil Steam Nova Defender",
     ["health_check_nova_steamapi_desc"] = "La protection du profil Steam doit être configurée pour détecter les profils suspects des joueurs.",
     ["health_check_nova_steamapi_desc_long"] =

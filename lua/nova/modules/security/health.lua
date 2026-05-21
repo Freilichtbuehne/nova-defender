@@ -171,11 +171,51 @@ local healthChecks = {
         long_desc = "health_check_nova_vpn_desc_long",
         score = 2,
         check = function()
+            local provider = Nova.getSetting("networking_vpn_provider", "ipqualityscore")
+
+            if provider == "abuseipdb" then
+                local abuseKey = Nova.getSetting("networking_vpn_abuseipdb_apikey", "")
+                local impacted = abuseKey == "" or string.len(abuseKey) < 10
+                return {
+                    ["impacted"] = impacted,
+                    ["list"] = {},
+                }
+            end
+
             local apiKey = Nova.getSetting("networking_vpn_apikey", "")
             local impacted = apiKey == "" or string.len(apiKey) < 32
             return {
                 ["impacted"] = impacted,
                 ["list"] = {},
+            }
+        end,
+    },
+    ["nova_abuseipdb"] = {
+        name = "health_check_nova_abuseipdb_title",
+        desc = "health_check_nova_abuseipdb_desc",
+        long_desc = "health_check_nova_abuseipdb_desc_long",
+        score = 2,
+        check = function()
+            local provider = Nova.getSetting("networking_vpn_provider", "ipqualityscore")
+            if provider ~= "abuseipdb" then
+                return {
+                    ["impacted"] = false,
+                    ["list"] = {},
+                }
+            end
+
+            local apiKey = Nova.getSetting("networking_vpn_abuseipdb_apikey", "")
+            local impacted = false
+            local errors = {}
+
+            if apiKey == "" or string.len(apiKey) < 10 then
+                impacted = true
+                table.insert(errors, "AbuseIPDB is enabled but no valid API key is set")
+            end
+
+            return {
+                ["impacted"] = impacted,
+                ["list"] = errors,
             }
         end,
     },
