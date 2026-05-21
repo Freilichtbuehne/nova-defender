@@ -88,6 +88,40 @@ local patches = {
                 end
             end)
         end
+    end,
+    ["1.12.0"] = function()
+        // Migrate db_sync_changed flag to last_modified timestamp for multi-server sync
+        Nova.log("i", "Migrating ban sync from db_sync_changed flag to last_modified timestamp")
+
+        if Nova.sqlite then
+            Nova.selectQuery("PRAGMA table_info(nova_bans);", function(data)
+                if not data then return end
+
+                local hasLastModified = false
+                for _, column in ipairs(data) do
+                    if column.name == "last_modified" then
+                        hasLastModified = true
+                        break
+                    end
+                end
+
+                if not hasLastModified then
+                    Nova.query("ALTER TABLE nova_bans ADD COLUMN last_modified INT DEFAULT 0;")
+                end
+            end)
+        elseif Nova.mysql then
+            Nova.selectQuery("SHOW COLUMNS FROM nova_bans LIKE 'last_modified';", function(data)
+                if data != nil and type(data) == "table" and #data == 0 then
+                    Nova.query("ALTER TABLE nova_bans ADD COLUMN last_modified INT DEFAULT 0;")
+                end
+            end)
+            // clean up old flag column
+            Nova.selectQuery("SHOW COLUMNS FROM nova_bans LIKE 'db_sync_changed';", function(data)
+                if data != nil and type(data) == "table" and #data > 0 then
+                    Nova.query("ALTER TABLE nova_bans DROP COLUMN db_sync_changed;")
+                end
+            end)
+        end
     end
 }
 
