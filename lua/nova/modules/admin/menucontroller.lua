@@ -446,6 +446,10 @@ hook.Add("nova_init_loaded", "admin_createnetmessages", function()
                         SendDataToClient(ply, data, Nova.netmessage("admin_get_players", "staff"))
                     end)
                 end)
+            elseif provider == "vpndetection" then
+                Nova.queryVPNDetection(ip, target, function(data)
+                    SendDataToClient(ply, data or {}, Nova.netmessage("admin_get_players", "staff"))
+                end)
             else
                 Nova.queryIPScore(ip, target, function(data)
                     if not data or not data.success then data = {} end

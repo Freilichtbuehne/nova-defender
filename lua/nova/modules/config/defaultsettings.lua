@@ -130,6 +130,7 @@ Nova.setSetting("networking_http_whitelistdomains", {
 	"api.gmod-integration.com",
 	"gmod.express",
 	"api.abuseipdb.com",
+	"api.vpndetection.io",
 }, true, true, nil, true)
 
 Nova.setSetting("networking_fetch_overwrite", false, true, true)
@@ -144,7 +145,7 @@ Nova.setSetting("networking_post_blockunsafe", false, true, true, nil, true)
 	VPN
 ===============================*/
 
-Nova.setSetting("networking_vpn_provider", "ipqualityscore", true, true, {"ipqualityscore", "abuseipdb"})
+Nova.setSetting("networking_vpn_provider", "ipqualityscore", true, true, {"ipqualityscore", "abuseipdb", "vpndetection"})
 Nova.setSetting("networking_vpn_apikey", "", true, true, nil, false, {key = "networking_vpn_provider", value = "ipqualityscore"})
 Nova.setSetting("networking_vpn_abuseipdb_apikey", "", true, true, nil, false, {key = "networking_vpn_provider", value = "abuseipdb"})
 Nova.setSetting("networking_vpn_dump", true, true, true, nil, true)
