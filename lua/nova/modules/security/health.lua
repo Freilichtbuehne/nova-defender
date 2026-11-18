@@ -182,6 +182,14 @@ local healthChecks = {
                 }
             end
 
+            // VPNDetection needs no API key
+            if provider == "vpndetection" then
+                return {
+                    ["impacted"] = false,
+                    ["list"] = {},
+                }
+            end
+
             local apiKey = Nova.getSetting("networking_vpn_apikey", "")
             local impacted = apiKey == "" or string.len(apiKey) < 32
             return {

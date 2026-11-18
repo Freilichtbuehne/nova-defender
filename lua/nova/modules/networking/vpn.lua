@@ -211,6 +211,10 @@ Nova.registerAction("networking_country", "networking_vpn_country-action", {
 })
 
 Nova.getCachedVPNInfo = function(ply_or_steamid)
+    if Nova.getSetting("networking_vpn_provider", "ipqualityscore") == "vpndetection" then
+        return Nova.getVPNDetectionInfo(ply_or_steamid)
+    end
+
     local steamID = Nova.convertSteamID(ply_or_steamid)
     local ply = Nova.fPlayerBySteamID(steamID)
     if not IsValid(ply) or not ply:IsPlayer() then return end
@@ -325,6 +329,16 @@ local function CheckVPN(ply)
                 local vpnInfoString = string.format("IP: %s, Country: %s, ISP: %s, ASN: %s", tostring(ip), tostring(countryCode), tostring(data.isp or "?"), tostring(asn or "?"))
                 HandleCountryCheck(countryCode, isVPN, isKnownASN, countryInfoString, vpnInfoString)
             end)
+        end)
+    elseif provider == "vpndetection" then
+        Nova.queryVPNDetection(ip, ply, function(data)
+            if not data then return end
+
+            local isKnownASN = table.HasValue(Nova.getSetting("networking_vpn_whitelist_asns", {}), tostring(data.ASN)) or false
+
+            local countryInfoString = string.format("IP: %s, Country: %s, ISP: %q", tostring(ip), tostring(data.country_code), tostring(data.ISP))
+            local vpnInfoString = string.format("IP: %s, Country: %s, ISP: %q, ASN: %q, VPN: %s, Tor: %s, Relay: %s", tostring(ip), tostring(data.country_code), tostring(data.ISP), tostring(data.ASN), tostring(data.is_vpn), tostring(data.is_tor), tostring(data.is_relay))
+            HandleCountryCheck(data.country_code, data.active_vpn, isKnownASN, countryInfoString, vpnInfoString)
         end)
     else
         Nova.queryIPScore(ip, ply, function(data)
